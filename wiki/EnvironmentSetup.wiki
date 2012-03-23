@@ -1,11 +1,11 @@
-
 == Eclipse Installation ==
 
 *You should download: Eclipse IDE for Java EE Developers*
 from: http://www.eclipse.org/downloads/
 
+*Installing Java JDK 1.7*
 
-== Android sdk installation + Eclipse ==
+== Android sdk installation ==
 
 *You should download the windows (recommended) sdk*
 http://developer.android.com/sdk/installing.html

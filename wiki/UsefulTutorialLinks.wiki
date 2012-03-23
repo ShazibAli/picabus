@@ -9,5 +9,5 @@ This page contains useful tutorials links to various technical areas related to 
 
 == Links ==
 
-*Some android developing basics*
+* *Some android developing basics*
 http://www.vogella.de/articles/Android/article.html

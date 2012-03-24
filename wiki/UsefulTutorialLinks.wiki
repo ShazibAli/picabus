@@ -1,4 +1,4 @@
-#Contains links to useful tutorials
+Contains links to useful tutorials
 
 == Introduction ==
 

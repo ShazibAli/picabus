@@ -18,6 +18,6 @@ Enter to the following link and follow the instructions depicted there.
 
 Link: http://blog.msbbc.co.uk/2007/06/using-googles-free-svn-repository-with.html  
 
-Please note: the project already exists in the repository so you just have to consume an existing project when you'll be asked to do so (you don't need to create a new Android project). 
+Please note: the project already exists in the repository so you just have to consume it as an existing project when you'll be asked to do so (you don't need to create a new Android project). 
 
 == OpenCV ==

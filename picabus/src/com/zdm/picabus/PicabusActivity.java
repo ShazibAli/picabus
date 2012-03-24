@@ -10,6 +10,6 @@ public class PicabusActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Toast.makeText(getApplicationContext(), "ss", 3);
+        
     }
 }

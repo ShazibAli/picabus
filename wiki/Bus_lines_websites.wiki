@@ -1,0 +1,12 @@
+
+
+= Websites links: =
+
+1. http://busline.gov.il/ - request sent.
+
+2. http://www.bus.gov.il/ - request sent.
+   Contains data about bus lines in "Gush Dan" only.
+   Looks really good and has all the maps of each line (can be great for 
+   us).
+
+3. http://www.bus.co.il/ - request not sent.

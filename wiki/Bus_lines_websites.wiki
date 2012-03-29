@@ -1,5 +1,4 @@
 
-
 = Websites links: =
 
 1. http://busline.gov.il/ - request sent.
@@ -10,3 +9,16 @@
    us).
 
 3. http://www.bus.co.il/ - request not sent.
+
+
+
+=Omry=
+In conclusion to this issue:
+As i see it there are a few options
+1. Gain access to one of the above site's DB and build our own based on it.
+2.Gain access to each bus line company DB and build DB based on it.
+3. Write a script that will send queries to the sites above\bus line companies sites and build the DB that way.
+
+i looked at the companies sites - we can get by query every info we need including stations(Metropolin has station numbers..other i'm not sure).
+any way the thing is that each site will require a different script, therefore i believe we should try and use the sites above or get the DB directly. worst case we'll write the script.
+  

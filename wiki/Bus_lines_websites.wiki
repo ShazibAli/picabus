@@ -22,6 +22,6 @@ i looked at the companies sites - we can get by query every info we need includi
 any way the thing is that each site will require a different script, therefore i believe we should try and use the sites above or get the DB directly. worst case we'll write the script.
 
 examples:
-[http://www.metropoline.com/he/sharon/lineStops/350/550 Metropolin] http://www.metropoline.com/he/sharon/lineStops/350/550
-http://www.dan.co.il/search/lines_details.asp?LineNumber=25-_&month=3#
+[http://www.metropoline.com/he/sharon/lineStops/350/550 MetropolinLine90] 
+[http://www.dan.co.il/search/lines_details.asp?LineNumber=25-_&month=3# DanLine25]
   

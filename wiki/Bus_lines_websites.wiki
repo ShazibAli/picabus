@@ -2,10 +2,11 @@
 
 1. http://busline.gov.il/ - request sent (negative response)
 
-2. http://www.bus.gov.il/ - request sent. (negative response)
    Contains data about bus lines in "Gush Dan" only.
    Looks really good and has all the maps of each line (can be great for 
    us).
+
+2. http://www.bus.gov.il/ - request sent. (negative response)
 
 3. http://www.bus.co.il/ - request not sent.
 

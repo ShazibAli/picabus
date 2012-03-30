@@ -7,13 +7,13 @@ This page contains useful tutorials links to various technical areas related to 
 
 == Links ==
 
-* *Some android developing basics*
+* Some android developing basics*
 http://www.vogella.de/articles/Android/article.html
 
-* *Text area recognition*
+* Text area recognition
 http://abstractnonsense.com/software/ocr.html
 
-* * Really simple and basic video tutorial (5-10 min. each)
+* Really simple and basic video tutorial (5-10 min. each)
 Search for "Android Application Development Tutorial" on youtube
 
 * PHP Tutorial (starts from basics) - http://www.w3schools.com/php/

@@ -1,5 +1,6 @@
-These are the main options for Client/Server/DB architecture:
-----
+==These are the main options for Client/Server/DB architecture:==
+
+
 *Client – Server – DB Architecture (general)*
 
 http://stackoverflow.com/questions/2256082/best-way-to-implement-client-server-database-architecture-in-an-android

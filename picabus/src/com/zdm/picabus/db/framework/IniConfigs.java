@@ -47,39 +47,30 @@ public class IniConfigs {
 				variable = line.substring(0, separator).trim();
 				value = line.substring(separator + 1).trim();
 				
-				switch(variable.toLowerCase()){
-					case "hostname":{
-						this.hostName = value;
-						break;
-					}
-					case "portnumber":{
-						this.portNumber = value;
-						break;
-					}					
-					case "schemaname":{
-						this.schemaName = value;
-						break;
-					}
-					case "username":{
-						this.username = value;
-						break;
-					}
-					case "password":{
-						this.password = value;
-						break;
-					}
-					case "maxnumconnections":{
-						this.maxNumConnections = Integer.valueOf(value);
-						break;
-					}
-					case "initnumconnections":{
-						this.initNumConnections = Integer.valueOf(value);
-						break;
-					}
-					default:{
-						continue;
-					}
+				if (variable.equalsIgnoreCase("hostname")) {
+					this.hostName = value;
 				}
+				else if (variable.equalsIgnoreCase("portnumber")) {
+					this.portNumber = value;
+				}
+				else if (variable.equalsIgnoreCase("schemaname")) {
+					this.schemaName = value;
+				}
+				else if (variable.equalsIgnoreCase("username")) {
+					this.username = value;
+				}
+				else if (variable.equalsIgnoreCase("password")) {
+					this.password = value;
+				}				
+				else if (variable.equalsIgnoreCase("maxnumconnections")) {
+					this.maxNumConnections = Integer.valueOf(value);
+				}
+				else if (variable.equalsIgnoreCase("initnumconnections")) {
+					this.initNumConnections = Integer.valueOf(value);
+				}	
+				else continue;
+
+				
 			}
 			
 			dis.close();

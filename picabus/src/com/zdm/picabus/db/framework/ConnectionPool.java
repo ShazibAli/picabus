@@ -4,9 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashSet;
-
+/**
+ * Configurable Connection Pool for MySql connections
+ * 
+ * @author Daniel Lereya
+ *
+ */
 public class ConnectionPool {
- 
 
 	private static  String PASSWORD;
 	private static  String USERNAME;
@@ -15,11 +19,7 @@ public class ConnectionPool {
 	private static  String HOSTNAME;
 	private static  int MAXCONNECTIONS;
 	private static  int INITNUMOFCONNECTION;
-
-
-	
 	private static Boolean isInitialized = false;
-	
 	private static int connectionCount = 0;
 	private static int maxNumOfConnections = 0;
 	private static HashSet<Connection> ready = new HashSet<Connection>();

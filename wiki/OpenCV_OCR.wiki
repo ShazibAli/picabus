@@ -6,7 +6,7 @@ Some useful links:
 *Basic Open CV OCR explained*
 http://blog.damiles.com/2008/11/basic-ocr-in-opencv/
 
-*OCR SDK *
+*OCR SDK - good explained steps*
 http://www.abbyy-developers.eu/en:tech
 http://ocrsdk.com/producttour/programming-languages/
 
@@ -20,6 +20,8 @@ http://www.ccs.neu.edu/home/feneric/charrecnn.html
 *k-nearest neighbor algorithm*
 http://en.wikipedia.org/wiki/K-nearest_neighbor_algorithm
 
+*Great explanation about OCR with OpenCV python*
+http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
 
 *Forum Question with good explanations*
 http://stackoverflow.com/questions/1284214/simple-ocr-programming-tutorials-articles

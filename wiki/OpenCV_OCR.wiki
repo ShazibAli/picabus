@@ -12,11 +12,11 @@ http://ocrsdk.com/producttour/programming-languages/
 
 
 *Neural Networks OCR Code*
-*http://www.codeproject.com/Articles/3907/Creating-Optical-Character-Recognition-OCR-applica
+# http://www.codeproject.com/Articles/3907/Creating-Optical-Character-Recognition-OCR-applica
 
-*http://www.ccs.neu.edu/home/feneric/charrecnn.html
+# http://www.ccs.neu.edu/home/feneric/charrecnn.html
 
-*http://neuroph.sourceforge.net/image_recognition.html
+# http://neuroph.sourceforge.net/image_recognition.html
 
 *k-nearest neighbor algorithm*
 http://en.wikipedia.org/wiki/K-nearest_neighbor_algorithm

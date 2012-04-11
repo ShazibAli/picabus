@@ -1,5 +1,4 @@
 #labels Phase-Implementation
-
 = Open CV OCR Algorithms and issues=
 
 Some useful links:
@@ -24,3 +23,12 @@ http://en.wikipedia.org/wiki/K-nearest_neighbor_algorithm
 
 *Forum Question with good explanations*
 http://stackoverflow.com/questions/1284214/simple-ocr-programming-tutorials-articles
+
+*Good presentation about opencv with android*
+http://www.slideshare.net/alagala/computer-vision-with-android-google-gtug-bangkok-2011
+
+*mobile camera based text detection*
+http://www.stanford.edu/class/ee368/Project_11/Reports/Ma_Lin_Zhang_Mobile_text_recognition_and_translation.pdf
+
+*open cv pattern recognition*
+http://blog.damiles.com/2008/11/the-basic-patter-recognition-and-classification-with-opencv/

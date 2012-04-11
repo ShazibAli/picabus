@@ -32,3 +32,6 @@ http://www.stanford.edu/class/ee368/Project_11/Reports/Ma_Lin_Zhang_Mobile_text_
 
 *open cv pattern recognition*
 http://blog.damiles.com/2008/11/the-basic-patter-recognition-and-classification-with-opencv/
+
+*Digit recognition*
+http://stackoverflow.com/questions/8070300/scoreboard-digit-recognition-using-opencv

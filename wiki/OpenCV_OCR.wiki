@@ -1,14 +1,9 @@
-#summary One-sentence summary of this page.
 #labels Phase-Implementation
 
-= Introduction =
 
-Add your content here.
+= Open CV OCR Algorithms and issues=
 
+Some useful links:
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Basic Open CV OCR explained
+http://blog.damiles.com/2008/11/basic-ocr-in-opencv/

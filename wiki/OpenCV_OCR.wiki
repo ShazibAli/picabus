@@ -35,3 +35,6 @@ http://blog.damiles.com/2008/11/the-basic-patter-recognition-and-classification-
 
 *Digit recognition*
 http://stackoverflow.com/questions/8070300/scoreboard-digit-recognition-using-opencv
+
+*Sudoku example*
+http://www.aishack.in/2010/08/sudoku-grabber-with-opencv/4/

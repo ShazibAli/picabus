@@ -10,6 +10,7 @@ Choose: 32-bit/64-bit Windows Service Installer
 In Installation progress: change HTTP/1.1 connector port to 80 (from 8080)
 
 *Configure in eclipse:* 
+
 open eclipse -> window -> preferences ->
 press server -> runtime environment -> 
 press add -> tomcat 7.0. click "next"

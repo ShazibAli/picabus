@@ -5,21 +5,29 @@
 *Download tomcat 7:*
 
 http://tomcat.apache.org/download-70.cgi
+
 Choose: 32-bit/64-bit Windows Service Installer
+
 In Installation progress: change HTTP/1.1 connector port to 80 (from 8080)
 
 *Configure in eclipse:* 
 
 open eclipse -> window -> preferences -> 
+
 press server -> runtime environment -> 
+
 press add -> tomcat 7.0. click "next"
+
 click browse, and then insert path of installation of tomcat. finish.
 
 In eclipse, in the lower part of window – go to "server" tab. 
+
 Right click there -> new -> server
+
 Make sure 7.0 is marked. -> next -> finish.
 
 In order to start the server Click "start the server" – it will show: server started and synchronized.
+
 in order to check the server is on, go to your browser, to URL http://localhost:80, and make sure that the tomcat version running appears, below "http status 404" message.
 
 
@@ -28,13 +36,19 @@ in order to check the server is on, go to your browser, to URL http://localhost:
 *Download cfx:* 
 
 http://cxf.apache.org/download.html
+
 choose binary distribution, and the zip file (apache-cxf-2.5.2.zip). extract it.
 
 *Configure in eclipse:* 
 
 open eclipse -> window -> preferences ->
+
 -> web services -> cxf 2.x -> press add. 
+
 Browse the installation folder. Click finish. 
+
 Now check the checkbox of it, in order to make it the default.
 
-Now under  window -> preferences -> web services ->server&runtime, change to tomcat 7.0, and in the second one- choose cxf instead of axis.
+Now under  window -> preferences -> web services ->server&runtime, 
+
+change to tomcat 7.0, and in the second one- choose cxf instead of axis.

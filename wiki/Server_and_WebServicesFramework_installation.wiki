@@ -1,4 +1,4 @@
-#Installation of Tomcat server and CXF (web services framework), and their configuration in eclipse
+#summary Installation of Tomcat server and CXF (web services framework), and their configuration in eclipse
 
 = Tomcat server installation and configuration in eclipse =
 

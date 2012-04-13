@@ -5,7 +5,7 @@ First, make sure Tomcat server and CFX are installed, and configured in eclipse.
 *Create the project:*
 
 In eclipse, go to File -> dynamic web project. 
-Give the project name,  
+Give the project name,
 change "Dynamic web module version"  to 2.5, 
 and under "configuration" choose: " CXF web services project 2.5". press finish.
 

@@ -10,7 +10,9 @@ In Installation progress: change HTTP/1.1 connector port to 80 (from 8080)
 
 *Configure in eclipse:* 
 
-open eclipse -> window -> preferences -> server -> runtime environment -> add -> tomcat 7.0. click "next"
+open eclipse -> window -> preferences -> 
+press server -> runtime environment -> 
+press add -> tomcat 7.0. click "next"
 click browse, and then insert path of installation of tomcat. finish.
 
 In eclipse, in the lower part of window – go to "server" tab. 
@@ -30,7 +32,8 @@ choose binary distribution, and the zip file (apache-cxf-2.5.2.zip). extract it.
 
 *Configure in eclipse:* 
 
-open eclipse -> window -> preferences -> web services -> cxf 2.x -> add. 
+open eclipse -> window -> preferences ->
+-> web services -> cxf 2.x -> press add. 
 Browse the installation folder. Click finish. 
 Now check the checkbox of it, in order to make it the default.
 

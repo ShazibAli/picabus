@@ -1,4 +1,4 @@
-#how to create web services in eclipse
+#summary How to create web services in eclipse
 
 First, make sure Tomcat server and CFX are installed, and configured in eclipse.
 

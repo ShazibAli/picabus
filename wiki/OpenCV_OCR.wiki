@@ -2,6 +2,7 @@
 = Open CV OCR Algorithms and issues=
 
 Some useful links:
+
 *My stack over flow question*
 http://stackoverflow.com/questions/10107258/digit-recogntion-using-opencv-on-android
 

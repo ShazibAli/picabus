@@ -6,6 +6,11 @@ Some useful links:
 *My stack over flow question*
 http://stackoverflow.com/questions/10107258/digit-recogntion-using-opencv-on-android
 
+*Java CV*
+CookBook http://code.google.com/p/javacv/wiki/OpenCV2_Cookbook_Examples
+JavaCV http://code.google.com/p/javacv/
+
+
 *Basic Open CV OCR explained*
 http://blog.damiles.com/2008/11/basic-ocr-in-opencv/
 

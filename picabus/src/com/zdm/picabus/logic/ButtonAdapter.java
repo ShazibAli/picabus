@@ -1,6 +1,7 @@
 package com.zdm.picabus.logic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -66,5 +67,10 @@ public class ButtonAdapter extends BaseAdapter implements OnClickListener{
 	public void onClick(View v) {
 		Toast t = Toast.makeText(context, "The button id is: " + v.getId(), Toast.LENGTH_SHORT);
 		t.show();
+		if (v.getId()==0){
+			Intent intent = null;
+			intent = new Intent("com.zdm.picabus.cameraservices.CameraActivity");
+			v.getContext().startActivity(intent);
+		}
 	}
 }

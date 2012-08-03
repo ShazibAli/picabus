@@ -44,7 +44,7 @@ public class CameraActivity extends Activity {
             // do something  
         	Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
         	  
-        	imageView.setImageBitmap(thumbnail); 
+        	//imageView.setImageBitmap(thumbnail); 
         }  
     } 
     

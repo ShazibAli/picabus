@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".GetRoutmoranszevel.GetRout" >
+        <activity android:name=".tempmoran.GetRoutmoranszevel.GetRout" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.GetRout" />
 

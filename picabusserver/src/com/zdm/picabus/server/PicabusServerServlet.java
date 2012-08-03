@@ -1,9 +1,11 @@
 package com.zdm.picabus.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,12 +17,11 @@ import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 
-
 @SuppressWarnings("serial")
 public class PicabusServerServlet extends HttpServlet {
 	private final static String FREE_TEXT = "תחנת רכבת סוקולוב כפר סבא לאזור תעשייה רעננה";
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
 		/*
@@ -67,26 +68,65 @@ public class PicabusServerServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		String helloPicabus = "<!DOCTYPE html> " +
-				"<HTML>" +
-				"  <HEAD>" +
-				"      <TITLE> Hello Picabus </TITLE>" +
-				"  </HEAD>" +
-				"<BODY>" +
-				"   <H1>Hi</H1>" +
-				"   <P>Test</P> " +
-				"</BODY>" +
-				"</HTML>";
 		
-		// returning html
-		out.write(helloPicabus);
+	    String reqUrl = req.getRequestURL().toString();
+	    String queryString = req.getQueryString();   // d=789
+	    
+	    
+	    resp.setContentType("text/html");
+	    
+	    String httpHeadersString = "Some Headers";
+	    String requestPayloadString = "Some ayload";
+	    
+		
+	    out.println("<BODY BGCOLOR=\"#FDF5E6\">\n" +
+                "<H1 > Request Details</H1>\n" +
+                "<B>Request Method: </B>" +
+                req.getMethod() + "<BR>\n" +
+                "<B>Request URI: </B>" +
+                req.getRequestURI() + "<BR>\n" +
+                "<B>Request Protocol: </B>" +
+                req.getProtocol() + "<BR><BR>\n" +
+                "<TABLE BORDER=1>\n" +
+                "<TR BGCOLOR=\"#FFAD00\">\n" +
+                "<TH>Header Name<TH>Header Value");
+	    Enumeration headerNames = req.getHeaderNames();
+	    while(headerNames.hasMoreElements()) {
+	      String headerName = (String)headerNames.nextElement();
+	      out.println("<TR><TD>" + headerName);
+	      out.println("    <TD>" + req.getHeader(headerName));
+	    }
+	    
+	    
+	    out.println("</TABLE>\n");
+	    out.println("<H1 >Requset Payload: </H1>\n");
+	    BufferedReader buff = req.getReader();
+	    char[] buf = new char[4 * 1024]; // 4 KB char buffer
+	    int len;
+	    while ((len = buff.read(buf, 0, buf.length)) != -1) {
+	     out.write(buf, 0, len);
+	    }
+	   out.println("</BODY></HTML>"); 
+		
 
 		
 	}
 
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		PrintWriter out = resp.getWriter();
+		out.println("Hello Get");
+	}
+	
+	
+	
+	public void createRequestReport(HttpServletRequest request, PrintWriter out) {
+
+	}
+
 	public String getDirections(String freeText,
 			Map<String, String> originalHeaders) throws IOException {
-	//	StringBuffer sb = null;
+		// StringBuffer sb = null;
 
 		int indexOfAttr = originalHeaders.get("set-cookie").indexOf(
 				"ASP.NET_SessionId=");
@@ -103,7 +143,8 @@ public class PicabusServerServlet extends HttpServlet {
 				"http://bus.gov.il/WebForms/wfrmMain.aspx?width=1024&company=1&language=he&state=");
 		HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
 
-	//	URLFetchService fetcher = URLFetchServiceFactory.getURLFetchService();
+		// URLFetchService fetcher =
+		// URLFetchServiceFactory.getURLFetchService();
 
 		request.addHeader(new HTTPHeader("Content-type", originalHeaders
 				.get("content-type")));
@@ -111,7 +152,7 @@ public class PicabusServerServlet extends HttpServlet {
 				.toString(payload.length())));
 		request.setPayload(payload.getBytes());
 
-	//	HTTPResponse response = fetcher.fetch(request);
+		// HTTPResponse response = fetcher.fetch(request);
 		// String responseString = (response.getContent());
 
 		/*

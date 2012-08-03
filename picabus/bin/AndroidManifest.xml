@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zdm.picabus"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <application
+        android:icon="@drawable/splash_picabus"
+        android:label="@string/app_name" >
+        <activity
+            android:name="com.zdm.logic.PicabusMainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".HomeScreen" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.HomeScreen" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+           <activity
+            android:name=".CameraActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name=".GoogleMapActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name=".LbsGeocodingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity android:name="com.zdm.logic.ClientTestActivity" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.ClientTestActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ClientTest2" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.ClientTestActivity2" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".ScheduleResults" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.ScheduleResults" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".GetRout" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.GetRout" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        
+    </application>
+
+</manifest>

@@ -1,4 +1,6 @@
-package com.zdm.picabus;
+package com.zdm.picabus.tempmoran;
+
+import com.zdm.picabus.R;
 
 import android.app.Activity;
 import android.os.Bundle;

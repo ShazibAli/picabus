@@ -1,4 +1,4 @@
-package com.zdm.picabus;
+package com.zdm.picabus.logic;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,22 +34,31 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.zdm.picabus.R;
+import com.zdm.picabus.R.id;
+import com.zdm.picabus.R.layout;
+
+
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TempClass extends Activity {
+public class ClientTestActivity extends Activity {
 
-	Button btnSendRequest;
+	Button btnSendRequest,btnGetRoute;
 	TextView txtResultText;
-
+	ImageView imView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -58,118 +68,63 @@ public class TempClass extends Activity {
 
 		Toast.makeText(getBaseContext(), "Test", 3000);
 		btnSendRequest = (Button) findViewById(R.id.sendRequest);
+		btnGetRoute = (Button) findViewById(R.id.bGetRoute);
 		txtResultText = (TextView) findViewById(R.id.resultContainer);
-
+		imView = (ImageView) findViewById(R.id.imview);
+		
 		btnSendRequest.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				Thread sendRequest = new Thread(new Runnable() {
 
 					public void run() {
-						// TODO Auto-generated method stub
-
-						// sendGetRequest("http://10.0.2.2:5000", null);
-
-						/************* encode android image (byte[]) to string ****************/
-						/*
-						 * String data = Base64.encodeToString(myArrayImage,
-						 * Base64.DEFAULT);
-						 */
-
-						/***************
-						 * send from path in android device-to server (insert in
-						 * post execute)
-						 *************/
-
-						/*
-						 * File("/sdcard/download/600px_US_5.svg");
-						 */
-						String pathToFile = "/sdcard/download/600px_US_5.svg";
-
-
-						/*
-						 * after photo taken by device- prepare a string (from
-						 * the path)
-						 */
-						/*-----> in the camera part:
-						 * File file = new File(Environment.getExternalStorageDirectory(),"sign.jpg");
-						 outputFileUri = Uri.fromFile(file);
-						 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-						 startActivityForResult(cameraIntent, PICTURE_ACTIVITY);
-
-						/*-------> here:
-						 */
-/*						File file = new File(Environment
-								.getExternalStorageDirectory(), "sign.jpg");
-						if (file.exists()) {
-							ByteArrayOutputStream stream = new ByteArrayOutputStream();
-							// Enclose this in a scope so that when it’s over we
-							// can call the garbage collector (the phone doesn’t
-							// have a lot of memory!)
-							{
-								Bitmap image = BitmapFactory.decodeFile(file
-										.getPath());
-								Bitmap scaled = Bitmap.createScaledBitmap(
-										image, (int) (image.getWidth() * 0.3),
-										(int) (image.getHeight() * 0.3), false);
-								scaled.compress(Bitmap.CompressFormat.JPEG, 90,
-										stream);
-							}
-
-							System.gc();
-
-							byte[] byte_arr = stream.toByteArray();
-							// String image_str = Base64.encodeBytes(byte_arr);
-							String image_str = Base64.encodeToString(
-									imageTakenAndroid, Base64.DEFAULT);
-						}*/
-
-						/******** take downloadedphoto from android library **********/
 						
-						/*File anroid_photo2 = new File(
-								"/sdcard/download/600px-US_5.svg.png");
-						if (anroid_photo2.exists())
-						System.out.println("kaf;lskjf");	*/
+						/*File anroid_photo2 = new File("/sdcard/download/600px-US_5.svg.png");*/
 
-
-						/* route request */
-						int line = 68;
-						String lineStr = "Line: \n"+Integer.toString(line)+"\n";
-						String busCompany = "Company: \nDan\n";
-						String routeRequest = lineStr + busCompany;
-
-						
-						
-						/*line time request*/
-						
 						/*1. get current time*/
 						Calendar calendar = new GregorianCalendar();
 						int  hour = calendar.get(Calendar.HOUR_OF_DAY);
 						int minute = calendar.get(Calendar.MINUTE);
-						if (calendar.get(Calendar.AM_PM) != 0)
-							hour+=12;
-						String time = Integer.toString(hour) + "\n" + Integer.toString(minute) + "\n";
+						String time = "Time:\nHour:"+ Integer.toString(hour) + "Minute" + Integer.toString(minute) + "\n";
 						
 						/*2. image*/
-						
-						
+									
 						/* image as bytes - to string */
 						//	byte[] imageTakenAndroid = { 123 };// should be a photo
 						/*String imageAsStr = Base64.encodeToString(imageTakenAndroid, Base64.DEFAULT);
 						signImage += imageAsStr + "\n";*/
 
 						
-						String imageTakenAndroid = "blaasasasasa";
-						String dataForTime = "Sign Image:\n"+ imageTakenAndroid+"\n";
 						
-						 String result = postSendSign("http://10.0.2.2:5001",dataForTime);
-						 
+						
+						
+						
+/*						Bitmap bitmapOrg = BitmapFactory.decodeResource(getResources(),R.drawable.splash);
+						ByteArrayOutputStream bao = new ByteArrayOutputStream();
+						bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+						byte [] ba = bao.toByteArray();
+						String imageTakenAndroid=Base64.encodeToString(ba, Base64.DEFAULT);
+*/
+
+								
+						String imageTakenAndroid = "blaasasasasa";
+						String dataForTime = time + "Sign Image:\n"+ imageTakenAndroid+"\n";
+						
+						String result = postSendSign("http://10.0.2.2:5001",dataForTime);
+
+						
+						Intent ourIntent = null;
+						//	try {
+							//	routClass = Class.forName("com.zdm.picabus.GetRout"); 
+								// ourIntent = new Intent(ClientTestActivity.this,routClass);
+								 ourIntent = new Intent("com.zdm.picabus.ScheduleResults");
+//								ourIntent.putExtra("BitmapImage", imageRes);
+							//	 ourIntent.putExtra("ResultStr", result);
+								startActivity(ourIntent);
+						// txtResultText.setText("result");						 
 					}
 					
 
-						// String result2 = postGetRoute("http://10.0.2.2:5009",
-						// routeRequest);
-						// txtResultText.setText("result");
 					}
 
 				);
@@ -178,21 +133,66 @@ public class TempClass extends Activity {
 			}
 
 		});
-	}
+		
+		
+		btnGetRoute.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Thread sendRequest = new Thread(new Runnable() {
+					
+				public void run() {
+					
+					int line = 68;
+					String lineStr = "Details:\nLine:"+Integer.toString(line);
+					String busCompany = "Dan";
+					String routeRequest = lineStr + "Company:"+busCompany+"\n";
+					
+					Bitmap imageRes = postGetRoute("http://10.0.2.2:5001",routeRequest);
 
-	
-	private static String readFileAsString(String filePath) throws java.io.IOException{
-	    byte[] buffer = new byte[(int) new File(filePath).length()];
-	    BufferedInputStream f = null;
-	    try {
-	        f = new BufferedInputStream(new FileInputStream(filePath));
-	        f.read(buffer);
-	    } finally {
-	        if (f != null) try { f.close(); } catch (IOException ignored) { }
-	    }
-	    return new String(buffer);
+					//imView.setImageBitmap(result2);
+					
+					
+					//Bitmap imageRes = BitmapFactory.decodeResource(getResources(),R.drawable.ab);
+					String extStorageDirectory = Environment.getExternalStorageDirectory().toString(); 
+				    OutputStream outStream = null; 
+				    File file = new File(extStorageDirectory, "route.PNG"); 
+				    try { 
+				     outStream = new FileOutputStream(file); 
+				     imageRes.compress(Bitmap.CompressFormat.PNG, 100, outStream); 
+				     outStream.flush();
+				     outStream.close();
+				    }
+				    catch(Exception e) 
+				    {			e.printStackTrace();} 
+
+
+					Intent ourIntent = null;
+				//	try {
+					//	routClass = Class.forName("com.zdm.picabus.GetRout"); 
+						// ourIntent = new Intent(ClientTestActivity.this,routClass);
+						 ourIntent = new Intent("com.zdm.picabus.GetRout");
+		//				ourIntent.putExtra("BitmapImage", imageRes); 
+						startActivity(ourIntent);
+			/*		}		catch(ClassNotFoundException e){
+						e.printStackTrace();
+					}
+			*/		
+
+
+					
+
+					//in the new intent
+					//Bitmap bitmap = (Bitmap) intent.getParcelableExtra("BitmapImage"); 
+
+
+				}
+			}
+		);
+				sendRequest.start();
 	}
-	
+		});
+	}
 	
 	
 	public static String postSendSign2(String targetURL, String urlParameters) {
@@ -317,6 +317,7 @@ public class TempClass extends Activity {
 			wr.close();
 			// Get Response
 			InputStream is = connection.getInputStream();
+			
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			String line;
 			StringBuffer response = new StringBuffer();
@@ -338,7 +339,7 @@ public class TempClass extends Activity {
 		}
 	}
 
-	public static String postGetRoute(String targetURL, String urlParameters) {
+	public static Bitmap postGetRoute(String targetURL, String urlParameters) {
 
 		URL url;
 		// String lineEnd = "\r\n";
@@ -376,15 +377,19 @@ public class TempClass extends Activity {
 			wr.close();
 			// Get Response
 			InputStream is = connection.getInputStream();
-			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+			
+/*			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			String line;
 			StringBuffer response = new StringBuffer();
 			while ((line = rd.readLine()) != null) {
 				response.append(line);
 				response.append('\r');
 			}
-			rd.close();
-			return response.toString();
+			rd.close();*/
+			Bitmap bmImg = BitmapFactory.decodeStream(is);
+			int num = bmImg.getByteCount();
+			//return response.toString();
+			return bmImg;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -398,178 +403,6 @@ public class TempClass extends Activity {
 	}
 
 
-	public void postData() {
-		// Create a new HttpClient and Post Header
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.yoursite.com/script.php");
-
-		try {
-			// Add your data
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-			nameValuePairs.add(new BasicNameValuePair("id", "12345"));
-			nameValuePairs.add(new BasicNameValuePair("stringdata",
-					"AndDev is Cool!"));
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-			// Execute HTTP Post Request
-			HttpResponse response = httpclient.execute(httppost);
-
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		}
-	}
-
-	// see
-	// http://androidsnippets.com/executing-a-http-post-request-with-httpclient
-
-	private String sendGetRequest(String endpoint, String requestParameters) {
-		String result = null;
-		if (endpoint.startsWith("http://")) {
-			// Send a GET request to the servlet
-			try {
-				// Construct data
-				StringBuffer data = new StringBuffer();
-
-				// Send data
-				String urlStr = endpoint;
-				if (requestParameters != null && requestParameters.length() > 0) {
-					urlStr += "?" + requestParameters;
-				}
-				URL url = new URL(urlStr);
-				URLConnection conn = url.openConnection();
-
-				// conn.connect();
-				// Get the response
-				BufferedReader rd = new BufferedReader(new InputStreamReader(
-						conn.getInputStream()));
-				StringBuffer sb = new StringBuffer();
-				String line;
-				while ((line = rd.readLine()) != null) {
-					sb.append(line);
-				}
-				rd.close();
-				result = sb.toString();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Reads data from the data reader and posts it to a server via POST
-	 * request. data - The data you want to send endpoint - The server's address
-	 * output - writes the server's response to output
-	 * 
-	 * @throws Exception
-	 */
-	public static void postData(Reader data, URL endpoint, Writer output)
-			throws Exception {
-		HttpURLConnection urlc = null;
-		try {
-			urlc = (HttpURLConnection) endpoint.openConnection();
-			// prepare data?
-			try {
-				urlc.setRequestMethod("POST");
-			} catch (ProtocolException e) {
-				throw new Exception(
-						"Shouldn't happen: HttpURLConnection doesn't support POST??",
-						e);
-			}
-			urlc.setDoOutput(true);
-			urlc.setDoInput(true);
-			urlc.setUseCaches(false);
-			urlc.setAllowUserInteraction(false);
-			urlc.setRequestProperty("Content-type", "text/xml; charset="
-					+ "UTF-8");
-
-			// request?
-			OutputStream out = urlc.getOutputStream();
-
-			try {
-				Writer writer = new OutputStreamWriter(out, "UTF-8");
-				pipe(data, writer);
-				writer.close();
-			} catch (IOException e) {
-				throw new Exception("IOException while posting data", e);
-			} finally {
-				if (out != null)
-					out.close();
-			}
-
-			// response?
-			InputStream in = urlc.getInputStream();
-			try {
-				Reader reader = new InputStreamReader(in);
-				pipe(reader, output);
-				reader.close();
-			} catch (IOException e) {
-				throw new Exception("IOException while reading response", e);
-			} finally {
-				if (in != null)
-					in.close();
-			}
-
-		} catch (IOException e) {
-			throw new Exception("Connection error (is server running at "
-					+ endpoint + " ?): " + e);
-		} finally {
-			if (urlc != null)
-				urlc.disconnect();
-		}
-	}
-
-	/**
-	 * Pipes everything from the reader to the writer via a buffer
-	 */
-	private static void pipe(Reader reader, Writer writer) throws IOException {
-		char[] buf = new char[1024];
-		int read = 0;
-		while ((read = reader.read(buf)) >= 0) {
-			writer.write(buf, 0, read);
-		}
-		writer.flush();
-	}
-
-	/*
-	 * // Create query string
-	 * 
-	 * String queryString = "param1=" + URLEncoder.encode(param1Value, "UTF-8");
-	 * queryString += "&param2=" + URLEncoder.encode(param2Value, "UTF-8");
-	 * 
-	 * // Make connection
-	 * 
-	 * URL url = new URL("http://www.objects.com.au/"); URLConnection
-	 * urlConnection = url.openConnection(); urlConnection.setDoOutput(true);
-	 * OutputStreamWriter out = new OutputStreamWriter(
-	 * urlConnection.getOutputStream());
-	 * 
-	 * // Write query string to request body
-	 * 
-	 * out.write(queryString); out.flush();
-	 * 
-	 * // Read the response
-	 * 
-	 * BufferedReader in = new BufferedReader( new
-	 * InputStreamReader(urlConnection.getInputStream())); String line = null;
-	 * while ((line = in.readLine()) != null) { System.out.println(line); }
-	 * out.close(); in.close();
-	 */
-
-	/*
-	 * String urlParameters = "fName=" + URLEncoder.encode("???", "UTF-8") +
-	 * "&lName=" + URLEncoder.encode("???", "UTF-8")
-	 */
-
-	/*
-	 * 
-	 * 
-	 * dos.writeBytes(twoHyphens + boundary + lineEnd); dos.writeBytes(
-	 * "Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" +
-	 * exsistingFileName +"\"" + lineEnd); dos.writeBytes(lineEnd);
-	 */
 
 	public static void excutePost222copiedwasntinfunc(String data) {
 

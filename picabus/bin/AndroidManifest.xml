@@ -9,27 +9,27 @@
     <uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <application
+   
+	<application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
-        <activity
-            android:name="com.zdm.logic.PicabusMainActivity"
+         <activity
+            android:name=".SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeScreen" >
+        <activity
+            android:name=".MainScreenActivity"
+            android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="com.zdm.picabus.HomeScreen" />
-
+                <action android:name="com.zdm.picabus.MAINSCREEN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-           <activity
+        <activity
             android:name=".CameraActivity"
             android:label="@string/app_name" >
         </activity>
@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".GetRout" >
+        <activity android:name=".tempmoran.GetRoutmoranszevel.GetRout" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.GetRout" />
 

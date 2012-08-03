@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
+import com.zdm.picabus.connectivity.RequestHandler;
 
 public class CameraActivity extends Activity {
     /** Called when the activity is first created. */
@@ -24,18 +25,21 @@ public class CameraActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera);
+        //setContentView(R.layout.camera);
         
-        getViewsById();
+        //getViewsById();
         
-        this.btnTakePic.setOnClickListener(new OnClickListener() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST); 
+        
+        /*this.btnTakePic.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 				  Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST); 
 				
 			}
-		});
+		});*/
 
     }
     
@@ -43,7 +47,7 @@ public class CameraActivity extends Activity {
         if (requestCode == CAMERA_PIC_REQUEST) {  
             // do something  
         	Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        	  
+        	RequestHandler.sendImage(thumbnail);
         	//imageView.setImageBitmap(thumbnail); 
         }  
     } 

@@ -1,8 +1,10 @@
 package com.zdm.picabus.connectivity;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -17,11 +19,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 public class RequestHandler {
 
@@ -71,11 +71,9 @@ public class RequestHandler {
 		}
 
 	}
-	
-	
+
 	public static void sendImage(Bitmap busSign) {
-		InputStream is;
-		
+
 		ByteArrayOutputStream bao = new ByteArrayOutputStream();
 
 		busSign.compress(Bitmap.CompressFormat.JPEG, 90, bao);
@@ -92,30 +90,53 @@ public class RequestHandler {
 
 		try {
 
-			HttpClient httpclient = new DefaultHttpClient();
+			final HttpClient httpclient = new DefaultHttpClient();
 
-			HttpPost httppost = new
-
-			HttpPost("http://localhost:8888/picabusserver");
+			final HttpPost httppost = new HttpPost(
+					"http://picabusapp.appspot.com/picabusserver");
 
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-			HttpResponse response = httpclient.execute(httppost);
+			Thread sendRequest = new Thread(new Runnable() {
 
-			HttpEntity entity = response.getEntity();
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						InputStream is = entity.getContent();
+						BufferedReader reader = new BufferedReader(
+								new InputStreamReader(is, "iso-8859-1"), 8);
+						StringBuffer sb = new StringBuffer();
+						String line = "";
+						while ((line = reader.readLine()) != null) {
+							sb.append(line + "\n");
+						}
+						is.close();
+						String result = sb.toString();
+						int x = 2 + 1;
+						// return result;
 
-			is = entity.getContent();
-			
-			Toast.makeText(null, is.toString(), Toast.LENGTH_SHORT).show();
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+
+			sendRequest.start();
+			// Toast.makeText(null, is.toString(), Toast.LENGTH_SHORT).show();
 
 		} catch (Exception e) {
 
 			Log.e("log_tag", "Error in http connection " + e.toString());
 
 		}
-		
-		
-		
+
 	}
 
 }

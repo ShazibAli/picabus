@@ -14,7 +14,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
          <activity
-            android:name=".SplashActivity"
+            android:name=".logic.SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainScreenActivity"
+            android:name=".logic.MainScreenActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.MAINSCREEN" />
@@ -30,28 +30,41 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CameraActivity"
+            android:name=".cameraservices.CameraActivity"
             android:label="@string/app_name" >
+             <intent-filter>
+                <action android:name="com.zdm.picabus.cameraservices.CameraActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         
         <activity
-            android:name=".GoogleMapActivity"
+            android:name=".locationservices.GoogleMapActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.cameraservices.GoogleMapActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         
         <activity
-            android:name=".LbsGeocodingActivity"
+            android:name=".locationservices.LbsGeocodingActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.cameraservices.GoogleMapActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         
-        <activity android:name="com.zdm.logic.ClientTestActivity" >
+        <activity
+             android:name=".tempmoran.ClientTestActivity" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.ClientTestActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ClientTest2" >
+        <activity android:name=".tempmoran.ClientTest2" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.ClientTestActivity2" />
 
@@ -59,7 +72,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".ScheduleResults" >
+        <activity android:name=".tempmoran.ScheduleResults" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.ScheduleResults" />
 
@@ -67,7 +80,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".tempmoran.GetRoutmoranszevel.GetRout" >
+        <activity android:name=".tempmoran.GetRout" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.GetRout" />
 

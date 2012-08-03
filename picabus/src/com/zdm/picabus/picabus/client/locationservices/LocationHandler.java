@@ -1,9 +1,9 @@
-package com.zdm.picabus.client.locationservices;
+package com.zdm.picabus.picabus.client.locationservices;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.zdm.picabus.client.locationservices.LocationHandler.GetLastLocation.LocationResult;
+import com.zdm.picabus.picabus.client.locationservices.LocationHandler.GetLastLocation.LocationResult;
 
 import android.content.Context;
 import android.location.Location;

@@ -1,4 +1,4 @@
-package com.zdm.picabus;
+package com.zdm.picabus.tempmoran;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import com.zdm.picabus.R;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

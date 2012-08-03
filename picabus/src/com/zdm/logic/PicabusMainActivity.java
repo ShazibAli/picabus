@@ -1,4 +1,7 @@
-package com.zdm.picabus;
+package com.zdm.logic;
+
+import com.zdm.picabus.R;
+import com.zdm.picabus.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +19,7 @@ public class PicabusMainActivity extends Activity {
 			public void run() {
 				try {
 					Thread.sleep(5000);
-					startActivity(new Intent("com.zdm.picabus.HomeScreen"));
+					startActivity(new Intent("com.zdm.picabus.ClientTestActivity"));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

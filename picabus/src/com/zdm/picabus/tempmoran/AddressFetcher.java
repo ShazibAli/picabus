@@ -17,8 +17,8 @@ public class AddressFetcher extends Activity {
 	double LONGITUDE = -122.083;
 
 	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	//@Override
+/*	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.address_fetcher);
 		TextView myLatitude = (TextView) findViewById(R.id.mylatitude);
@@ -53,5 +53,5 @@ public class AddressFetcher extends Activity {
 			myAddress.setText("Canont get Address!");
 		}
 
-	}
+	}*/
 }

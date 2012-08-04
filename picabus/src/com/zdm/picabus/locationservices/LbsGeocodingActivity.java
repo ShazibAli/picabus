@@ -44,10 +44,10 @@ public class LbsGeocodingActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.gps_tests);
+//		setContentView(R.layout.gps_tests);
 
-		retrieveLocationButton = (Button) findViewById(R.id.retrieve_location_button);
-		retrieveAddressButton = (Button) findViewById(R.id.retrieve_address);
+	//	retrieveLocationButton = (Button) findViewById(R.id.retrieve_location_button);
+		//retrieveAddressButton = (Button) findViewById(R.id.retrieve_address);
 		//showOnMap = (Button) findViewById(R.id.show_on_map);
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

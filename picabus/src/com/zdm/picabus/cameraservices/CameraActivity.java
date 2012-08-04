@@ -4,8 +4,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.locationservices.GpsCorrdinates;
 
 public class CameraActivity extends Activity {
     /** Called when the activity is first created. */
@@ -45,9 +48,15 @@ public class CameraActivity extends Activity {
 			String time = "Time:\nHour:"+ Integer.toString(hour) + "Minute" + Integer.toString(minute) + "\n";
 
 			//get coordinates
+			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			GpsCorrdinates gps = new GpsCorrdinates(locationManager);
+			gps.getCurrentLocation();
+			Double lat = gps.getLatitude();
+			Double lng = gps.getLongitude();
 			
         	//send data to server
-        	HttpCaller.sendImage(thumbnail);
+			HttpCaller.sendData(time, thumbnail, lat, lng);
+        	//HttpCaller.sendImage(thumbnail);
         	//imageView.setImageBitmap(thumbnail); 
         }  
     } 

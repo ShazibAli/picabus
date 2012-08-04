@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
-import com.zdm.picabus.connectivity.RequestHandler;
+import com.zdm.picabus.connectivity.HttpCaller;
 
 public class CameraActivity extends Activity {
     /** Called when the activity is first created. */
@@ -47,7 +47,7 @@ public class CameraActivity extends Activity {
 			//get coordinates
 			
         	//send data to server
-        	RequestHandler.sendImage(thumbnail);
+        	HttpCaller.sendImage(thumbnail);
         	//imageView.setImageBitmap(thumbnail); 
         }  
     } 

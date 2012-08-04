@@ -23,7 +23,7 @@ import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
 
-public class RequestHandler {
+public class HttpCaller {
 
 	public static void sendData(String time, Bitmap image, double LATITUDE,
 			double LONGITUDE) {
@@ -95,6 +95,8 @@ public class RequestHandler {
 			final HttpPost httppost = new HttpPost(
 					"http://picabusapp.appspot.com/picabusserver");
 
+			httppost.addHeader(CustomHeader.TASK_NAME.getHeaderName(), Request.GET_DEPARTURE_TIMES.getTaskName());
+			
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			Thread sendRequest = new Thread(new Runnable() {

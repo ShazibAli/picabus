@@ -56,11 +56,11 @@ public class TempClass extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.client_test);
+	//	setContentView(R.layout.client_test);
 
 		Toast.makeText(getBaseContext(), "Test", 3000);
-		btnSendRequest = (Button) findViewById(R.id.sendRequest);
-		txtResultText = (TextView) findViewById(R.id.resultContainer);
+		//btnSendRequest = (Button) findViewById(R.id.sendRequest);
+	//	txtResultText = (TextView) findViewById(R.id.resultContainer);
 
 		btnSendRequest.setOnClickListener(new View.OnClickListener() {
 

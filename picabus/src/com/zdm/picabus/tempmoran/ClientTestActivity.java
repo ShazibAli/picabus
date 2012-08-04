@@ -1,4 +1,4 @@
-package com.zdm.picabus.logic;
+package com.zdm.picabus.tempmoran;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -65,12 +65,12 @@ public class ClientTestActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.client_test);
+	//	setContentView(R.layout.client_test);
 
 		Toast.makeText(getBaseContext(), "Test", 3000);
-		btnSendRequest = (Button) findViewById(R.id.sendRequest);
-		btnGetRoute = (Button) findViewById(R.id.bGetRoute);
-		txtResultText = (TextView) findViewById(R.id.resultContainer);
+	//	btnSendRequest = (Button) findViewById(R.id.sendRequest);
+		//btnGetRoute = (Button) findViewById(R.id.bGetRoute);
+	//	txtResultText = (TextView) findViewById(R.id.resultContainer);
 		imView = (ImageView) findViewById(R.id.imview);
 		
 		btnSendRequest.setOnClickListener(new View.OnClickListener() {

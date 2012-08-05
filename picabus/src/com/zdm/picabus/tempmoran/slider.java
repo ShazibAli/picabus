@@ -1,56 +1,38 @@
-package com.zdm.picabus.logic;
+package com.zdm.picabus.tempmoran;
 
 import com.zdm.picabus.R;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.SlidingDrawer.OnDrawerScrollListener;
-
-
-public class MainScreenActivity extends Activity {
-	
-
-ImageButton cameraBtn;
-ImageButton historyBtn;
-ImageButton aboutUsBtn;
-ImageButton searchBtn;
-Button slideButton;
-SlidingDrawer slidingDrawer;
-
-	@Override
-protected void onCreate(Bundle savedInstanceState) {
-	// TODO Auto-generated method stub
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.menu_screen);
-    
-    cameraBtn = (ImageButton) findViewById(R.id.button_camera);
-    historyBtn = (ImageButton) findViewById(R.id.button_history);
-    aboutUsBtn = (ImageButton) findViewById(R.id.button_aboutus);
-    searchBtn = (ImageButton) findViewById(R.id.button_search);
-
-    
-    cameraBtn.setOnClickListener(new View.OnClickListener() {
-		
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			Intent intent = new Intent("com.zdm.picabus.cameraservices.CameraActivity");
-			startActivity(intent);
-		}
-	});
-    
-    
-    
+import android.widget.Toast;
+ 
+public class slider extends Activity implements OnClickListener {
+ 
+    Button slideButton,b1, b2,b3,b4;
+    SlidingDrawer slidingDrawer;
+ 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+ 
+        setContentView(R.layout.setting_slider);
         slideButton = (Button) findViewById(R.id.slideButton);
         slidingDrawer = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
+        b1 = (Button) findViewById(R.id.Button01);
+        b2 = (Button) findViewById(R.id.Button02);
+
  
- /*       slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
+        b1.setOnClickListener(this);
+        b2.setOnClickListener(this);
+
+ 
+  /*      slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
             public void onDrawerOpened() {
                 slideButton.setBackgroundResource(R.drawable.green_down_arrow);
             }
@@ -80,17 +62,12 @@ protected void onCreate(Bundle savedInstanceState) {
                 slideButton.setBackgroundResource(R.drawable.green_up_arrow);
             }
         });
-    }*/
+ */
+    }
  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-}
 
+    public void onClick(View v) {
+        Button b = (Button)v;
+        Toast.makeText(slider.this, b.getText() + " Clicked", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -14,6 +14,7 @@ public class GpsCorrdinates {
 	private LocationManager locationManager;
 	private Double lat;
 	private Double lng;
+	Location location;
 	
 	//locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -24,14 +25,14 @@ public class GpsCorrdinates {
 	
 	public GpsCorrdinates(LocationManager lm){
 		this.locationManager = lm;
+		location = locationManager
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	}
 	
 	public void getCurrentLocation() {
 
 		//locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		Location location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (location != null) {
 			lat = location.getLongitude();
 			lng = location.getLatitude();

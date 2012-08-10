@@ -13,20 +13,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-@SuppressWarnings("serial")
+
 public class PicabusServerServlet extends HttpServlet {
 
+
+	private static final long serialVersionUID = 1L;
 	private final static String TASK_NAME_HEADER = "Task-name";
 	private final static int ERROR_CODE = 500;
 	private final static String UNSUPPOTED_TASK_ERROR_MSG = "Supplied Task-name is not supported by Picabus server";
 	
-
-	@SuppressWarnings("deprecation")
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		// dispatching requests handling according task name
@@ -37,19 +38,7 @@ public class PicabusServerServlet extends HttpServlet {
 		
 		if (taskName.equalsIgnoreCase(Service.GET_DEPARTURE_TIMES.getTaskName())) {
 			
-			// extract requests payload 
-			  StringBuffer sb = new StringBuffer();
-			  String line = null;
-			  try {
-			    BufferedReader reader = req.getReader();
-			    while ((line = reader.readLine()) != null)
-			      sb.append(line);
-			  } catch (Exception e) { /*report an error*/ }
-
-			    String jsonAsString = sb.toString();
-			    Gson gson = new Gson();
-			    JsonParser parser = new JsonParser();
-			    JsonObject jsonObject = (JsonObject)parser.parse(jsonAsString);
+				JsonObject jsonObject = extractRequestPayload(req);
 			    int lineNumber =  jsonObject.getAsJsonObject().get("lineNumber").getAsInt();
 			    double lat = jsonObject.getAsJsonObject().get("latitude").getAsDouble();
 			    double lng = jsonObject.getAsJsonObject().get("longitude").getAsDouble();
@@ -71,8 +60,27 @@ public class PicabusServerServlet extends HttpServlet {
 		}
 	}
 	
-	
+	/**
+	 * Extract the request content (assumed to be in JSON format)
+	 * @param req the HttpServletRequest 
+	 * @return request payload as JSON object 
+	 */
+	public JsonObject extractRequestPayload(HttpServletRequest req) {
 
+		StringBuffer sb = new StringBuffer();
+		String line = null;
+		try {
+			BufferedReader reader = req.getReader();
+			while ((line = reader.readLine()) != null)
+				sb.append(line);
+		} catch (Exception e) { /* report an error */
+		}
+
+		String jsonAsString = sb.toString();
+		JsonParser parser = new JsonParser();
+		return (JsonObject) parser.parse(jsonAsString);
+	}
+	
 	public void doPost2(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 

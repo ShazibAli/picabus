@@ -3,8 +3,9 @@ package com.zdm.picabus.db;
 import java.sql.Time;
 import java.util.Set;
 
-import com.zdm.picabus.db.entities.BusLine;
-import com.zdm.picabus.db.entities.BusStation;
+
+import com.zdm.picabus.server.entities.Line;
+import com.zdm.picabus.server.entities.Station;
 
 public interface IDBServices {
 
@@ -21,7 +22,7 @@ public interface IDBServices {
 	 * 
 	 * @return all the bus line and their relevant data
 	 */
-	public Set<BusLine> getLinesData(Double longitude, Double latitude,
+	public Set<Line> getLinesData(Double longitude, Double latitude,
 			Set<Integer> lineNumbers, Time clientTime);
 
 	/**
@@ -34,6 +35,6 @@ public interface IDBServices {
 	 *            the direction (can be 1 or 0)
 	 * @return return all the stations data in the requested root
 	 */
-	public Set<BusStation> getRoute(Long tripId, Long stopId, Integer direction);
+	public Set<Station> getRoute(Long tripId, Long stopId, Integer direction);
 
 }

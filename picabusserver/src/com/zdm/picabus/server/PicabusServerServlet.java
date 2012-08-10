@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.zdm.picabus.server.datastore.DataStoreHandler;
-import com.zdm.picabus.server.datastore.IDataStoreHandler;
-import com.zdm.picabus.server.entities.Line;
 
 
 
@@ -45,9 +42,14 @@ public class PicabusServerServlet extends HttpServlet {
 			    double lng = jsonObject.getAsJsonObject().get("longitude").getAsDouble();
 			    String clientTimeString = jsonObject.getAsJsonObject().get("clientTime").getAsString();
 			    
-			    IDataStoreHandler idss = new DataStoreHandler();
-			    Line requestedLData = idss.getDepartueTime(lineNumber, lat, lng, clientTimeString); //TODO: handle return value
+			    RequestHandler rh = new RequestHandler();
+			    JsonObject responeData = rh.getDepartueTime(lineNumber, lat, lng, clientTimeString); 
 			    
+			    // send back the response
+			    resp.setContentType("application/json");
+			   
+			    PrintWriter out = resp.getWriter();
+				out.print(responeData.toString());
 			
 
 		}

@@ -13,10 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.zdm.picabus.server.datastore.DataStoreHandler;
+import com.zdm.picabus.server.datastore.IDataStoreHandler;
+import com.zdm.picabus.server.entities.Line;
 
 
 
@@ -44,8 +45,8 @@ public class PicabusServerServlet extends HttpServlet {
 			    double lng = jsonObject.getAsJsonObject().get("longitude").getAsDouble();
 			    String clientTimeString = jsonObject.getAsJsonObject().get("clientTime").getAsString();
 			    
-			    RequestHandler rh = new RequestHandler();
-			    rh.getDepartueTime(lineNumber, lat, lng, clientTimeString); //TODO: handle return value
+			    IDataStoreHandler idss = new DataStoreHandler();
+			    Line requestedLData = idss.getDepartueTime(lineNumber, lat, lng, clientTimeString); //TODO: handle return value
 			    
 			
 
@@ -65,7 +66,7 @@ public class PicabusServerServlet extends HttpServlet {
 	 * @param req the HttpServletRequest 
 	 * @return request payload as JSON object 
 	 */
-	public JsonObject extractRequestPayload(HttpServletRequest req) {
+	private JsonObject extractRequestPayload(HttpServletRequest req) {
 
 		StringBuffer sb = new StringBuffer();
 		String line = null;

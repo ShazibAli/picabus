@@ -7,6 +7,10 @@ public class Line {
 	private boolean biDirectional;
 	private Collection<Trip> trips;
 	
+	
+	public Line() {
+	}
+	
 	/**
 	 * @param biDirectional
 	 * @param trips

@@ -1,6 +1,7 @@
 package com.zdm.picabus.db;
 
 import java.sql.Time;
+import java.util.Collection;
 import java.util.Set;
 
 
@@ -11,20 +12,20 @@ public interface IDBServices {
 
 	/**
 	 * 
-	 * @param longitude
-	 *            the longitude value of the bus station
+	 * @param lineNumber
+	 *            the line number 
 	 * @param latitude
 	 *            the latitude value of the bus station
-	 * @param lineNumbers
-	 *            all the line numbers passing in this station
+	 * @param longitude
+	 *            the longitude value of the bus station
 	 * @param clientTime
-	 *            the time of the client (can be different from the server time)
+	 *            the time of the client (can differ from the server time)
 	 * 
-	 * @return all the bus line and their relevant data
+	 * @return bus line containing the relevant data
 	 */
-	public Set<Line> getLinesData(Double longitude, Double latitude,
-			Set<Integer> lineNumbers, Time clientTime);
-
+	public Line getNextDepartureTimePerLine(int lineNumber, double latitude, double longitude, String clientTimeString);
+	
+	public Collection<Line> getRouteDetails();
 	/**
 	 * 
 	 * @param tripId

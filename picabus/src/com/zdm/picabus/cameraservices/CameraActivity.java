@@ -9,13 +9,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.locationservices.GpsCorrdinates;
 
@@ -55,9 +52,9 @@ public class CameraActivity extends Activity {
 			Double lng = gps.getLongitude();
 			
         	//send data to server
-			HttpCaller.sendData(time, thumbnail, lat, lng);
-        	//HttpCaller.sendImage(thumbnail);
-        	//imageView.setImageBitmap(thumbnail); 
+		
+			HttpCaller.getDepartureTime(5, lat, lng, "16:56");
+        	 
         }  
     } 
     

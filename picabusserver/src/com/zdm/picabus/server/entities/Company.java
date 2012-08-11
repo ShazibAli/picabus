@@ -1,9 +1,10 @@
 package com.zdm.picabus.server.entities;
 
 public enum Company {
-	EGGED("Egged"),
-	DAN("Dan"),
-	Metropolin("METROPOLIN");
+	EGGED("אגד"),
+	DAN("דן"),
+	METROPOLIN("מטרופולין"),
+	UNKNOWN("Unknown");
 	
 	private String companyName;
 	
@@ -19,5 +20,18 @@ public enum Company {
 	@Override
 	public String toString(){
 		return companyName;
+	}
+	
+	public static Company getCompanyByString (String companyName) {
+		if (EGGED.getCompanyName().equalsIgnoreCase(companyName)) {
+			return EGGED;
+		} 
+		else if (DAN.getCompanyName().equalsIgnoreCase(companyName)) {
+			return DAN;
+		}
+		else if (METROPOLIN.getCompanyName().equalsIgnoreCase(companyName)) {
+			return METROPOLIN;
+		}
+		else return UNKNOWN;
 	}
 }

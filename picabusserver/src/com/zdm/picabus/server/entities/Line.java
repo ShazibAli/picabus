@@ -6,20 +6,44 @@ public class Line {
 	
 	private boolean biDirectional;
 	private Collection<Trip> trips;
-	
+	private String stopHeadsign;
 	
 	public Line() {
 	}
 	
+
 	/**
 	 * @param biDirectional
 	 * @param trips
+	 * @param stopHeadsign
 	 */
-	public Line(boolean biDirectional, Collection<Trip> trips) {
+	public Line(boolean biDirectional, Collection<Trip> trips,
+			String stopHeadsign) {
 		super();
 		this.biDirectional = biDirectional;
 		this.trips = trips;
+		this.stopHeadsign = stopHeadsign;
 	}
+
+
+
+	/**
+	 * @return the stopHeadsign
+	 */
+	public String getStopHeadsign() {
+		return stopHeadsign;
+	}
+
+
+
+	/**
+	 * @param stopHeadsign the stopHeadsign to set
+	 */
+	public void setStopHeadsign(String stopHeadsign) {
+		this.stopHeadsign = stopHeadsign;
+	}
+
+
 
 	/**
 	 * @return the biDirectional

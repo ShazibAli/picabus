@@ -25,7 +25,8 @@ public interface IDBServices {
 	 */
 	public Line getNextDepartureTimePerLine(int lineNumber, double latitude, double longitude, String clientTimeString);
 	
-	public Collection<Line> getRouteDetails();
+
+	public Set<Line> getDepartureTimes(double latitude, double longitude, String clientTimeString);
 	/**
 	 * 
 	 * @param tripId

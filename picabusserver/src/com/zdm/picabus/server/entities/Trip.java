@@ -1,20 +1,24 @@
 package com.zdm.picabus.server.entities;
 
 import java.sql.Time;
-import java.util.Calendar;
 
 public class Trip {
 
-	private int tripID;
+	private long tripID;
 	private String destination;
 	private int directionID;
 	private int lineNumber;
 	private Time eta;
 	private Company company;
 	private long stopID;
+	private int stopSequence;
+	private long routeID;
+	private long serviceID;
+	
 	
 	public Trip() {
 	}
+
 
 	/**
 	 * @param tripID
@@ -24,9 +28,13 @@ public class Trip {
 	 * @param eta
 	 * @param company
 	 * @param stopID
+	 * @param stopSequence
+	 * @param routeID
+	 * @param serviceID
 	 */
-	public Trip(int tripID, String destination, int directionID,
-			int lineNumber, Time eta, Company company, long stopID) {
+	public Trip(long tripID, String destination, int directionID,
+			int lineNumber, Time eta, Company company, long stopID,
+			int stopSequence, long routeID, long serviceID) {
 		super();
 		this.tripID = tripID;
 		this.destination = destination;
@@ -35,19 +43,71 @@ public class Trip {
 		this.eta = eta;
 		this.company = company;
 		this.stopID = stopID;
+		this.stopSequence = stopSequence;
+		this.routeID = routeID;
+		this.serviceID = serviceID;
 	}
+
+
+	/**
+	 * @return the stop_sequence
+	 */
+	public int getStopSequence() {
+		return stopSequence;
+	}
+
+
+	/**
+	 * @param stopSequence the stop_sequence to set
+	 */
+	public void setStopSequence(int stopSequence) {
+		this.stopSequence = stopSequence;
+	}
+
+
+	/**
+	 * @return the routeID
+	 */
+	public long getRouteID() {
+		return routeID;
+	}
+
+
+	/**
+	 * @param routeID the routeID to set
+	 */
+	public void setRouteID(long routeID) {
+		this.routeID = routeID;
+	}
+
+
+	/**
+	 * @return the serviceID
+	 */
+	public long getServiceID() {
+		return serviceID;
+	}
+
+
+	/**
+	 * @param serviceID the serviceID to set
+	 */
+	public void setServiceID(long serviceID) {
+		this.serviceID = serviceID;
+	}
+
 
 	/**
 	 * @return the tripID
 	 */
-	public int getTripID() {
+	public long getTripID() {
 		return tripID;
 	}
 
 	/**
 	 * @param tripID the tripID to set
 	 */
-	public void setTripID(int tripID) {
+	public void setTripID(long tripID) {
 		this.tripID = tripID;
 	}
 

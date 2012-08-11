@@ -28,12 +28,13 @@ public class PicabusServerServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		// dispatching requests handling according task name
+		
 		String taskName = req.getHeader(TASK_NAME_HEADER);
 		if (taskName == null) {
 			resp.sendError(ERROR_CODE, UNSUPPOTED_TASK_ERROR_MSG);
 		}
 		
+		// dispatching requests for handling according task name
 		if (taskName.equalsIgnoreCase(Service.GET_DEPARTURE_TIMES.getTaskName())) {
 			
 				JsonObject jsonObject = extractRequestPayload(req);
@@ -41,17 +42,18 @@ public class PicabusServerServlet extends HttpServlet {
 			    double lat = jsonObject.getAsJsonObject().get("latitude").getAsDouble();
 			    double lng = jsonObject.getAsJsonObject().get("longitude").getAsDouble();
 			    String clientTimeString = jsonObject.getAsJsonObject().get("clientTime").getAsString();
-			    
+			    String timeIntervalString = jsonObject.getAsJsonObject().get("timeInterval").getAsString();
+			   
 			    RequestHandler rh = new RequestHandler();
-			    JsonObject responeData = rh.getDepartueTime(lineNumber, lat, lng, clientTimeString); 
+			//  JsonObject responeData = rh.getDepartueTimePerLine(lineNumber, lat, lng, clientTimeString); 
 			    
 			    // send back the response
-			    resp.setContentType("application/json");
+			    resp.setHeader("Content-Type", "application/json; charset=UTF-8");
 			   
 			    PrintWriter out = resp.getWriter();
-				out.print(responeData.toString());
+			//	out.print(responeData.toString());
 			
-
+			    out.print("{\"data\": {\"tripCount\": 1,\"stopHeadsign\": \"דרארליך/שבטיישראל\",\"bidirectional\": false,\"trip0\": {\"direction\": 1,\"id\": 646734120110512,\"destination\": \"מתחםגי/ילדיטהרן-ראשוןלציון<->ת.רכבתמרכז-תלאביביפו\",\"lineNumber\": 10,\"eta\": \"08: 28: 18\",\"companyName\": \"דן\",\"stopID\": 29335,\"stopSequence\": 34,\"serviceID\": 1619376,\"routeID\": 1026368}}}");
 		}
 
 		else if (taskName.equalsIgnoreCase(Service.GET_ROUTE_DETAILS.getTaskName())) {

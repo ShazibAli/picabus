@@ -6,7 +6,8 @@ public class Station {
 	private double longitude;
 	private String stopName;
 	
-
+	public Station() {
+	}
 	/**
 	 * @param latitude
 	 * @param longitude

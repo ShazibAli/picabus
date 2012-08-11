@@ -7,6 +7,7 @@ public enum Company {
 	
 	private String companyName;
 	
+	
 	private Company (String companyName) {
 		this.companyName = companyName;
 	}

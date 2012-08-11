@@ -1,5 +1,6 @@
 package com.zdm.picabus.server.entities;
 
+import java.sql.Time;
 import java.util.Calendar;
 
 public class Trip {
@@ -8,11 +9,12 @@ public class Trip {
 	private String destination;
 	private int directionID;
 	private int lineNumber;
-	private Calendar eta;
+	private Time eta;
 	private Company company;
 	private long stopID;
 	
-
+	public Trip() {
+	}
 
 	/**
 	 * @param tripID
@@ -24,7 +26,7 @@ public class Trip {
 	 * @param stopID
 	 */
 	public Trip(int tripID, String destination, int directionID,
-			int lineNumber, Calendar eta, Company company, long stopID) {
+			int lineNumber, Time eta, Company company, long stopID) {
 		super();
 		this.tripID = tripID;
 		this.destination = destination;
@@ -94,14 +96,14 @@ public class Trip {
 	/**
 	 * @return the eta
 	 */
-	public Calendar getEta() {
+	public Time getEta() {
 		return eta;
 	}
 
 	/**
 	 * @param eta the eta to set
 	 */
-	public void setEta(Calendar eta) {
+	public void setEta(Time eta) {
 		this.eta = eta;
 	}
 

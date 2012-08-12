@@ -96,11 +96,6 @@ public class DBServices implements IDBServices {
 	}
 
 
-	@Override
-	public Set<Stop> getRoute(Long tripId, Long stopId, Integer direction) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	@Override
@@ -156,6 +151,16 @@ public class DBServices implements IDBServices {
 				}
 		}
 		return stop;
+	}
+
+
+
+
+	@Override
+	public Set<Stop> getRouteDetails(long tripID,
+			int currentStopSequenceNumber, String departureTimeString) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

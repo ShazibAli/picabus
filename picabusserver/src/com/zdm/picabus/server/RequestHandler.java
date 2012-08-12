@@ -45,4 +45,11 @@ public class RequestHandler {
 		return data;
 	}
 
+	public JsonObject getRouteDetails(long tripID,
+			int currentStopSequenceNumber, 
+			String departureTimeString) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

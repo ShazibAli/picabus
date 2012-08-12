@@ -46,12 +46,14 @@ public interface IDBServices {
 	 * 
 	 * @param tripId
 	 *            the id of the chosen trip
-	 * @param stopId
-	 *            the id of the current stop
-	 * @param direction
-	 *            the direction (can be 1 or 0)
-	 * @return return all the stations data in the requested root
+	 * @param currentStopSequenceNumber
+	 *            the stop sequence number of the user current location
+	 * @param departureTimeString
+	 *            the exact time which this trip is leaving the station
+	 * @return return all the stations which comprises this trip continuation
 	 */
-	public Set<Stop> getRoute(Long tripId, Long stopId, Integer direction);
+	public Set<Stop> getRouteDetails(long tripID,
+			int currentStopSequenceNumber,
+			String departureTimeString);
 
 }

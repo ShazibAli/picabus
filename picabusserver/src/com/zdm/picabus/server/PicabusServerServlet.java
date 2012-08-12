@@ -57,7 +57,13 @@ public class PicabusServerServlet extends HttpServlet {
 		}
 
 		else if (taskName.equalsIgnoreCase(Service.GET_ROUTE_DETAILS.getTaskName())) {
-
+			JsonObject jsonObject = extractRequestPayload(req);
+		    int currentStopSequenceNumber =  jsonObject.getAsJsonObject().get("currentStopSequenceNumber").getAsInt();
+		    long tripID = jsonObject.getAsJsonObject().get("tripID").getAsLong();
+		    String departureTimeString = jsonObject.getAsJsonObject().get("departureTimeString").getAsString();
+		    
+			RequestHandler rh = new RequestHandler();
+			JsonObject responeData = rh.getRouteDetails(tripID, currentStopSequenceNumber, departureTimeString); 
 		}
 
 		else {

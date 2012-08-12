@@ -8,11 +8,14 @@ public class Stop {
 	private String stopDescription;
 	private double latitude;
 	private double longitude;
-	
+	private int stopSequenceNumber;
+	private String departureTimeString;
 	
 	
 	public Stop() {
 	}
+	
+	
 	
 	/**
 	 * @param stopID
@@ -21,9 +24,11 @@ public class Stop {
 	 * @param stopDescription
 	 * @param latitude
 	 * @param longitude
+	 * @param stopSequenceNumber
 	 */
 	public Stop(long stopID, int stopCode, String stopName,
-			String stopDescription, double latitude, double longitude) {
+			String stopDescription, double latitude, double longitude,
+			int stopSequenceNumber) {
 		super();
 		this.stopID = stopID;
 		this.stopCode = stopCode;
@@ -31,8 +36,48 @@ public class Stop {
 		this.stopDescription = stopDescription;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.stopSequenceNumber = stopSequenceNumber;
+		this.departureTimeString = null;
 	}
-	
+
+
+
+	/**
+	 * @return the departureTimeString
+	 */
+	public String getDepartureTimeString() {
+		return departureTimeString;
+	}
+
+
+
+	/**
+	 * @param departureTimeString the departureTimeString to set
+	 */
+	public void setDepartureTimeString(String departureTimeString) {
+		this.departureTimeString = departureTimeString;
+	}
+
+
+
+	/**
+	 * @return the stopSequenceNumber
+	 */
+	public int getStopSequenceNumber() {
+		return stopSequenceNumber;
+	}
+
+
+
+	/**
+	 * @param stopSequenceNumber the stopSequenceNumber to set
+	 */
+	public void setStopSequenceNumber(int stopSequenceNumber) {
+		this.stopSequenceNumber = stopSequenceNumber;
+	}
+
+
+
 	/**
 	 * @return the stopID
 	 */

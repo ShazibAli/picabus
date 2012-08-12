@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import com.google.cloud.sql.jdbc.Connection;
 import com.google.cloud.sql.jdbc.PreparedStatement;
 import com.google.cloud.sql.jdbc.ResultSet;
 import com.zdm.picabus.db.connectivity.Tables;
+import com.zdm.picabus.db.parser.fileparsers.Stops;
 import com.zdm.picabus.server.entities.Company;
 import com.zdm.picabus.server.entities.Line;
 import com.zdm.picabus.server.entities.Stop;
@@ -138,7 +140,11 @@ public class DBServices implements IDBServices {
 				int stopCode = rs.getInt("stop_code");
 				String stopName = rs.getString("stop_name");
 				String stopDescription = rs.getString("stop_desc");
-				stop = new Stop(stopID, stopCode, stopName, stopDescription, latitude, longitude);
+				int stopSequenceNumber = rs.getInt("stop_sequence");
+				String departureTimeString = rs.getTime("departure_time").toString();
+				stop = new Stop(stopID, stopCode, stopName, stopDescription, latitude, longitude, stopSequenceNumber);
+				stop.setDepartureTimeString(departureTimeString);
+				
 			}
 			
 		} catch (SQLException e) {
@@ -157,10 +163,48 @@ public class DBServices implements IDBServices {
 
 
 	@Override
-	public Set<Stop> getRouteDetails(long tripID,
-			int currentStopSequenceNumber, String departureTimeString) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Stop> getRouteDetails(long tripID,
+			int currentStopSequenceNumber) {
+		Connection c = null;
+		Stop stop = null;
+		List<Stop> stops = new ArrayList<Stop>();
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager
+					.getConnection(URL);
+
+			String statement = "SELECT  * FROM " + Tables.STOPTIMES.getTableName() + ", " + Tables.STOPS.getTableName() + " where stop_times.trip_id = ? and stop_sequence > ? and stop_times.stop_id = stops.stop_id ORDER BY stop_sequence ASC";		
+			PreparedStatement stmt = c.prepareStatement(statement);
+			stmt.setLong(1, tripID);
+			stmt.setInt(2,currentStopSequenceNumber);
+			ResultSet rs = stmt.executeQuery();
+						
+			while (rs.next()) {
+				long stopID = rs.getLong("stop_id");
+				int stopCode = rs.getInt("stop_code");
+				String stopName = rs.getString("stop_name");
+				String stopDescription = rs.getString("stop_desc");
+				int stopSequenceNumber = rs.getInt("stop_sequence");
+				double latitude = rs.getDouble("stop_lat");
+				double longitude = rs.getDouble("stop_lon");
+				String departureTimeString = rs.getTime("departure_time").toString();
+				
+				stop = new Stop(stopID, stopCode, stopName, stopDescription, latitude, longitude, stopSequenceNumber);
+				stop.setDepartureTimeString(departureTimeString);
+				stops.add(stop);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+				}
+		}
+		return stops;
+
 	}
 	
 

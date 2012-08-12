@@ -1,7 +1,5 @@
 package com.zdm.picabus.server;
 
-import java.util.Set;
-
 import com.google.gson.JsonObject;
 import com.zdm.picabus.db.DBServices;
 import com.zdm.picabus.db.IDBServices;
@@ -10,24 +8,6 @@ import com.zdm.picabus.server.entities.Trip;
 
 public class RequestHandler {
 
-	public JsonObject getDepartueTime(double lat, double lng,
-			String clientTimeString) {
-
-		IDBServices idbs = new DBServices();
-		Set<Line> requestedLData = idbs.getDepartureTimes(lat, lng, clientTimeString); 
-		
-		// TODO: handle return value
-		for (Line line : requestedLData) {
-			// iterate lines
-		}
-		JsonObject innerObject = new JsonObject();
-			innerObject.addProperty("name", "john");
-	
-			JsonObject jsonObject = new JsonObject();
-			jsonObject.add("publisher", innerObject);
-		
-		return null;
-	}
 	
 	
 	public JsonObject getDepartueTimePerLine(int lineNumber, double lat, double lng,

@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-
-
 public class PicabusServerServlet extends HttpServlet {
 
 
@@ -42,17 +40,17 @@ public class PicabusServerServlet extends HttpServlet {
 			    double lat = jsonObject.getAsJsonObject().get("latitude").getAsDouble();
 			    double lng = jsonObject.getAsJsonObject().get("longitude").getAsDouble();
 			    String clientTimeString = jsonObject.getAsJsonObject().get("clientTime").getAsString();
-			    String timeIntervalString = jsonObject.getAsJsonObject().get("timeInterval").getAsString();
+			    String timeIntervalString = jsonObject.getAsJsonObject().get("timeInterval").getAsString(); //TODO: add time interval
 			   
 			    RequestHandler rh = new RequestHandler();
 			    JsonObject responeData = rh.getDepartueTimePerLine(lineNumber, lat, lng, clientTimeString); 
 			    
 			    // send back the response
 			    resp.setHeader("Content-Type", "application/json; charset=UTF-8");
-			   
 			    PrintWriter out = resp.getWriter();
 				out.print(responeData.toString());
 			
+			//  Mock Data
 			//  out.print("{\"data\": {\"tripCount\": 1,\"stopHeadsign\": \"דרארליך/שבטיישראל\",\"bidirectional\": false,\"trip0\": {\"direction\": 1,\"id\": 646734120110512,\"destination\": \"מתחםגי/ילדיטהרן-ראשוןלציון<->ת.רכבתמרכז-תלאביביפו\",\"lineNumber\": 10,\"eta\": \"08: 28: 18\",\"companyName\": \"דן\",\"stopID\": 29335,\"stopSequence\": 34,\"serviceID\": 1619376,\"routeID\": 1026368}}}");
 		}
 
@@ -60,13 +58,17 @@ public class PicabusServerServlet extends HttpServlet {
 			JsonObject jsonObject = extractRequestPayload(req);
 		    int currentStopSequenceNumber =  jsonObject.getAsJsonObject().get("currentStopSequenceNumber").getAsInt();
 		    long tripID = jsonObject.getAsJsonObject().get("tripID").getAsLong();
-		    String departureTimeString = jsonObject.getAsJsonObject().get("departureTimeString").getAsString();
 		    
 			RequestHandler rh = new RequestHandler();
-			JsonObject responeData = rh.getRouteDetails(tripID, currentStopSequenceNumber, departureTimeString); 
+			JsonObject responeData = rh.getRouteDetails(tripID, currentStopSequenceNumber); 
+		
+			 // send back the response
+		    resp.setHeader("Content-Type", "application/json; charset=UTF-8");
+		    PrintWriter out = resp.getWriter();
+			out.print(responeData.toString());
 		}
 
-		else {
+		else { // case this is an unsupported task
 			resp.sendError(ERROR_CODE, UNSUPPOTED_TASK_ERROR_MSG);
 		}
 	}
@@ -206,7 +208,7 @@ public class PicabusServerServlet extends HttpServlet {
 	 * 
 	 */
 	public enum Service {
-		GET_DEPARTURE_TIMES("getDepartureTimes"), GET_ROUTE_DETAILS("getRoute");
+		GET_DEPARTURE_TIMES("getDepartureTimes"), GET_ROUTE_DETAILS("getRouteDetails");
 
 		private String taskName;
 

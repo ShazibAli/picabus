@@ -1,5 +1,6 @@
 package com.zdm.picabus.db;
 
+import java.util.List;
 import java.util.Set;
 
 import com.zdm.picabus.server.entities.Line;
@@ -48,12 +49,9 @@ public interface IDBServices {
 	 *            the id of the chosen trip
 	 * @param currentStopSequenceNumber
 	 *            the stop sequence number of the user current location
-	 * @param departureTimeString
-	 *            the exact time which this trip is leaving the station
 	 * @return return all the stations which comprises this trip continuation
 	 */
-	public Set<Stop> getRouteDetails(long tripID,
-			int currentStopSequenceNumber,
-			String departureTimeString);
+	public List<Stop> getRouteDetails(long tripID,
+			int currentStopSequenceNumber);
 
 }

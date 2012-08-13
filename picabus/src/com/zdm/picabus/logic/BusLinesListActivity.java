@@ -19,6 +19,7 @@ import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.logic.DataObject.TripObject;
+import com.zdm.picabus.utilities.DataCollector;
 
 public class BusLinesListActivity extends ListActivity {
 

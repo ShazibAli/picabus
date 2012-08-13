@@ -1,4 +1,4 @@
-package com.zdm.picabus.logic;
+package com.zdm.picabus.utilities;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

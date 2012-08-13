@@ -15,10 +15,10 @@ public class RequestHandler {
 	private static final String STOP_PREFIX = "stop";
 	
 	public JsonObject getDepartueTimePerLine(int lineNumber, double lat, double lng,
-			String clientTimeString) {
+			String clientTimeString, int timeIntervalInMinutes) {
 
 		IDBServices idbs = new DBServices();
-		Line retrievedLine = idbs.getNextDepartureTimePerLine(lineNumber, lat, lng, clientTimeString); 
+		Line retrievedLine = idbs.getNextDepartureTimePerLine(lineNumber, lat, lng, clientTimeString, timeIntervalInMinutes); 
 		
 		int tripCounter = 0;
 		JsonObject currentTripInner;

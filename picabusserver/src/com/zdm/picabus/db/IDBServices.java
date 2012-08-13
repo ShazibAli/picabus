@@ -17,11 +17,13 @@ public interface IDBServices {
 	 * @param longitude
 	 *            the longitude value of the bus station
 	 * @param clientTime
-	 *            the time of the client (can differ from the server time)
-	 * 
+	 *            the time of the client (can differ from the server time) 
+	 * @param timeIntervalInMinutes
+	 *            specifying the interval in minutes from the client time in which the user wants to see the results
+	 *
 	 * @return bus line containing the relevant data
 	 */
-	public Line getNextDepartureTimePerLine(int lineNumber, double latitude, double longitude, String clientTimeString);
+	public Line getNextDepartureTimePerLine(int lineNumber, double latitude, double longitude, String clientTimeString, int timeIntervalInMinutes);
 	
 
 	/**

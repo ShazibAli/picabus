@@ -35,7 +35,8 @@ public class HttpCaller {
 	
 
 
-	public static void getDepartureTime(final int lineNumber, final double latitude, final double longitude, final String clientTime) {
+	public static void getDepartureTime(final int lineNumber, final double latitude, final double longitude, final String clientTime, final int timeInterval) {
+ 
 		Thread t = new Thread() {
 			public void run() {
 				Looper.prepare(); // For Preparing Message Pool for the child Thread TODO: verify looper use
@@ -50,6 +51,8 @@ public class HttpCaller {
 					json.put("latitude", latitude);
 					json.put("longitude", longitude);
 					json.put("clientTime", clientTime);
+					json.put("timeInterval", timeInterval);
+					
 					StringEntity se = new StringEntity(json.toString());
 					post.addHeader(CustomHeader.TASK_NAME.getHeaderName(),
 							Request.GET_DEPARTURE_TIMES.getTaskName());
@@ -60,17 +63,18 @@ public class HttpCaller {
 					if (response != null) {
 						InputStream in = response.getEntity().getContent(); // Get the data in the entity
 						String responseContent = readContentFromIS(in);
-						int x = 1;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("Error: Cannot Estabilish Connection"); // TODO: replace with popup
 																		
 				}
+				
 				Looper.loop(); // Loop in the message queue
 			}
 		};
 		t.start();
+
 
 	}
 

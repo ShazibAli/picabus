@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent"
+   >
+
+    
+    <LinearLayout
+        android:weightSum="100"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+
+    <TextView
+        android:id="@+id/textViewLine"
+            android:layout_weight="30"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+    android:text="Line number: "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+     <ImageView
+        android:id="@+id/iconCompany"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="70"
+        android:layout_marginRight="2dip"
+        android:src="@drawable/dan_icon" />
+
+    </LinearLayout>
+    
+     <TextView
+        android:id="@+id/textViewStation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+    android:text="Station name: "
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+   
+          <TextView
+        android:id="@+id/textViewLastStop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+    android:text="Last Stop: "
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+              <TextView
+        android:id="@+id/textViewLastStop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+    android:text="Estimated arrival times: "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    
+    
+    
+    
+    
+<ListView
+    android:id="@+id/android:list"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    />
+<TextView
+    android:id="@+id/android:empty"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:text="@string/no_lines"/>
+</LinearLayout>

@@ -3,5 +3,13 @@
 
     <string name="hello">Hello World, PicabusActivity!</string>
     <string name="app_name">Picabus</string>
+    <string name="menu_camera_button">take a picture</string>
+    <string name="menu_ft_search_button">search</string>
+    <string name="menu_history_button">history</string>
+    <string name="ft_submit_button">submit</string>
+    <string name="menu_aboutus_button">about us</string>
+    <string name="no_lines">no bus lines were taken</string>
+    <string name="pref_timeinterval_instruction">Please choose time interval for bus arrivals:</string>
+    <string name="manual_search_instruction">Please enter the requested bus line</string>
 
 </resources>

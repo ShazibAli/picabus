@@ -13,84 +13,96 @@ import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.SlidingDrawer.OnDrawerScrollListener;
 
-
 public class MainScreenActivity extends Activity {
-	
 
-ImageButton cameraBtn;
-ImageButton historyBtn;
-ImageButton aboutUsBtn;
-ImageButton searchBtn;
-Button slideButton;
-SlidingDrawer slidingDrawer;
+	ImageButton cameraBtn;
+	ImageButton historyBtn;
+	ImageButton aboutUsBtn;
+	ImageButton searchBtn;
+	Button slideButton;
+	SlidingDrawer slidingDrawer;
 
 	@Override
-protected void onCreate(Bundle savedInstanceState) {
-	// TODO Auto-generated method stub
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.menu_screen);
-    
-    cameraBtn = (ImageButton) findViewById(R.id.button_camera);
-    historyBtn = (ImageButton) findViewById(R.id.button_history);
-    aboutUsBtn = (ImageButton) findViewById(R.id.button_aboutus);
-    searchBtn = (ImageButton) findViewById(R.id.button_search);
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.menu_screen);
 
-    
-    cameraBtn.setOnClickListener(new View.OnClickListener() {
-		
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			Intent intent = new Intent("com.zdm.picabus.cameraservices.CameraActivity");
-			startActivity(intent);
-		}
-	});
-    
-    
-    
-        slideButton = (Button) findViewById(R.id.slideButton);
-        slidingDrawer = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
- 
- /*       slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
-            public void onDrawerOpened() {
-                slideButton.setBackgroundResource(R.drawable.green_down_arrow);
-            }
-        });
-        slidingDrawer.setOnDrawerScrollListener(new OnDrawerScrollListener() {
-			
-			public void onScrollStarted() {
-				if (slidingDrawer.isOpened()) {
-					slideButton.setBackgroundResource(R.drawable.green_down_arrow);
-				}
-				else slideButton.setBackgroundResource(R.drawable.green_up_arrow);;
-			}
-			
-			public void onScrollEnded() {
-				if (slidingDrawer.isOpened()) {
-					slideButton.setBackgroundResource(R.drawable.green_down_arrow);
-				}
-				else slideButton.setBackgroundResource(R.drawable.green_up_arrow);;
-				
+		cameraBtn = (ImageButton) findViewById(R.id.button_camera);
+		historyBtn = (ImageButton) findViewById(R.id.button_history);
+		aboutUsBtn = (ImageButton) findViewById(R.id.button_aboutus);
+		searchBtn = (ImageButton) findViewById(R.id.button_search);
+
+		cameraBtn.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(
+						"com.zdm.picabus.cameraservices.CameraActivity");
+				startActivity(intent);
 			}
 		});
- 
-        slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
 
+		aboutUsBtn.setOnClickListener(new View.OnClickListener() {
 
-            public void onDrawerClosed() {
-                slideButton.setBackgroundResource(R.drawable.green_up_arrow);
-            }
-        });
-    }*/
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-}
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(
+						"com.zdm.picabus.logic.AboutUsActivity");
+				startActivity(intent);
+			}
+		});
+
+		searchBtn.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(
+						"com.zdm.picabus.logic.ManualSearchActivity");
+				startActivity(intent);
+			}
+		});
+
+		// slidingDrawer - preferences part
+		slideButton = (Button) findViewById(R.id.slideButton);
+		slidingDrawer = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
+
+		slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
+			public void onDrawerOpened() {
+				slideButton
+						.setBackgroundResource(R.drawable.settings_icon_down);
+			}
+		});
+		slidingDrawer.setOnDrawerScrollListener(new OnDrawerScrollListener() {
+
+			public void onScrollStarted() {
+				if (slidingDrawer.isOpened()) {
+					slideButton
+							.setBackgroundResource(R.drawable.settings_icon_down);
+				} else
+					slideButton
+							.setBackgroundResource(R.drawable.settings_icon_up);
+				;
+			}
+
+			public void onScrollEnded() {
+				if (slidingDrawer.isOpened()) {
+					slideButton
+							.setBackgroundResource(R.drawable.settings_icon_down);
+				} else
+					slideButton
+							.setBackgroundResource(R.drawable.settings_icon_up);
+				;
+
+			}
+		});
+
+		slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
+
+			public void onDrawerClosed() {
+				slideButton.setBackgroundResource(R.drawable.settings_icon_up);
+			}
+		});
+	}
 
 }

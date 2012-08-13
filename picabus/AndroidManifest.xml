@@ -39,7 +39,61 @@
             </intent-filter>
         </activity>
         
-        <activity
+
+        
+         <activity 
+            android:name=".logic.AboutUsActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.logic.AboutUsActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity 
+            android:name=".logic.ManualSearchActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.logic.ManualSearchActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity 
+            android:name=".logic.BusLinesListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.logic.BusLinesListActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity 
+            android:name=".logic.ResultBusArrivalActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.logic.ResultBusArrivalActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        
+               <activity 
+            android:name=".logic.TestTest"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.logic.TestTest" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        
+        
+      
+        
+        
+        
+                <activity
             android:name=".locationservices.GoogleMapActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -49,13 +103,18 @@
         </activity>
         
         <activity
-            android:name=".locationservices.LbsGeocodingActivity"
+            android:name=".tempmoran.LbsGeocodingActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.cameraservices.GoogleMapActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        
+        
+        
+        
         
         <activity
              android:name=".tempmoran.ClientTestActivity" >
@@ -88,6 +147,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+       
         
         
     </application>

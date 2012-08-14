@@ -73,7 +73,13 @@ public class Line {
 		this.trips = trips;
 	} 
 
-	
+	/**
+	 * 
+	 * @return true iff the current line contains no data
+	 */
+	public boolean isEmpty() {
+		return !biDirectional && trips == null && stopHeadsign == null ;
+	}
 	
 }
 

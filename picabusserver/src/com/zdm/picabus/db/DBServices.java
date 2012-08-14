@@ -15,6 +15,7 @@ import com.zdm.picabus.server.entities.Company;
 import com.zdm.picabus.server.entities.Line;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
+import com.zdm.picabus.server.exceptions.EmptyResultException;
 
 public class DBServices implements IDBServices {
 
@@ -23,9 +24,12 @@ public class DBServices implements IDBServices {
 
 	@Override
 	public Line getNextDepartureTimePerLine(int lineNumber, double latitude,
-			double longitude, String clientTimeString, int timeIntervalInMinutes) {
+			double longitude, String clientTimeString, int timeIntervalInMinutes) throws EmptyResultException {
 		
 		Stop stop = getNearestStop(latitude, longitude, false, 1);
+		if (stop == null) {
+			return null;
+		}
 		Connection c = null;
 		boolean [] bidirectional = {false, false};
 		String stopHeadsign = null;
@@ -62,6 +66,8 @@ public class DBServices implements IDBServices {
 			List<Trip> trips = new ArrayList<Trip>();
 			line = new Line();
 			
+			boolean rsEmpty = true;
+			
 			while (rs.next()) {		
 				// extract values from the result set
 				stopHeadsign = rs.getString("stop_headsign");
@@ -81,18 +87,29 @@ public class DBServices implements IDBServices {
 				trips.add(trip);
 				
 				// update direction (assuming directionID possible values are 0 or 1)
-				bidirectional[directionID] = true;						
+				bidirectional[directionID] = true;	
+				
+				rsEmpty = false;
 			}
 			line.setStopHeadsign(stopHeadsign);
 			line.setTrips(trips);
 			line.setBiDirectional(bidirectional[0] && bidirectional[1]);
+			rs.close();
+			stmt.close();
 			
+			// validate that the result set is not empty
+			if (rsEmpty) {
+				throw new EmptyResultException(
+						"Couldn't locate the station based on the givven GPS coordinates");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		} finally {
 			if (c != null)
 				try {
 					c.close();
+					
 				} catch (SQLException ignore) {
 					// ignoring this exception
 				}
@@ -101,7 +118,7 @@ public class DBServices implements IDBServices {
 	}
 
 	@Override
-	public Stop getNearestStop(double latitude, double longitude, boolean isRecursive, int maxNumOfIterations) {
+	public Stop getNearestStop(double latitude, double longitude, boolean isRecursive, int maxNumOfIterations) throws EmptyResultException {
 		double radiusInKM = 0.005;
 		int numOfIterations = 1;
 		Stop stop = getNearestStop(latitude, longitude, radiusInKM);
@@ -118,7 +135,7 @@ public class DBServices implements IDBServices {
 		return stop;
 	}
 	
-	private Stop getNearestStop(double latitude, double longitude, double radiusInKM) {
+	private Stop getNearestStop(double latitude, double longitude, double radiusInKM) throws EmptyResultException {
 		Connection c = null;
 		final int limit = 1;
 		Stop stop = null;
@@ -136,25 +153,39 @@ public class DBServices implements IDBServices {
 					+ " LIMIT " + limit;
 			
 			PreparedStatement stmt = c.prepareStatement(statement);
-			
+
 			stmt.setDouble(1, latitude);
 			stmt.setDouble(2, longitude);
 			stmt.setDouble(3, latitude);
 			stmt.setDouble(4, radiusInKM);
-			
+
 			ResultSet rs = stmt.executeQuery();
-						
+
+			
+			boolean rsEmpty = true;
+			
 			while (rs.next()) {
 				long stopID = rs.getLong("stop_id");
 				int stopCode = rs.getInt("stop_code");
 				String stopName = rs.getString("stop_name");
 				String stopDescription = rs.getString("stop_desc");
-				stop = new Stop(stopID, stopCode, stopName, stopDescription, latitude, longitude, -1);
+				stop = new Stop(stopID, stopCode, stopName, stopDescription,
+						latitude, longitude, -1);
 				stop.setDepartureTimeString(null);
-	
-			}	
+				rsEmpty = false;
+			}
+			rs.close();
+			stmt.close();
+
+			// validate that the result set is not empty
+			if (rsEmpty) {
+				throw new EmptyResultException(
+						"Couldn't locate the station based on the givven GPS coordinates");
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		} finally {
 			if (c != null)
 				try {
@@ -168,7 +199,7 @@ public class DBServices implements IDBServices {
 
 	@Override
 	public List<Stop> getRouteDetails(long tripID,
-			int currentStopSequenceNumber) {
+			int currentStopSequenceNumber) throws EmptyResultException {
 		Connection c = null;
 		Stop stop = null;
 		List<Stop> stops = new ArrayList<Stop>();
@@ -183,7 +214,9 @@ public class DBServices implements IDBServices {
 			stmt.setLong(1, tripID);
 			stmt.setInt(2,currentStopSequenceNumber);
 			ResultSet rs = stmt.executeQuery();
-						
+			
+			boolean rsEmpty = true;
+			
 			while (rs.next()) {
 				long stopID = rs.getLong("stop_id");
 				int stopCode = rs.getInt("stop_code");
@@ -197,9 +230,21 @@ public class DBServices implements IDBServices {
 				stop = new Stop(stopID, stopCode, stopName, stopDescription, latitude, longitude, stopSequenceNumber);
 				stop.setDepartureTimeString(departureTimeString);
 				stops.add(stop);
-			}	
+				
+				rsEmpty = false;
+			}
+			rs.close();
+			stmt.close();
+
+			
+			// validate that the result set is not empty
+			if (rsEmpty) {
+				throw new EmptyResultException(
+						"Couldn't locate the station based on the givven GPS coordinates");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		} finally {
 			if (c != null)
 				try {

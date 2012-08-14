@@ -26,6 +26,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="70"
+            android:contentDescription="@string/company_icon"
         android:layout_marginRight="2dip"
         android:src="@drawable/dan_icon" />
 
@@ -40,17 +41,17 @@
 
    
           <TextView
-        android:id="@+id/textViewLastStop"
+        android:id="@+id/textViewLastStopA"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
     android:text="Last Stop: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
               <TextView
-        android:id="@+id/textViewLastStop"
+        android:id="@+id/textViewLastStopB"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-    android:text="Estimated arrival times: "
+    android:text="@string/estimated_arrival_times"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     

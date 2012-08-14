@@ -18,7 +18,6 @@ import android.widget.PopupWindow;
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.locationservices.GpsResult;
-import com.zdm.picabus.logic.DataObject.TripObject;
 import com.zdm.picabus.utilities.DataCollector;
 
 public class BusLinesListActivity extends ListActivity {
@@ -85,7 +84,7 @@ public class BusLinesListActivity extends ListActivity {
 
 		//Open new intent
 		if (popupRetVal != 0) {
-			int temp = popupRetVal;
+
 			// Intent resultsIntent = new
 			// Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
 			resultsIntent.putExtra("direction", popupRetVal);

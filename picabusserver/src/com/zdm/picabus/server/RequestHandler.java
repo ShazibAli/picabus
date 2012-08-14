@@ -8,6 +8,7 @@ import com.zdm.picabus.db.IDBServices;
 import com.zdm.picabus.server.entities.Line;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
+import com.zdm.picabus.server.exceptions.EmptyResultException;
 
 public class RequestHandler {
 
@@ -15,10 +16,15 @@ public class RequestHandler {
 	private static final String STOP_PREFIX = "stop";
 	
 	public JsonObject getDepartueTimePerLine(int lineNumber, double lat, double lng,
-			String clientTimeString, int timeIntervalInMinutes) {
+			String clientTimeString, int timeIntervalInMinutes) throws EmptyResultException {
 
 		IDBServices idbs = new DBServices();
 		Line retrievedLine = idbs.getNextDepartureTimePerLine(lineNumber, lat, lng, clientTimeString, timeIntervalInMinutes); 
+		
+		// validity check
+		if (retrievedLine == null) {
+			return null;
+		}
 		
 		int tripCounter = 0;
 		JsonObject currentTripInner;
@@ -49,9 +55,16 @@ public class RequestHandler {
 		return data;
 	}
 
-	public JsonObject getRouteDetails(long tripID, int currentStopSequenceNumber) {
+	public JsonObject getRouteDetails(long tripID, int currentStopSequenceNumber) throws EmptyResultException {
 		IDBServices idbs = new DBServices();
 		List<Stop> retrievedStops = idbs.getRouteDetails(tripID, currentStopSequenceNumber); 
+		
+		// validity check
+		if (retrievedStops == null) {
+			return null;
+		} 
+
+		
 		JsonObject stopsWrapper = new JsonObject();
 		JsonObject currentStopInner;
 		JsonObject data = new JsonObject();

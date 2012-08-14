@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.zdm.picabus.server.entities.Line;
 import com.zdm.picabus.server.entities.Stop;
+import com.zdm.picabus.server.exceptions.EmptyResultException;
 
 public interface IDBServices {
 
@@ -22,8 +23,9 @@ public interface IDBServices {
 	 *            specifying the interval in minutes from the client time in which the user wants to see the results
 	 *
 	 * @return bus line containing the relevant data
+	 * @throws EmptyResultException thrown when no result was found
 	 */
-	public Line getNextDepartureTimePerLine(int lineNumber, double latitude, double longitude, String clientTimeString, int timeIntervalInMinutes);
+	public Line getNextDepartureTimePerLine(int lineNumber, double latitude, double longitude, String clientTimeString, int timeIntervalInMinutes) throws EmptyResultException;
 	
 
 	/**
@@ -41,8 +43,9 @@ public interface IDBServices {
 	 *            maximum number of iterations when the search is recursive (each iteration is a query)            
 	 * 
 	 * @return bus stop containing the relevant data
+	 * @throws EmptyResultException thrown when no result was found
 	 */
-	public Stop getNearestStop(double latitude, double longitude, boolean isRecursive, int maxNumOfIterations);
+	public Stop getNearestStop(double latitude, double longitude, boolean isRecursive, int maxNumOfIterations) throws EmptyResultException;
 	
 	
 	/**
@@ -52,8 +55,9 @@ public interface IDBServices {
 	 * @param currentStopSequenceNumber
 	 *            the stop sequence number of the user current location
 	 * @return return all the stations which comprises this trip continuation
+	 * @throws EmptyResultException thrown when no result was found
 	 */
 	public List<Stop> getRouteDetails(long tripID,
-			int currentStopSequenceNumber);
+			int currentStopSequenceNumber) throws EmptyResultException;
 
 }

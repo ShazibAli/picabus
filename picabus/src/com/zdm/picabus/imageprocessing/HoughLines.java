@@ -26,6 +26,7 @@ import com.googlecode.javacv.cpp.opencv_core.CvPoint2D32f;
 import com.googlecode.javacv.cpp.opencv_core.CvSeq;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
+
 /**
  * Houghlines Class is used to Detect the sections  in the input img.
  * that way the ROI could be found  

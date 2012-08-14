@@ -8,16 +8,15 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="About Us..."
+        android:text="@string/aboutus_title"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nowadays bus passengers doesn't have an easy way to know when the bus they are waiting for is about to arrive.
-PICABUS is an enjoyable and easy to use way for checking buses schedule -just point and shoot!
-Take a picture of the bus sign with PICABUS, and it will recognize the bus line numbers in a specific bus station. It then presents the approximate time of the desired bus line arrival, and its route.
-" />
+        android:text="@string/aboutus_text"
+        
+ />
 
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.zdm.picabus.logic;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,9 +48,9 @@ public class ResultBusArrivalActivity extends ListActivity {
 			companyImage.setImageResource(R.drawable.kavim_icon);
 		// station
 		TextView textViewStation = (TextView) findViewById(R.id.textViewStation);
-		textViewLine.setText(data.stopHeadsign);
+		textViewStation.setText(data.stopHeadsign);
 		// last stop
-		TextView textViewLastStop = (TextView) findViewById(R.id.textViewLastStop);
+		TextView textViewLastStop = (TextView) findViewById(R.id.textViewLastStopA);
 		if (directionChoice == 1)
 			textViewLastStop.setText(data.tripsList.get(1).destinationA);
 		else if (directionChoice == 2)
@@ -67,7 +66,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO: us 'position' in order to understand which hour was selected
 		// and get the data
-		int temp = position;
+		
 	}
 
 }

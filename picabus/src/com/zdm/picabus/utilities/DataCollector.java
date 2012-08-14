@@ -3,7 +3,6 @@ package com.zdm.picabus.utilities;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import android.content.Context;
 import android.location.LocationManager;
 
 import com.zdm.picabus.locationservices.GpsCorrdinates;

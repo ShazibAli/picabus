@@ -4,13 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.zdm.picabus.R;
-import com.zdm.picabus.connectivity.HttpCaller;
-import com.zdm.picabus.locationservices.GpsResult;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;

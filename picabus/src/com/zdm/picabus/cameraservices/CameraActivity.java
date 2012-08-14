@@ -4,15 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.LocationManager;
 import android.os.Bundle;
-
-import com.zdm.picabus.connectivity.HttpCaller;
-import com.zdm.picabus.locationservices.GpsResult;
-import com.zdm.picabus.utilities.DataCollector;
 
 public class CameraActivity extends Activity {
 	/** Called when the activity is first created. */

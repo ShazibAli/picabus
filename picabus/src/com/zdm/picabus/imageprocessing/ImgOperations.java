@@ -19,6 +19,7 @@ import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvRect;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
+
 public class ImgOperations {
 	/**
 	 * Cropping function for IplImages

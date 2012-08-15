@@ -6,12 +6,12 @@ package com.zdm.picabus.connectivity;
  * @author user
  * 
  */
-public enum Request {
+public enum Tasks {
 	GET_DEPARTURE_TIMES("getDepartureTimes"), GET_ROUTE_DETAILS("getRoute");
 
 	private String taskName;
 
-	private Request(String value) {
+	private Tasks(String value) {
 		this.taskName = value;
 	}
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -27,20 +28,22 @@ import com.zdm.picabus.utilities.DataCollector;
 
 public class BusLinesListActivity extends ListActivity {
 
-	private final static boolean DEBUG = true;
-	private Line lineDataModel = null;
+	private final static boolean DEBUG_MODE = true;
 
+	private Line lineDataModel;
 	private ArrayList<Integer> linesList = null;
 	private LineRowAdapter lineRowAdapter;
 	PopupWindow pw;
 	int popupRetVal = 0;
 	Intent resultsIntent;
-
+	ProgressDialog pd;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buslines_list_screen);
-
+		
+		this.pd = new ProgressDialog(this);
+		
 		// Get list of lines from OPEN CV
 		Intent i = getIntent();
 		linesList = i.getIntegerArrayListExtra("linesList");
@@ -65,13 +68,13 @@ public class BusLinesListActivity extends ListActivity {
 		Double lng = res.getLng();
 
 		// Send data to server
-		// if (lat != null || lng != null)
-		if (!DEBUG) {
-			HttpCaller.getDepartureTime(line_number, lat, lng, time, 15);
+	//	if (lat != null || lng != null)
+		if (!DEBUG_MODE){
+			HttpCaller.getDepartureTime(this, pd, line_number, lat, lng, time, 15);
 		} else {
 			// for emulator
 			// show loading
-			HttpCaller.getDepartureTime(line_number, 32.046738, 34.758574,
+			HttpCaller.getDepartureTime(this, pd, line_number, 32.046738, 34.758574,
 					time, 15);
 		}
 
@@ -189,7 +192,7 @@ public class BusLinesListActivity extends ListActivity {
 		Intent resultsIntent = new Intent(
 				"com.zdm.picabus.logic.ResultBusArrivalActivity");
 		if (lineDataModel != null) {
-			resultsIntent.putExtra("lineDataModel", lineDataModel);
+			resultsIntent.putExtra("lineDataModel", lineDataModel); 
 		}
 		// Pop-up - choose direction
 		if (lineDataModel.isBiDirectional() != true) {

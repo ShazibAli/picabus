@@ -79,6 +79,16 @@ public class BusLinesListActivity extends ListActivity {
 
 	}
 
+	/**
+	 * pop up for choosing the destination of the requested line
+	 * 
+	 * @param directionA
+	 *            - first direction
+	 * @param directionB
+	 *            - second direction
+	 * @param c
+	 *            - context of activity
+	 */
 	private void initiatePopupWindow(String directionA, String directionB,
 			final Context c) {
 
@@ -139,6 +149,15 @@ public class BusLinesListActivity extends ListActivity {
 		}
 	}
 
+	/**
+	 * 
+	 * the function is called after http response completed. the function pops-up
+	 * the user to select destination and opens new activity with line data and
+	 * destination choice
+	 * 
+	 * @param line_number
+	 *            - line number that was chosen by user
+	 */
 	private void onCurrentLineUpdated(int line_number) {
 		// close loading
 		// here the lineModel is updated and ready for use

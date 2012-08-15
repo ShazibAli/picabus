@@ -10,6 +10,10 @@ import com.zdm.picabus.locationservices.GpsResult;
 
 public class DataCollector {
 
+	/**
+	 * 
+	 * @return - user's current time as string XX:XX:XX
+	 */
 	public static String getCurrentTime() {
 
 		String hourStr,minuteStr,secondStr;
@@ -39,6 +43,12 @@ public class DataCollector {
 		return time;
 	}
 
+	/**
+	 * 
+	 * @param locationManager - Context.getSystemService(Context.LOCATION_SERVICE). 
+
+	 * @return Gps coordinates of user's location
+	 */
 	public static GpsResult getGpsCoordinates(LocationManager locationManager) {
 
 		GpsCorrdinates gps = new GpsCorrdinates(locationManager);

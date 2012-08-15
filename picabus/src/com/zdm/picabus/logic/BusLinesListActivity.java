@@ -123,16 +123,16 @@ public class BusLinesListActivity extends ListActivity {
 			// Buttons click listeners
 			directionBtnA.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					// resultsIntent.putExtra("direction", 1);
+					resultsIntent.putExtra("direction", 0);
 					pw.dismiss();
-					// c.startActivity(resultsIntent);
+					c.startActivity(resultsIntent);
 				}
 			});
 
 			directionBtnB.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					// resultsIntent.putExtra("direction", 2);
-					// c.startActivity(resultsIntent);
+					resultsIntent.putExtra("direction", 1);
+					c.startActivity(resultsIntent);
 					pw.dismiss();
 
 				}
@@ -199,10 +199,10 @@ public class BusLinesListActivity extends ListActivity {
 			resultsIntent.putExtra("direction", 3);
 			startActivity(resultsIntent);
 		} else {
-			// initiatePopupWindow("תחנה מרכזית ירוחם", "מקום כלשהו", this);
+			initiatePopupWindow("תחנה מרכזית ירוחם", "מקום כלשהו", this);
 		}
 
-		resultsIntent.putExtra("direction", 0);
-		startActivity(resultsIntent);
+/*		resultsIntent.putExtra("direction", 0);
+		startActivity(resultsIntent);*/
 	}
 }

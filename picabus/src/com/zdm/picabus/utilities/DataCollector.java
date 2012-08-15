@@ -55,6 +55,7 @@ public class DataCollector {
 		gps.getCurrentLocation();
 		Double lat = gps.getLatitude();
 		Double lng = gps.getLongitude();
+		
 		GpsResult res = new GpsResult(lat, lng);
 
 		return res;

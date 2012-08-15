@@ -17,12 +17,14 @@ import android.widget.PopupWindow;
 
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
 
 public class BusLinesListActivity extends ListActivity {
 
 	private final static boolean DEBUG=true;
+	private Line lineDataModel = null;
 	
 	private ArrayList<Integer> linesList = null;
 	private LineRowAdapter lineRowAdapter;
@@ -65,6 +67,7 @@ public class BusLinesListActivity extends ListActivity {
 		}
 		else{
 			// for emulator
+			// show loading
 			HttpCaller.getDepartureTime(line_number, 32.046738, 34.758574,
 					time, 15);}
 
@@ -156,6 +159,11 @@ public class BusLinesListActivity extends ListActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void onCurrentLineUpdated () {
+		// close loading 
+		// here the lineModel is updated and ready for use
 	}
 
 }

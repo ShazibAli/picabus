@@ -19,5 +19,6 @@
     <string name="company_icon">Bus company icon</string>
     <string name="estimated_arrival_times">Estimated arrival times: </string>
     <string name="icon_bus_lines_list">icon</string>
+    <string name="getroute_icon">Get route</string>
 
 </resources>

@@ -5,21 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Looper;
+import android.app.ProgressDialog;
+import android.content.Context;
 
 public class HttpCaller {
 
-	public static final String serverURL = "http://10.0.0.1:8888/";
+	public static final String serverURL = "http://10.0.0.1:8888/picabusserver";
 
 	public static String readContentFromIS(InputStream in) throws IOException {
 		BufferedReader reader = new BufferedReader(
@@ -32,49 +26,23 @@ public class HttpCaller {
 		return sb.toString();		
 	}
 	
-
-
-	public static void getDepartureTime(final int lineNumber, final double latitude, final double longitude, final String clientTime, final int timeInterval) {
+	public static void getDepartureTime(Context mContext, ProgressDialog waitSpinner, final int lineNumber, final double latitude, final double longitude, final String clientTime, final int timeInterval) {
  
-		Thread t = new Thread() {
-			public void run() {
-				Looper.prepare(); // For Preparing Message Pool for the child Thread TODO: verify looper use
-				HttpClient client = new DefaultHttpClient();
-				HttpConnectionParams.setConnectionTimeout(client.getParams(),
-						10000); // Timeout Limit
-				HttpConnectionParams.setSoTimeout(client.getParams(), 10000); 
-				HttpResponse response;
-				JSONObject json = new JSONObject();
-				try {
-					HttpPost post = new HttpPost(serverURL + "picabusserver");
-					json.put("lineNumber", lineNumber);
-					json.put("latitude", latitude);
-					json.put("longitude", longitude);
-					json.put("clientTime", clientTime);
-					json.put("timeInterval", timeInterval);
-					
-					StringEntity se = new StringEntity(json.toString());
-					post.addHeader(CustomHeader.TASK_NAME.getHeaderName(),
-							Request.GET_DEPARTURE_TIMES.getTaskName());
-					se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-					post.setEntity(se);
-					response = client.execute(post);
-					/* Checking response */
-					if (response != null) {
-						InputStream in = response.getEntity().getContent(); // Get the data in the entity
-						String responseContent = readContentFromIS(in);
-						
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.out.println("Error: Cannot Estabilish Connection"); // TODO: replace with popup
-																		
-				}
-				
-				Looper.loop(); // Loop in the message queue
-			}
+		JSONObject requestPayload = new JSONObject();
+		try {
+			requestPayload.put("lineNumber", lineNumber);
+			requestPayload.put("latitude", latitude);
+			requestPayload.put("longitude", longitude);
+			requestPayload.put("clientTime", clientTime);
+			requestPayload.put("timeInterval", timeInterval);
+			
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		};
-		t.start();
+		
+		GetDepartureTimeTask gdtt = new GetDepartureTimeTask(mContext, waitSpinner, Tasks.GET_DEPARTURE_TIMES.getTaskName(), requestPayload);
+		gdtt.execute(serverURL ,null,null);
 
 
 	}

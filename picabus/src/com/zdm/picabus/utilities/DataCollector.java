@@ -12,11 +12,29 @@ public class DataCollector {
 
 	public static String getCurrentTime() {
 
+		String hourStr,minuteStr,secondStr;
+		
 		Calendar calendar = new GregorianCalendar();
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int minute = calendar.get(Calendar.MINUTE);
 		int second = calendar.get(Calendar.SECOND);
-		String time = Integer.toString(hour) + ":" + Integer.toString(minute)+":"+Integer.toString(second);
+		
+		if (hour>=10)
+			hourStr=Integer.toString(hour);
+		else
+			hourStr="0"+Integer.toString(hour);
+		
+		if (minute>=10)
+			minuteStr=Integer.toString(minute);
+		else
+			minuteStr="0"+Integer.toString(minute);
+
+		if (second>=10)
+			secondStr=Integer.toString(second);
+		else
+			secondStr="0"+Integer.toString(second);
+		
+		String time = hourStr+":"+minuteStr+":"+secondStr;
 
 		return time;
 	}

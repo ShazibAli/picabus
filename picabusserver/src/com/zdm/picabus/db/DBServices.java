@@ -100,7 +100,7 @@ public class DBServices implements IDBServices {
 			// validate that the result set is not empty
 			if (rsEmpty) {
 				throw new EmptyResultException(
-						"Couldn't locate the station based on the givven GPS coordinates");
+						"Couldn't locate the station based on the given GPS coordinates");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

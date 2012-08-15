@@ -19,7 +19,7 @@ import android.os.Looper;
 
 public class HttpCaller {
 
-	public static final String serverURL = "http://picabusapp.appspot.com/";
+	public static final String serverURL = "http://10.0.0.1:8888/";
 
 	public static String readContentFromIS(InputStream in) throws IOException {
 		BufferedReader reader = new BufferedReader(
@@ -29,7 +29,6 @@ public class HttpCaller {
 		while ((line = reader.readLine()) != null) {
 			sb.append(line + "\n");
 		}
-		in.close();
 		return sb.toString();		
 	}
 	
@@ -43,6 +42,7 @@ public class HttpCaller {
 				HttpClient client = new DefaultHttpClient();
 				HttpConnectionParams.setConnectionTimeout(client.getParams(),
 						10000); // Timeout Limit
+				HttpConnectionParams.setSoTimeout(client.getParams(), 10000); 
 				HttpResponse response;
 				JSONObject json = new JSONObject();
 				try {
@@ -63,6 +63,7 @@ public class HttpCaller {
 					if (response != null) {
 						InputStream in = response.getEntity().getContent(); // Get the data in the entity
 						String responseContent = readContentFromIS(in);
+						
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

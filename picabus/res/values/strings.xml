@@ -20,5 +20,6 @@
     <string name="estimated_arrival_times">Estimated arrival times: </string>
     <string name="icon_bus_lines_list">icon</string>
     <string name="getroute_icon">Get route</string>
+    <string name="no_eta">Bus time arrivals are not available</string>
 
 </resources>

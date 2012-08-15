@@ -1,9 +1,14 @@
 package com.zdm.picabus.enitities;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public class Line {
+public class Line implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean biDirectional;
 	private Collection<Trip> trips;
 	private String stopHeadsign;

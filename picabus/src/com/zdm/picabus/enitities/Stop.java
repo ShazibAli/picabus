@@ -1,7 +1,13 @@
 package com.zdm.picabus.enitities;
 
-public class Stop {
+import java.io.Serializable;
+
+public class Stop implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long stopID;
 	private int stopCode;
 	private String stopName;

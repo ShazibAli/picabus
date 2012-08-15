@@ -1,6 +1,8 @@
 package com.zdm.picabus.logic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -11,6 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
+import com.zdm.picabus.enitities.Company;
+import com.zdm.picabus.enitities.Line;
+import com.zdm.picabus.enitities.Trip;
 
 //import com.zdm.picabus.logic.DataObject.TripObject;
 
@@ -26,50 +31,66 @@ public class ResultBusArrivalActivity extends ListActivity {
 		setContentView(R.layout.result_busarrival_screen);
 
 		arrivalTimesList = new ArrayList<String>();
-		
-		arrivalTimesList.add("08:55:33");
-		arrivalTimesList.add("09:54:31");
-		arrivalTimesList.add("10:55:10");
-		arrivalTimesList.add("12:57:10");
+		Intent i = getIntent();
+		Line lineDataModel = (Line) i.getSerializableExtra("lineDataModel");
+		int directionChoice = (int) i.getIntExtra("direction", 9);
 
-/*		Intent i = getIntent();
-		DataObject data = (DataObject) i.getSerializableExtra("dataObject");
-		int directionChoice = (int) i.getIntExtra("direction", 0);
+		if (lineDataModel==null){
+			//TODO
+		}
+		else{
 
-		// update fields from data results:
-
+		//Manage data and get arrival times list from data
+		List<Trip> trips = (List<Trip>) lineDataModel.getTrips();
+		Trip firstTrip = trips.get(0);
+		for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
+			Trip trip = (Trip) iterator.next();
+			if (trip.getDirectionID()==directionChoice){
+			arrivalTimesList.add(trip.getEta().toString());
+			}
+		}
+		//update fields from data results:
 		// line
 		TextView textViewLine = (TextView) findViewById(R.id.textViewLine);
-		textViewLine.setText(data.tripsList.get(1).lineNumber);
+		textViewLine.setText("Line number: "+firstTrip.getLineNumber());
+		
 		// company
 		ImageView companyImage = (ImageView) findViewById(R.id.iconCompany);
-		if (data.tripsList.get(1).companyName == "דן")
+		if (firstTrip.getCompany() == Company.DAN){
 			companyImage.setImageResource(R.drawable.dan_icon);
-		else if (data.tripsList.get(1).companyName == "אגד")
+		}
+		else if (firstTrip.getCompany() == Company.EGGED){
 			companyImage.setImageResource(R.drawable.egged_icon);
-		else if (data.tripsList.get(1).companyName == "קווים")
-			companyImage.setImageResource(R.drawable.kavim_icon);
+		}
+		else if (firstTrip.getCompany() == Company.METROPOLIN){
+			companyImage.setImageResource(R.drawable.metropoline_icon);
+		}
+		else{
+			companyImage.setImageResource(R.drawable.line_row_bus);
+		}
+		
 		// station
 		TextView textViewStation = (TextView) findViewById(R.id.textViewStation);
-		textViewStation.setText(data.stopHeadsign);
-		// last stop
-		TextView textViewLastStop = (TextView) findViewById(R.id.textViewLastStopA);
-		if (directionChoice == 1)
-			textViewLastStop.setText(data.tripsList.get(1).destinationA);
-		else if (directionChoice == 2)
-			textViewLastStop.setText(data.tripsList.get(1).destinationB);*/
+		textViewStation.setText("Station name: "+lineDataModel.getStopHeadsign());
+		
+		// getRoute
+		ImageView routeImage = (ImageView) findViewById(R.id.getRouteIcon);
+		routeImage.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {	
+			}
+		});
+		// last stop - //TODO - parse inside stop sequence, according to direction
+		TextView textViewLastStop = (TextView) findViewById(R.id.textViewLastStop);
+		if (directionChoice == 0)
+			textViewLastStop.setText("Last stop: "+firstTrip.getDestination());
+		else if (directionChoice == 1)
+			textViewLastStop.setText("Last stop: "+firstTrip.getDestination());
 
 		this.arrivalRowAdapter = new ArrivalRowAdapter(this,
 				R.layout.row_arrival_time, arrivalTimesList);
 		setListAdapter(this.arrivalRowAdapter);
-
+		}
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		// TODO: us 'position' in order to understand which hour was selected
-		// and get the data
-		
-	}
 
 }

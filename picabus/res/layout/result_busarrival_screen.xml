@@ -18,8 +18,7 @@
             android:layout_weight="30"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-    android:text="Line number: "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        	android:textAppearance="?android:attr/textAppearanceLarge" />
     
      <ImageView
         android:id="@+id/iconCompany"
@@ -41,7 +40,7 @@
 
    
           <TextView
-        android:id="@+id/textViewLastStopA"
+        android:id="@+id/textViewLastStop"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
     android:text="Last Stop: "
@@ -56,7 +55,7 @@
         android:src="@drawable/map_icon" />   
     
               <TextView
-        android:id="@+id/textViewLastStopB"
+        android:id="@+id/arrivalTimes"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
     android:text="@string/estimated_arrival_times"
@@ -75,5 +74,5 @@
     android:id="@+id/android:empty"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:text="@string/no_lines"/>
+    android:text="@string/no_eta"/>
 </LinearLayout>

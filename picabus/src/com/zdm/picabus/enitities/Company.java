@@ -1,6 +1,6 @@
 package com.zdm.picabus.enitities;
 
-public enum Company {
+public enum Company  {
 	EGGED("אגד"),
 	DAN("דן"),
 	METROPOLIN("מטרופולין"),

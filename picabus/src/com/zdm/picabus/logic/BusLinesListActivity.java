@@ -60,12 +60,13 @@ public class BusLinesListActivity extends ListActivity {
 
 		// Send data to server
 	//	if (lat != null || lng != null)
-		if (!DEBUG)
+		if (!DEBUG){
 			HttpCaller.getDepartureTime(line_number, lat, lng, time, 15);
-		else
+		}
+		else{
 			// for emulator
 			HttpCaller.getDepartureTime(line_number, 32.046738, 34.758574,
-					time, 15);
+					time, 15);}
 
 		// TODO: parseData() into DataObject type
 		// Temp=Create data object to pass.
@@ -85,14 +86,14 @@ public class BusLinesListActivity extends ListActivity {
 		// Pop-up - choose direction
 		Intent resultsIntent = new Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
 //		
-		initiatePopupWindow(to.destinationA, to.destinationB);
+		//initiatePopupWindow(to.destinationA, to.destinationB);
 
 		//Open new intent
 	//	if (popupRetVal != 0) {
 		//	Intent resultsIntent = new Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
 //			resultsIntent.putExtra("direction", popupRetVal);
 			// resultsIntent.putExtra("dataObject", data);
-			// startActivity(resultsIntent);
+			 startActivity(resultsIntent);
 	//	}
 	}
 

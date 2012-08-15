@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
@@ -45,7 +44,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 		Trip firstTrip = trips.get(0);
 		for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
 			Trip trip = (Trip) iterator.next();
-			if (trip.getDirectionID()==directionChoice){
+			if ((trip.getDirectionID()==directionChoice) || (lineDataModel.isBiDirectional()==false)){
 			arrivalTimesList.add(trip.getEta().toString());
 			}
 		}

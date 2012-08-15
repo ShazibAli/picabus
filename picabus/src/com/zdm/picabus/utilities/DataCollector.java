@@ -15,7 +15,8 @@ public class DataCollector {
 		Calendar calendar = new GregorianCalendar();
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int minute = calendar.get(Calendar.MINUTE);
-		String time = Integer.toString(hour) + ":" + Integer.toString(minute);
+		int second = calendar.get(Calendar.SECOND);
+		String time = Integer.toString(hour) + ":" + Integer.toString(minute)+":"+Integer.toString(second);
 
 		return time;
 	}

@@ -3,6 +3,8 @@ package com.zdm.picabus.cameraservices;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.zdm.picabus.imageprocessing.costumizeImg;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,14 +28,9 @@ public class CameraActivity extends Activity {
 		if (requestCode == CAMERA_PIC_REQUEST) {
 			// get image taken
 			Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+			List<Integer> linesList = costumizeImg.processImage(thumbnail);
 			// TODO: send to openCV, and open "BusLinesListActivity" from there*afterwards
 			// for now-fake data from open cv
-			List<Integer> linesList = new ArrayList<Integer>();
-			linesList.add(13);
-			linesList.add(232);
-			linesList.add(73);
-			linesList.add(45);
-			linesList.add(53);
 
 			Intent intent = new Intent(
 					"com.zdm.picabus.logic.BusLinesListActivity");

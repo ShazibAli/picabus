@@ -26,7 +26,6 @@ public class CameraActivity extends Activity {
 		if (requestCode == CAMERA_PIC_REQUEST) {
 			// get image taken
 			Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-
 			// TODO: send to openCV, and open "BusLinesListActivity" from there*afterwards
 			// for now-fake data from open cv
 			List<Integer> linesList = new ArrayList<Integer>();

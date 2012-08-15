@@ -47,6 +47,14 @@
     android:text="Last Stop: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
+                <ImageView
+        android:id="@+id/getRouteIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/getroute_icon"
+            android:layout_gravity="center"
+        android:src="@drawable/map_icon" />   
+    
               <TextView
         android:id="@+id/textViewLastStopB"
             android:layout_width="fill_parent"
@@ -54,8 +62,7 @@
     android:text="@string/estimated_arrival_times"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
-    
-    
+
     
     
     

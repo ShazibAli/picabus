@@ -32,10 +32,10 @@ public class ArrivalRowAdapter extends ArrayAdapter<String> {
 
 		String time = items.get(position);
 		if (time != null) {
-			TextView tt = (TextView) v.findViewById(R.id.textViewLine);
+			TextView tt = (TextView) v.findViewById(R.id.textviewarrival);
 
 			if (tt != null) {
-				tt.setText("Line number: " + time);
+				tt.setText(time);
 			}
 
 		}

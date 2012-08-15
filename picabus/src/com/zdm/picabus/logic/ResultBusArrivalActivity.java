@@ -25,11 +25,14 @@ public class ResultBusArrivalActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.result_busarrival_screen);
 
+		arrivalTimesList = new ArrayList<String>();
+		
 		arrivalTimesList.add("08:55:33");
 		arrivalTimesList.add("09:54:31");
 		arrivalTimesList.add("10:55:10");
+		arrivalTimesList.add("12:57:10");
 
-		Intent i = getIntent();
+/*		Intent i = getIntent();
 		DataObject data = (DataObject) i.getSerializableExtra("dataObject");
 		int directionChoice = (int) i.getIntExtra("direction", 0);
 
@@ -54,7 +57,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 		if (directionChoice == 1)
 			textViewLastStop.setText(data.tripsList.get(1).destinationA);
 		else if (directionChoice == 2)
-			textViewLastStop.setText(data.tripsList.get(1).destinationB);
+			textViewLastStop.setText(data.tripsList.get(1).destinationB);*/
 
 		this.arrivalRowAdapter = new ArrivalRowAdapter(this,
 				R.layout.row_arrival_time, arrivalTimesList);

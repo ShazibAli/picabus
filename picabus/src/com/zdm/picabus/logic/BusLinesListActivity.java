@@ -22,6 +22,8 @@ import com.zdm.picabus.utilities.DataCollector;
 
 public class BusLinesListActivity extends ListActivity {
 
+	private final static boolean DEBUG=true;
+	
 	private ArrayList<Integer> linesList = null;
 	private LineRowAdapter lineRowAdapter;
 	PopupWindow pw;
@@ -57,7 +59,8 @@ public class BusLinesListActivity extends ListActivity {
 		Double lng = res.getLng();
 
 		// Send data to server
-		if (lat != null && lng != null)
+	//	if (lat != null || lng != null)
+		if (!DEBUG)
 			HttpCaller.getDepartureTime(line_number, lat, lng, time, 15);
 		else
 			// for emulator
@@ -80,17 +83,17 @@ public class BusLinesListActivity extends ListActivity {
 		data.tripsList.add(to);
 
 		// Pop-up - choose direction
+		Intent resultsIntent = new Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
+//		
 		initiatePopupWindow(to.destinationA, to.destinationB);
 
 		//Open new intent
-		if (popupRetVal != 0) {
-
-			// Intent resultsIntent = new
-			// Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
-			resultsIntent.putExtra("direction", popupRetVal);
+	//	if (popupRetVal != 0) {
+		//	Intent resultsIntent = new Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
+//			resultsIntent.putExtra("direction", popupRetVal);
 			// resultsIntent.putExtra("dataObject", data);
 			// startActivity(resultsIntent);
-		}
+	//	}
 	}
 
 	private void initiatePopupWindow(String directionA, String directionB) {
@@ -124,6 +127,7 @@ public class BusLinesListActivity extends ListActivity {
 					// TODO Auto-generated method stub
 					popupRetVal = 1;
 					// resultsIntent.putExtra("direction", popupRetVal);
+					//startActivity(resultsIntent);
 					pw.dismiss();
 					// startActivity(resultsIntent);
 				}
@@ -135,7 +139,7 @@ public class BusLinesListActivity extends ListActivity {
 					popupRetVal = 2;
 					// resultsIntent.putExtra("direction", popupRetVal);
 					pw.dismiss();
-					// startActivity(resultsIntent);
+				//	startActivity(resultsIntent);
 				}
 			});
 

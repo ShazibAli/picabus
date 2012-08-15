@@ -1,9 +1,14 @@
 package com.zdm.picabus.enitities;
 
+import java.io.Serializable;
 import java.sql.Time;
 
-public class Trip {
+public class Trip implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long tripID;
 	private String destination;
 	private int directionID;

@@ -1,6 +1,8 @@
 package com.zdm.picabus.logic;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -17,15 +19,17 @@ import android.widget.PopupWindow;
 
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
+import com.zdm.picabus.enitities.Trip;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
 
 public class BusLinesListActivity extends ListActivity {
 
-	private final static boolean DEBUG=true;
+	private final static boolean DEBUG = true;
 	private Line lineDataModel = null;
-	
+
 	private ArrayList<Integer> linesList = null;
 	private LineRowAdapter lineRowAdapter;
 	PopupWindow pw;
@@ -61,50 +65,27 @@ public class BusLinesListActivity extends ListActivity {
 		Double lng = res.getLng();
 
 		// Send data to server
-	//	if (lat != null || lng != null)
-		if (!DEBUG){
+		// if (lat != null || lng != null)
+		if (!DEBUG) {
 			HttpCaller.getDepartureTime(line_number, lat, lng, time, 15);
-		}
-		else{
+		} else {
 			// for emulator
 			// show loading
 			HttpCaller.getDepartureTime(line_number, 32.046738, 34.758574,
-					time, 15);}
+					time, 15);
+		}
 
-		// TODO: parseData() into DataObject type
-		// Temp=Create data object to pass.
-		int tripCount = 2;
-		DataObject data = new DataObject(tripCount);
-		// for now-update data:
-		data.new TripObject();
-		DataObject.TripObject to = data.new TripObject();
-		to.lineNumber = 45;
-		to.companyName = "דן";
-		to.destinationA = "ת  רכבת מרכז-תל אביב יפו";
-		to.destinationB = "מתחם גי ילדי טהרן-ראשון לציון";
-		data.stopHeadsign = "תרעד 12 רמת גן";
-		data.tripsList.add(to);
-		data.tripsList.add(to);
+		onCurrentLineUpdated(line_number);
 
-		// Pop-up - choose direction
-		Intent resultsIntent = new Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
-//		
-		//initiatePopupWindow(to.destinationA, to.destinationB);
-
-		//Open new intent
-	//	if (popupRetVal != 0) {
-		//	Intent resultsIntent = new Intent("com.zdm.picabus.logic.ResultBusArrivalActivity");
-//			resultsIntent.putExtra("direction", popupRetVal);
-			// resultsIntent.putExtra("dataObject", data);
-			 startActivity(resultsIntent);
-	//	}
 	}
 
-	private void initiatePopupWindow(String directionA, String directionB) {
+	private void initiatePopupWindow(String directionA, String directionB,
+			final Context c) {
 
 		try {
 
-			// Get the instance of the LayoutInflater, use the context of this activity
+			// Get the instance of the LayoutInflater, use the context of this
+			// activity
 			LayoutInflater inflater = (LayoutInflater) this
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			// Inflate the view from a predefined XML layout
@@ -112,6 +93,7 @@ public class BusLinesListActivity extends ListActivity {
 					(ViewGroup) findViewById(R.id.popup_element));
 			// create a 300px width and 470px height PopupWindow
 			pw = new PopupWindow(layout, 300, 470, true);
+
 			// display the popup in the center
 			pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
@@ -128,22 +110,18 @@ public class BusLinesListActivity extends ListActivity {
 			// Buttons click listeners
 			directionBtnA.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					popupRetVal = 1;
-					// resultsIntent.putExtra("direction", popupRetVal);
-					//startActivity(resultsIntent);
+					// resultsIntent.putExtra("direction", 1);
 					pw.dismiss();
-					// startActivity(resultsIntent);
+					// c.startActivity(resultsIntent);
 				}
 			});
 
 			directionBtnB.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					popupRetVal = 2;
-					// resultsIntent.putExtra("direction", popupRetVal);
+					// resultsIntent.putExtra("direction", 2);
+					// c.startActivity(resultsIntent);
 					pw.dismiss();
-				//	startActivity(resultsIntent);
+
 				}
 			});
 
@@ -160,10 +138,49 @@ public class BusLinesListActivity extends ListActivity {
 			e.printStackTrace();
 		}
 	}
-	
-	private void onCurrentLineUpdated () {
-		// close loading 
-		// here the lineModel is updated and ready for use
-	}
 
+	private void onCurrentLineUpdated(int line_number) {
+		// close loading
+		// here the lineModel is updated and ready for use
+
+		// FAKE DATA
+		lineDataModel = new Line();
+		Trip t = new Trip();
+		t.setCompany(Company.EGGED);
+		t.setDestination("תחנה מרכזית שקר כלשהו");
+		t.setDirectionID(0);
+		Time a = new Time(15, 42, 33);
+		t.setEta(a);
+		t.setLineNumber(line_number);
+		Trip t2 = new Trip();
+		t2.setCompany(Company.EGGED);
+		t2.setDestination("תחנה מרכזית שקר כלשהו");
+		t2.setDirectionID(0);
+		a = new Time(16, 01, 02);
+		t2.setEta(a);
+		t2.setLineNumber(line_number);
+		List<Trip> trips = new ArrayList<Trip>();
+		trips.add(t);
+		trips.add(t2);
+		lineDataModel.setTrips(trips);
+		lineDataModel.setBiDirectional(false);
+		lineDataModel.setStopHeadsign("תרעד 12 רמת גן");
+
+		// /Prepare next intent
+		Intent resultsIntent = new Intent(
+				"com.zdm.picabus.logic.ResultBusArrivalActivity");
+		if (lineDataModel != null) {
+			resultsIntent.putExtra("lineDataModel", lineDataModel);
+		}
+		// Pop-up - choose direction
+		if (lineDataModel.isBiDirectional() != true) {
+			resultsIntent.putExtra("direction", 3);
+			startActivity(resultsIntent);
+		} else {
+			// initiatePopupWindow("תחנה מרכזית ירוחם", "מקום כלשהו", this);
+		}
+
+		resultsIntent.putExtra("direction", 0);
+		startActivity(resultsIntent);
+	}
 }

@@ -46,8 +46,8 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 
 		// Create new default http client
 		HttpClient client = new DefaultHttpClient();
-		HttpConnectionParams.setConnectionTimeout(client.getParams(), CONNECTION_TIMEOUT); // Timeout Limit
-		HttpConnectionParams.setSoTimeout(client.getParams(), SO_TIMEOUT);
+		HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); // Timeout Limit
+		HttpConnectionParams.setSoTimeout(client.getParams(), 10000);
 		HttpResponse response;
 		HttpPost post = new HttpPost(serviceURL);
 			

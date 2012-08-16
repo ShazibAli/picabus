@@ -13,7 +13,7 @@ import android.content.Context;
 
 public class HttpCaller {
 
-	public static final String serverURL = "http://10.0.0.1:8888/picabusserver";
+	public static final String serverURL = "http://picabusapp.appspot.com/picabusserver";
 
 	public static String readContentFromIS(InputStream in) throws IOException {
 		BufferedReader reader = new BufferedReader(

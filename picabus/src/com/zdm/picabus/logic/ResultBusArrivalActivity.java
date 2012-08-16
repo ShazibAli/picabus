@@ -45,7 +45,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 		for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
 			Trip trip = (Trip) iterator.next();
 			if ((trip.getDirectionID()==directionChoice) || (lineDataModel.isBiDirectional()==false)){
-			arrivalTimesList.add(trip.getEta().toString());
+			arrivalTimesList.add(trip.getEta());
 			}
 		}
 		//update fields from data results:
@@ -55,13 +55,13 @@ public class ResultBusArrivalActivity extends ListActivity {
 		
 		// company
 		ImageView companyImage = (ImageView) findViewById(R.id.iconCompany);
-		if (firstTrip.getCompany() == Company.DAN){
+		if (getCompanyByString(firstTrip.getCompany())== getCompanyByString(Company.DAN)){
 			companyImage.setImageResource(R.drawable.dan_icon);
 		}
-		else if (firstTrip.getCompany() == Company.EGGED){
+		else if (getCompanyByString(firstTrip.getCompany())== getCompanyByString(Company.EGGED)){
 			companyImage.setImageResource(R.drawable.egged_icon);
 		}
-		else if (firstTrip.getCompany() == Company.METROPOLIN){
+		else if (getCompanyByString(firstTrip.getCompany())== getCompanyByString(Company.METROPOLIN)){
 			companyImage.setImageResource(R.drawable.metropoline_icon);
 		}
 		else{
@@ -86,6 +86,11 @@ public class ResultBusArrivalActivity extends ListActivity {
 				R.layout.row_arrival_time, arrivalTimesList);
 		setListAdapter(this.arrivalRowAdapter);
 		}
+	}
+
+	private String getCompanyByString(Company company) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

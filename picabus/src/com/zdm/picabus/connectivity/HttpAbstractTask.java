@@ -41,8 +41,8 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 		String retreturnVal = "";
 		String serviceURL = arg[0];
 
-		waitSpinner = ProgressDialog.show(mContext, "Loading",
-				"Please wait...", true);
+		/*waitSpinner = ProgressDialog.show(mContext, "Loading",
+				"Please wait...", true);*/
 
 		// Create new default http client
 		HttpClient client = new DefaultHttpClient();

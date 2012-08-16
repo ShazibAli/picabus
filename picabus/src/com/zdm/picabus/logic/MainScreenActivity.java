@@ -141,6 +141,7 @@ public class MainScreenActivity extends Activity {
 			public void onDrawerOpened() {
 				slideButton
 						.setBackgroundResource(R.drawable.settings_icon_down);
+				slidingDrawer.setClickable(true);
 			}
 		});
 		slidingDrawer.setOnDrawerScrollListener(new OnDrawerScrollListener() {
@@ -171,6 +172,7 @@ public class MainScreenActivity extends Activity {
 
 			public void onDrawerClosed() {
 				slideButton.setBackgroundResource(R.drawable.settings_icon_up);
+				slidingDrawer.setClickable(false);
 			}
 		});
 	}

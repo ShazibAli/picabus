@@ -72,7 +72,6 @@
 
         <SlidingDrawer
         android:id="@+id/SlidingDrawer"
-        android:layout_weight="5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:content="@+id/contentLayout"
@@ -106,31 +105,27 @@
         android:text="@string/pref_timeinterval_instruction"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+        <Spinner
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/SpinnerTimeInterval"
+    />
+        
 
-    <LinearLayout
+	<CheckBox
+        android:id="@+id/notifyCheckBox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="horizontal"
-        android:weightSum="3" >
-    
-    <NumberPicker
-        android:id="@+id/numberPicker1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-    <ImageButton
-        android:id="@+id/button_submit_ft"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="2"
-        android:contentDescription="Set"
-        android:src="@drawable/submit_ft_icon"
-        android:text="Set" />
-    
-       </LinearLayout>
+        android:text="@string/notify_checkbox" />
+        
+                <Spinner
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/SpinnerNotification"
+    />
+                
+  
+     
         </LinearLayout>
         
         

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="80"
-        android:background="@drawable/picabus_splash"
+        android:background="@drawable/picabus_logo"
         android:contentDescription="@string/menu_camera_button"
         android:src="@drawable/button_camera_s"
         android:text="@string/menu_camera_button" />
@@ -93,7 +93,7 @@
             android:id="@+id/contentLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/preferences_bg"
+            android:background="@drawable/settings_bg"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="10dip" >

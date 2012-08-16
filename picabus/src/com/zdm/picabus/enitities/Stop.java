@@ -49,6 +49,30 @@ public class Stop implements Serializable {
 
 
 	/**
+	 * @param stopCode
+	 * @param stopName
+	 * @param stopDescription
+	 * @param latitude
+	 * @param longitude
+	 * @param stopSequenceNumber
+	 * @param departureTimeString
+	 */
+	public Stop(int stopCode, String stopName, String stopDescription,
+			double latitude, double longitude, int stopSequenceNumber,
+			String departureTimeString) {
+		super();
+		this.stopCode = stopCode;
+		this.stopName = stopName;
+		this.stopDescription = stopDescription;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.stopSequenceNumber = stopSequenceNumber;
+		this.departureTimeString = departureTimeString;
+	}
+
+
+
+	/**
 	 * @return the departureTimeString
 	 */
 	public String getDepartureTimeString() {

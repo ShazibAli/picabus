@@ -59,7 +59,7 @@ public class ResponseParser implements IResponseParser {
 				stopSequence = currentTrip.getInt("stopSequence");
 				serviceID = currentTrip.getLong("serviceID");
 				routeID = currentTrip.getLong("routeID");
-				Trip currentTripObject = new Trip(tripID, destination, directionID, lineNumber, Time.valueOf(eta), Company.getCompanyByString(companyName), stopID, stopSequence, routeID, serviceID);
+				Trip currentTripObject = new Trip(tripID, destination, directionID, lineNumber, eta, Company.getCompanyByString(companyName), stopID, stopSequence, routeID, serviceID);
 				trips.add(currentTripObject);
 			}
 		
@@ -76,8 +76,44 @@ public class ResponseParser implements IResponseParser {
 	}
 
 	public Collection<Stop> parseGetRouteJsonResponse(JSONObject responseJson) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Stop> stops = new ArrayList<Stop>();
+		JSONObject data;
+		try {
+			data = responseJson.getJSONObject("data");
+			int stopCount = data.getInt("stopCount");
+			String currentStopIdentifier;
+			JSONObject currentStop;
+			
+			// single stop value holders
+			String stopName;
+			String stopDescription;
+			int stopSequenceNumber;
+			double latitude;
+			double longitude;
+			String departureTimeString;
+			int stopCode;
+			
+			for (int i = 0; i < stopCount; i++) {
+				currentStopIdentifier = "stop" + i;
+				currentStop = data.getJSONObject(currentStopIdentifier);
+				
+				// extracting current trip data
+				stopName = currentStop.getString("stopName");
+				stopDescription = currentStop.getString("stopAddress");
+				stopSequenceNumber = currentStop.getInt("stopSequence");
+				latitude = currentStop.getDouble("latitude");
+				longitude = currentStop.getDouble("longitude");
+				departureTimeString = currentStop.getString("departureTime");
+				stopCode = currentStop.getInt("stop_code");
+				Stop currentStopObject = new Stop(stopCode, stopName, stopDescription, latitude, longitude, stopSequenceNumber, departureTimeString);
+				stops.add(currentStopObject);			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return stops;
 	}
 
 

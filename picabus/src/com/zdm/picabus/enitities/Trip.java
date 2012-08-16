@@ -1,7 +1,6 @@
 package com.zdm.picabus.enitities;
 
 import java.io.Serializable;
-import java.sql.Time;
 
 public class Trip implements Serializable{
 

@@ -24,20 +24,18 @@ import android.widget.PopupWindow;
 
 public class GetDepartureTimeTask extends HttpAbstractTask {
 
-	private ProgressDialog waitSpinner;
 	private Context context;
 	PopupWindow pw;
 
 	public GetDepartureTimeTask(Context mContext, ProgressDialog waitSpinner,
 			String taskName, JSONObject reuqestPayload) {
 		super(mContext, waitSpinner, taskName, reuqestPayload);
-		this.waitSpinner = waitSpinner;
 		this.context = mContext;
 	}
 
 	@Override
 	protected void onPostExecute(String result) {
-
+		
 		JSONObject json = null;
 		try {
 			json = new JSONObject(result);
@@ -57,12 +55,15 @@ public class GetDepartureTimeTask extends HttpAbstractTask {
 			// Parse destination
 			Destination dest = DestionationParser.parseDestination(firstTrip
 					.getDestination());
-
+			
 			// Prepare next intent
 			Intent resultsIntent = new Intent(
 					"com.zdm.picabus.logic.ResultBusArrivalActivity");
 			resultsIntent.putExtra("lineDataModel", line);
 
+			// close the spinner
+			waitSpinner.dismiss();
+			
 			// Pop-up - choose direction
 			if (line.isBiDirectional() != true) {
 				resultsIntent.putExtra("direction", 3);
@@ -79,7 +80,7 @@ public class GetDepartureTimeTask extends HttpAbstractTask {
 						dest.getDestinationB(), this.context, resultsIntent);
 			}
 		}
-		// waitSpinner.dismiss();
+		  
 	}
 
 	/**

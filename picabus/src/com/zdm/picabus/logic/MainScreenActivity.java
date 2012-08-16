@@ -132,7 +132,7 @@ public class MainScreenActivity extends Activity {
 					spNotification.setAdapter(adapterNotification);
 				}
 				else{
-					spNotification.setActivated(false);
+					//spNotification.setActivated(false);
 				}
 			}
 		});

@@ -7,7 +7,7 @@ package com.zdm.picabus.connectivity;
  * 
  */
 public enum Tasks {
-	GET_DEPARTURE_TIMES("getDepartureTimes"), GET_ROUTE_DETAILS("getRoute");
+	GET_DEPARTURE_TIMES("getDepartureTimes"), GET_ROUTE_DETAILS("getRouteDetails");
 
 	private String taskName;
 

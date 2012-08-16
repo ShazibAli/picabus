@@ -35,7 +35,6 @@
         android:id="@+id/textViewStation"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-    android:text="Station name: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
    
@@ -43,7 +42,6 @@
         android:id="@+id/textViewLastStop"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-    android:text="Last Stop: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
                 <ImageView

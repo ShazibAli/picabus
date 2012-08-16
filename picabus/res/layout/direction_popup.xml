@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:id="@+id/popup_element" 
     android:background="#444444" 
-    android:padding="10px" 
+    android:padding="10dp" 
     android:orientation="vertical">
 
 

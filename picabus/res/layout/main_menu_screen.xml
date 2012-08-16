@@ -118,20 +118,14 @@
         android:layout_height="wrap_content"
         android:text="@string/notify_checkbox" />
         
-                <Spinner
+   <Spinner
    	android:id="@+id/SpinnerNotification"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
 
     />
-                
-  
-     
+                 
         </LinearLayout>
-        
-        
-        
-        
         
     </SlidingDrawer>
 

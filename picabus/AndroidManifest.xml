@@ -15,6 +15,7 @@
         android:icon="@drawable/application_icon"
         android:label="@string/app_name" 
         android:theme="@android:style/Theme.Black.NoTitleBar">
+        <uses-library android:name="com.google.android.maps" />
          <activity
             android:name=".logic.SplashActivity"
             android:label="@string/app_name" >
@@ -41,9 +42,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-
-        
          <activity 
             android:name=".logic.AboutUsActivity"
             android:screenOrientation="portrait"
@@ -83,8 +81,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-    
-    </application>
+         <activity
+            android:name=".maps.RoutesMapActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.maps.RoutesMapActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+</application>
 
 </manifest>

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
+import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Trip;
@@ -22,13 +25,17 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 	private ArrayList<String> arrivalTimesList = null;
 	private ArrivalRowAdapter arrivalRowAdapter;
-
+	ProgressDialog pd;
+	Context context;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.result_busarrival_screen);
 
+		// saving reference to the context of this activity for the async task
+		this.context = this;
 		arrivalTimesList = new ArrayList<String>();
 		Intent i = getIntent();
 		Line lineDataModel = (Line) i.getSerializableExtra("lineDataModel");
@@ -41,7 +48,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 		//Manage data and get arrival times list from data
 		List<Trip> trips = (List<Trip>) lineDataModel.getTrips();
-		Trip firstTrip = trips.get(0);
+		final Trip firstTrip = trips.get(0);
 		for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
 			Trip trip = (Trip) iterator.next();
 			if ((trip.getDirectionID()==directionChoice) || (lineDataModel.isBiDirectional()==false)){
@@ -65,7 +72,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 			companyImage.setImageResource(R.drawable.metropoline_icon);
 		}
 		else{
-			companyImage.setImageResource(R.drawable.line_row_bus);
+			companyImage.setImageResource(R.drawable.line_row_bus); 
 		}
 		
 		// station
@@ -76,6 +83,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 		ImageView routeImage = (ImageView) findViewById(R.id.getRouteIcon);
 		routeImage.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {	
+				HttpCaller.getRouteDetails(context, pd, firstTrip.getStopSequence(), firstTrip.getTripID());
 			}
 		});
 		// last stop

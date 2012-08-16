@@ -20,30 +20,47 @@ import android.util.Log;
 
 public abstract class HttpAbstractTask extends AsyncTask<String, String, String> {
    
-	private static final int SO_TIMEOUT = 3000;
-	private static final int CONNECTION_TIMEOUT = 3000;
+	private static final int SO_TIMEOUT = 5000;
+	private static final int CONNECTION_TIMEOUT = 5000;
 	
 	private Context mContext;
-	private ProgressDialog waitSpinner;
+	protected ProgressDialog waitSpinner;
 	private String taskName;
 	private JSONObject requestPayload;
 	
 	public HttpAbstractTask(Context mContext, ProgressDialog waitSpinner, String taskName, JSONObject reuqestPayload) {
 		this.mContext = mContext;
-		this.waitSpinner = waitSpinner;
+		this.waitSpinner = new ProgressDialog(mContext);
 		this.taskName = taskName;
 		this.requestPayload = reuqestPayload;
 	}
 	
+	
+	
+	
+	
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#onPreExecute()
+	 */
+	@Override
+	protected void onPreExecute() { // note: this method is executed by the UI thread
+		super.onPreExecute();
+		waitSpinner = ProgressDialog.show(mContext, "Loading",
+				"Please wait...", true);
+		
+	}
+
+
+
+
+
 	@Override
 	protected String doInBackground(String... arg) { // note: this method is executed off the UI thread
 	
 		String retreturnVal = "";
 		String serviceURL = arg[0];
 
-		/*waitSpinner = ProgressDialog.show(mContext, "Loading",
-				"Please wait...", true);*/
-
+		
 		// Create new default http client
 		HttpClient client = new DefaultHttpClient();
 		HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); // Timeout Limit

@@ -22,5 +22,6 @@
     <string name="getroute_icon">Get route</string>
     <string name="no_eta">Bus time arrivals are not available</string>
     <string name="notify_checkbox">I want to be notified when bus arrives</string>
+    <string name="clock_icon">clock_icon</string>
 
 </resources>

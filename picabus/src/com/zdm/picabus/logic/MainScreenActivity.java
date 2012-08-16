@@ -1,17 +1,18 @@
 package com.zdm.picabus.logic;
 
 import com.zdm.picabus.R;
+import com.zdm.picabus.utilities.SettingsParser;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
@@ -32,7 +33,7 @@ public class MainScreenActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu_screen);
 
@@ -44,7 +45,6 @@ public class MainScreenActivity extends Activity {
 		cameraBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(
 						"com.zdm.picabus.cameraservices.CameraActivity");
 				startActivity(intent);
@@ -54,7 +54,6 @@ public class MainScreenActivity extends Activity {
 		aboutUsBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(
 						"com.zdm.picabus.logic.AboutUsActivity");
 				startActivity(intent);
@@ -64,13 +63,14 @@ public class MainScreenActivity extends Activity {
 		searchBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(
 						"com.zdm.picabus.logic.ManualSearchActivity");
 				startActivity(intent);
 			}
 		});
 
+		//machine's menu button
+		
 		// slidingDrawer - preferences part
 		slideButton = (Button) findViewById(R.id.slideButton);
 		slidingDrawer = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
@@ -88,12 +88,12 @@ public class MainScreenActivity extends Activity {
 
 		spTimeInterval.setOnItemSelectedListener(new OnItemSelectedListener(){
 
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-			//	String choice = spNotification.getSelectedItem().toString();
-				//TODO: parse that result, get the number only
-				
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+
+				String choice = (String) parent.getItemAtPosition(pos);
+				int choiceInMinutes = SettingsParser.ParseTimeInMinutes(choice);
+				//TODO: call function			
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -109,16 +109,16 @@ public class MainScreenActivity extends Activity {
                                          android.R.layout.simple_spinner_item, notificationTimes);
 		spNotification.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				//String choice = spNotification.getSelectedItem().toString();
-				//TODO: parse that result, get the number only
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+
+				String choice = (String) parent.getItemAtPosition(pos);
+				int choiceInMinutes = SettingsParser.ParseTimeInMinutes(choice);
+				//TODO: call function	
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub		
 			}
 			
 		});
@@ -132,7 +132,7 @@ public class MainScreenActivity extends Activity {
 					spNotification.setAdapter(adapterNotification);
 				}
 				else{
-					//spTimeInterval.set
+					spNotification.setActivated(false);
 				}
 			}
 		});
@@ -175,4 +175,19 @@ public class MainScreenActivity extends Activity {
 		});
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if ( keyCode == KeyEvent.KEYCODE_MENU ) {
+	    	if (!slidingDrawer.isOpened()){
+	    		slidingDrawer.open();
+	    		return true;
+	    	}
+	    	else{
+	    		slidingDrawer.close();
+	    		return true;
+	    	}
+	    	
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
 }

@@ -24,6 +24,12 @@ public class CameraActivity extends Activity {
 		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 	}
 
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAMERA_PIC_REQUEST) {
 			// get image taken

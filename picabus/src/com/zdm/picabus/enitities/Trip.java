@@ -13,7 +13,7 @@ public class Trip implements Serializable{
 	private String destination;
 	private int directionID;
 	private int lineNumber;
-	private Time eta;
+	private String eta;
 	private Company company;
 	private long stopID;
 	private int stopSequence;
@@ -38,7 +38,7 @@ public class Trip implements Serializable{
 	 * @param serviceID
 	 */
 	public Trip(long tripID, String destination, int directionID,
-			int lineNumber, Time eta, Company company, long stopID,
+			int lineNumber, String eta, Company company, long stopID,
 			int stopSequence, long routeID, long serviceID) {
 		super();
 		this.tripID = tripID;
@@ -161,14 +161,14 @@ public class Trip implements Serializable{
 	/**
 	 * @return the eta
 	 */
-	public Time getEta() {
+	public String getEta() {
 		return eta;
 	}
 
 	/**
 	 * @param eta the eta to set
 	 */
-	public void setEta(Time eta) {
+	public void setEta(String eta) {
 		this.eta = eta;
 	}
 

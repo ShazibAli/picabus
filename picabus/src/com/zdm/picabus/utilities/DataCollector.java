@@ -55,9 +55,13 @@ public class DataCollector {
 		gps.getCurrentLocation();
 		Double lat = gps.getLatitude();
 		Double lng = gps.getLongitude();
-		//6 digits after dot
-/*		lat = Math.floor(lat * 100) / 100;
-		lng = Math.floor(lng * 100) / 100;*/
+		
+		//Format to 6 digits after dot
+		if (lat!=null && lng!=null){
+		lat = Math.floor(lat * 1000000) / 1000000;
+		lng = Math.floor(lng * 1000000) / 1000000;
+		}
+		
 		//create GPS object and return it
 		GpsResult res = new GpsResult(lat, lng);
 

@@ -24,39 +24,40 @@ public class CameraActivity extends Activity {
 		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 	}
 
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
-	}
-	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAMERA_PIC_REQUEST) {
-			// get image taken
-			Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-			
-			//Send image to open cv and get result
-			List<Integer> linesList = costumizeImg.processImage(thumbnail);
-			//null check - dummy values for open cv for now
-			if (linesList==null){
-				linesList=new ArrayList<Integer>();
-				linesList.add(45);
-				linesList.add(10);
-				linesList.add(114);
-				linesList.add(67);
-				linesList.add(624);
+
+			if (resultCode == RESULT_OK) {
+				// get image taken
+				Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+
+				// Send image to open cv and get result
+				List<Integer> linesList = costumizeImg.processImage(thumbnail);
+				// null check - dummy values for open cv for now
+				if (linesList == null) {
+					linesList = new ArrayList<Integer>();
+					linesList.add(45);
+					linesList.add(10);
+					linesList.add(114);
+					linesList.add(67);
+					linesList.add(624);
+				}
+
+				// open results page
+				Intent intent = new Intent(
+						"com.zdm.picabus.logic.BusLinesListActivity");
+				intent.putIntegerArrayListExtra("linesList",
+						(ArrayList<Integer>) linesList);
+				startActivity(intent);
+
 			}
-				
-			//open results page
-			Intent intent = new Intent(
-					"com.zdm.picabus.logic.BusLinesListActivity");
-			intent.putIntegerArrayListExtra("linesList",
-					(ArrayList<Integer>) linesList);
-			startActivity(intent);
-			
 
-
+			else if (resultCode == RESULT_CANCELED) {
+				Intent openMainScreen = new Intent("com.zdm.picabus.MAINSCREEN");
+				startActivity(openMainScreen);
+			} else {
+			}
 		}
-	}
 
+	}
 }

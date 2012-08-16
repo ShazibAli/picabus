@@ -33,7 +33,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 		Intent i = getIntent();
 		Line lineDataModel = (Line) i.getSerializableExtra("lineDataModel");
 		int directionChoice = (int) i.getIntExtra("direction", 9);
-
+		String destination = (String) i.getStringExtra("destination");
 		if (lineDataModel==null){
 			//TODO
 		}
@@ -78,12 +78,9 @@ public class ResultBusArrivalActivity extends ListActivity {
 			public void onClick(View v) {	
 			}
 		});
-		// last stop - //TODO - parse inside stop sequence, according to direction
+		// last stop
 		TextView textViewLastStop = (TextView) findViewById(R.id.textViewLastStop);
-		if (directionChoice == 0)
-			textViewLastStop.setText("Last stop: "+firstTrip.getDestination());
-		else if (directionChoice == 1)
-			textViewLastStop.setText("Last stop: "+firstTrip.getDestination());
+		textViewLastStop.setText("Last stop: "+destination);
 
 		this.arrivalRowAdapter = new ArrivalRowAdapter(this,
 				R.layout.row_arrival_time, arrivalTimesList);

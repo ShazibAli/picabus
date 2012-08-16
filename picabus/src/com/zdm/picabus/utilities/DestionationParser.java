@@ -4,6 +4,11 @@ import com.zdm.picabus.enitities.Destination;
 
 public class DestionationParser {
 
+	/**
+	 * 
+	 * @param dest - destination on format destA<->destB
+	 * @return Destination object with splitted destA and destB
+	 */
 	public static Destination parseDestination(String dest){
 		
 		String delims = "<->+";

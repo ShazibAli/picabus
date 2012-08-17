@@ -4,6 +4,7 @@ import com.zdm.picabus.R;
 import com.zdm.picabus.utilities.SettingsParser;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -24,19 +25,27 @@ import android.widget.Spinner;
 
 public class MainScreenActivity extends Activity {
 
+	static final int NOTIFICATION_UNIQUE_ID = 139874;
+	
 	ImageButton cameraBtn;
 	ImageButton historyBtn;
 	ImageButton aboutUsBtn;
 	ImageButton searchBtn;
 	Button slideButton;
 	SlidingDrawer slidingDrawer;
-
+	NotificationManager nm;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu_screen);
-
+		
+		// Canceling the notification - if it was raised
+		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		nm.cancel(NOTIFICATION_UNIQUE_ID);
+		
 		cameraBtn = (ImageButton) findViewById(R.id.button_camera);
 		historyBtn = (ImageButton) findViewById(R.id.button_history);
 		aboutUsBtn = (ImageButton) findViewById(R.id.button_aboutus);

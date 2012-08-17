@@ -79,8 +79,7 @@ public class GetDepartureTimeTask extends HttpAbstractTask {
 				initiatePopupWindow(dest.getDestinationA(),
 						dest.getDestinationB(), this.context, resultsIntent);
 			}
-		}
-		  
+		} 
 	}
 
 	/**

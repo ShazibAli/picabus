@@ -3,8 +3,13 @@ package com.zdm.picabus.logic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -27,13 +32,14 @@ public class ResultBusArrivalActivity extends ListActivity {
 	private ArrivalRowAdapter arrivalRowAdapter;
 	ProgressDialog pd;
 	Context context;
+	static final int NOTIFICATION_UNIQUE_ID = 139874;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.result_busarrival_screen);
-
+		
 		// saving reference to the context of this activity for the async task
 		this.context = this;
 		arrivalTimesList = new ArrayList<String>();
@@ -46,7 +52,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 		}
 		else{
 
-		//Manage data and get arrival times list from data
+		// Manage data and get arrival times list from data
 		List<Trip> trips = (List<Trip>) lineDataModel.getTrips();
 		final Trip firstTrip = trips.get(0);
 		for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
@@ -55,7 +61,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 			arrivalTimesList.add(trip.getEta());
 			}
 		}
-		//update fields from data results:
+		// update fields from data results:
 		// line
 		TextView textViewLine = (TextView) findViewById(R.id.textViewLine);
 		textViewLine.setText("Line number: "+firstTrip.getLineNumber());
@@ -83,6 +89,8 @@ public class ResultBusArrivalActivity extends ListActivity {
 		ImageView routeImage = (ImageView) findViewById(R.id.getRouteIcon);
 		routeImage.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {	
+				// creating notification Timer Task TODO: integrate in the right place
+				createNotification(10000, 10, "some stop", 5);
 				HttpCaller.getRouteDetails(context, pd, firstTrip.getStopSequence(), firstTrip.getTripID());
 			}
 		});
@@ -100,6 +108,31 @@ public class ResultBusArrivalActivity extends ListActivity {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	private void createNotification (long ms, final int lineNumber, final String stopName, final int notificationDelta) {
+		Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                triggerNotification(lineNumber, stopName, notificationDelta);
+            }
+        };
+        timer.schedule(timerTask, ms);
+	}
 
+	private void triggerNotification(int lineNumber, String stopName, int notificationDelta) {
+		CharSequence title = "Picabus Update";
+        CharSequence message = "Line " + lineNumber + " is departing from " + stopName + " in " + notificationDelta + " minutes!";
+ 
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new Notification(R.drawable.notification_icon, "Picabus Reminder", System.currentTimeMillis());
+ 
+        Intent notificationIntent = new Intent(this, MainScreenActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+ 
+       notification.setLatestEventInfo(ResultBusArrivalActivity.this, title, message, pendingIntent);
+        notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
+		
+	}
 
 }

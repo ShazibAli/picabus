@@ -38,15 +38,9 @@ public class GetRouteDetailsTask extends HttpAbstractTask {
 		Intent resultsIntent = new Intent(
 				"com.zdm.picabus.maps.RoutesMapActivity");
 		
-		
 		resultsIntent.putExtra("stops", stops);
 		// close the spinner and launch the new activity
 		waitSpinner.dismiss();
 		this.context.startActivity(resultsIntent);
-		
-		
-		
-
 	}
-
 }

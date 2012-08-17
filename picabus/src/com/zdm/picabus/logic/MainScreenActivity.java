@@ -81,8 +81,8 @@ public class MainScreenActivity extends Activity {
 		historyBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-//				Intent intent = new Intent("com.zdm.picabus.logic.ManualSearchActivity");
-//				startActivity(intent);
+				Intent intent = new Intent("com.zdm.picabus.logic.HistoryActivity");
+				startActivity(intent);
 			}
 		});
 

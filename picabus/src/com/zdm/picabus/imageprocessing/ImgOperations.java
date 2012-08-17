@@ -2,6 +2,7 @@ package com.zdm.picabus.imageprocessing;
 
 import static com.googlecode.javacv.cpp.opencv_core.CV_FILLED;
 import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_32F;
+import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_8U;
 import static com.googlecode.javacv.cpp.opencv_core.cvCopy;
 import static com.googlecode.javacv.cpp.opencv_core.cvMinMaxLoc;
 import static com.googlecode.javacv.cpp.opencv_core.cvPoint;
@@ -14,10 +15,27 @@ import static com.googlecode.javacv.cpp.opencv_imgproc.CV_TM_CCOEFF_NORMED;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvMatchTemplate;
 
 import java.io.File;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.net.URL;
+
+import javax.annotation.Resource;
+
+
+import android.R;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvRect;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
+import com.zdm.picabus.R.drawable;
+
+
 
 
 public class ImgOperations {
@@ -136,85 +154,104 @@ public class ImgOperations {
 	 * @return an array containing all the line numbers that were found and
 	 *         draws a rectangle over where the template were found
 	 */
-	public static int[] templateMatchLib(IplImage img, String pathTemp) {
-		IplImage temp;
-		String path;
-		String[] name;
+	public static int[] templateMatchLib(IplImage img, Context con) 
+	{
+		
+		IplImage temp = null;
+		String[] nameParsed = null;
+		String name = null;
 		CvPoint[] rectT = new CvPoint[2];
 
 		int length = 0;
-
-		path = pathTemp;
-
-		File dir = new File(path);
-
-		length = dir.listFiles().length; // number of files in the template
-											// folder
+		int i = 0;;
 
 		int[] line = new int[length * 7]; // the return line numbers
 		CvPoint[][] rect = new CvPoint[length * 7][2]; // holds points for all
 														// pictures detected
-
-		int i = 0;
-
-		for (File child : dir.listFiles()) // iterate over all files in the
-											// template folder
+		int res;
+		Field[] drawables = com.zdm.picabus.R.drawable.class.getFields();
+		Drawable draw = null;
+		
+		
+		for (Field f : drawables) // iterate over all files in the template folder
 		{
-			if (".".equals(child.getName()) || "..".equals(child.getName())) {
-				continue; // Ignore the self and parent aliases.
-			}
+		    try {
+		       name =  f.getName();
+		       nameParsed = name.split("_"); 
+		       
+		       if(nameParsed[0].equals("template")) //if template image
+		       {
+		    	   res = f.getInt(null);
+		    	   draw = con.getResources().getDrawable(res);
+		    	   Bitmap bitmap = ((BitmapDrawable)draw).getBitmap();
+		    	   
+		    	   temp = IplImage.create(bitmap.getWidth(), bitmap.getHeight(), IPL_DEPTH_8U ,3 );
+		   		   bitmap.copyPixelsToBuffer(temp.getByteBuffer());		    	   		    	   
+		    	
+		    	// each template check 4 times on the picture to see if the template
+					// is there more than once.
+					// that way for a line numbered 244 we'll find the two '4' and not
+					// only one
+					// each time covers the result by a rectangle so it won't be found
+					// again
+					for (int n = 0; n < 4; n++) {
 
-			temp = cvLoadImage(child.getAbsolutePath()); // load template image
-			name = child.getName().split("\\."); // get the name without .jpg to
-													// name[0]
-			name = name[0].split("_"); // in case two templates of same number
-										// one 14.jpg other 12_1.jpg
+						// System.out.println("detection num: " + (n + 1) + " named: " +
+						// name[0]);
+						rectT = templateMatch(img, temp); // match the given template
+															// with the picture
 
-			// each template check 4 times on the picture to see if the template
-			// is there more than once.
-			// that way for a line numbered 244 we'll find the two '4' and not
-			// only one
-			// each time covers the result by a rectangle so it won't be found
-			// again
-			for (int n = 0; n < 4; n++) {
+						rect[i][0] = rectT[0]; // get all the results in an array -
+												// rect[][]
+						rect[i][1] = rectT[1];
 
-				// System.out.println("detection num: " + (n + 1) + " named: " +
-				// name[0]);
-				rectT = templateMatch(img, temp); // match the given template
-													// with the picture
+						if (rect[i][0] != null) // if the template was detected
+						{
 
-				rect[i][0] = rectT[0]; // get all the results in an array -
-										// rect[][]
-				rect[i][1] = rectT[1];
+							line[i] = Integer.valueOf(nameParsed[0]); // enter the number
+																// result
+							i++;
 
-				if (rect[i][0] != null) // if the template was detected
-				{
+							/*
+							 * //CV_TM_CCORR_NORMED cvRectangle( img, cvPoint(
+							 * minloc.x(), minloc.y() ), cvPoint( minloc.x() + tempW,
+							 * minloc.y() + tempH ), cvScalar( 0, 0, 255, 0 ), 1, 0, 0
+							 * );
+							 */
 
-					line[i] = Integer.valueOf(name[0]); // enter the number
-														// result
-					i++;
+							// draw a rectangle so the digit that was found wouldn't be
+							// found again
+							// CV_TM_CCOEFF_NORMED
+							cvRectangle(img, rectT[0], rectT[1],
+									cvScalar(0, 0, 255, 0), CV_FILLED, 0, 0); // 1
+																				// instead
+																				// of
+																				// CV_FILLED
+						} else {
+							// if it wasn't found , stop searching
+							n = 5;
+						}
+					}
+						    	   
+		    	   
+		       }
+		       
 
-					/*
-					 * //CV_TM_CCORR_NORMED cvRectangle( img, cvPoint(
-					 * minloc.x(), minloc.y() ), cvPoint( minloc.x() + tempW,
-					 * minloc.y() + tempH ), cvScalar( 0, 0, 255, 0 ), 1, 0, 0
-					 * );
-					 */
-
-					// draw a rectangle so the digit that was found wouldn't be
-					// found again
-					// CV_TM_CCOEFF_NORMED
-					cvRectangle(img, rectT[0], rectT[1],
-							cvScalar(0, 0, 255, 0), CV_FILLED, 0, 0); // 1
-																		// instead
-																		// of
-																		// CV_FILLED
-				} else {
-					// if it wasn't found , stop searching
-					n = 5;
-				}
-			}
+		    } 
+		    catch (Exception e) 
+		    {
+		        e.printStackTrace();
+		    }
 		}
+		
+		
+
+		
+
+			
+
+
+			
 
 		filterPoints(rect, line);
 

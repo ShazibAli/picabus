@@ -6,6 +6,7 @@ import java.util.List;
 import com.zdm.picabus.imageprocessing.costumizeImg;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -30,9 +31,10 @@ public class CameraActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				// get image taken
 				Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-
+				
+				Context con = getApplicationContext();
 				// Send image to open cv and get result
-				List<Integer> linesList = costumizeImg.processImage(thumbnail);
+				List<Integer> linesList = costumizeImg.processImage(thumbnail, con);
 				// null check - dummy values for open cv for now
 				if (linesList == null) {
 					linesList = new ArrayList<Integer>();

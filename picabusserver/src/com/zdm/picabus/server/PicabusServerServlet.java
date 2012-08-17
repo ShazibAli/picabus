@@ -76,7 +76,7 @@ public class PicabusServerServlet extends HttpServlet {
 			    
 			    // send back the response
 			    resp.setHeader("Content-Type", "application/json; charset=UTF-8");
-			    PrintWriter out = resp.getWriter();
+			    PrintWriter out =  resp.getWriter();
 				out.print(responeData.toString());
 			
 			//  Mock Data

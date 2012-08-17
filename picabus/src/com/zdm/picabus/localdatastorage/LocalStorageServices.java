@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class LocalStorageServices{
+	
 	public static final String PREFS_NAME = "UserPreferences";
 	public static final String HOSTORY_NAME = "UserHistory";
 	

@@ -77,6 +77,14 @@ public class MainScreenActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		historyBtn.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+//				Intent intent = new Intent("com.zdm.picabus.logic.ManualSearchActivity");
+//				startActivity(intent);
+			}
+		});
 
 		//machine's menu button
 		

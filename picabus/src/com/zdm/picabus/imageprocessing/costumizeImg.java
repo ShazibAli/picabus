@@ -1,46 +1,81 @@
 package com.zdm.picabus.imageprocessing;
 
+import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_8U;
 import static com.googlecode.javacv.cpp.opencv_core.cvReleaseImage;
-import static com.googlecode.javacv.cpp.opencv_highgui.CV_WINDOW_AUTOSIZE;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvDestroyWindow;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvNamedWindow;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvShowImage;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvWaitKey;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_INTER_LINEAR;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvResize;
-import java.nio.ByteBuffer;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
-import com.zdm.picabus.imageprocessing.ColorDetector;
 
-
+//public class MyActivity extends Activity implements HelperCallbackInterface
+//{
+//private BaseLoaderCallback mOpenCVCallBack = new BaseLoaderCallback(this) {
+//@Override
+//public void onManagerConnected(int status) {
+//   switch (status) {
+//       case LoaderCallbackInterface.SUCCESS:
+//       {
+//      Log.i(TAG, "OpenCV loaded successfully");
+//      // Create and set View
+//      mView = new puzzle15View(mAppContext);
+//      setContentView(mView);
+//       } break;
+//       default:
+//       {
+//      super.onManagerConnected(status);
+//       } break;
+//   }
+//    }
+//};
+//
+///** Called when the activity is first created. */
+//@Override
+//public void onCreate(Bundle savedInstanceState)
+//{
+//    Log.i(TAG, "onCreate");
+//    super.onCreate(savedInstanceState);
+//
+//    Log.i(TAG, "Trying to load OpenCV library");
+//    if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_2, this, mOpenCVCallBack))
+//    {
+//      Log.e(TAG, "Cannot connect to OpenCV Manager");
+//    }
+//}
+//
+//// ...
+//}
 
 public class costumizeImg 
 {
 
-	public static List<Integer> processImage(Bitmap bitmap) 
+	public static List<Integer> processImage(Bitmap bitmap, Context con) 
 	{
-		
-		IplImage origImage = IplImage.create(bitmap.getWidth(), bitmap.getHeight(), 8 ,3 );
+		IplImage origImage = null;
+		origImage = IplImage.create(bitmap.getWidth(), bitmap.getHeight(), IPL_DEPTH_8U ,3 );
 		bitmap.copyPixelsToBuffer(origImage.getByteBuffer());
 		
 		List<Integer> lineList = new ArrayList<Integer>();
-		
+	
+        
 		IplImage cropped = null;
 		IplImage line = null;
 		IplImage image = null;
-		ColorDetector colordetected = new ColorDetector(); 
+		//ColorDetector colordetected = new ColorDetector(); 
 		int [][] houghlines = null;
 		
 		int [] lineNum = null;
 		
-		String pathTemp = "d:\\temp\\TemplateMatch\\temp\\"; //template matching images root
+		//String pathTemp = "d:\\temp\\TemplateMatch\\temp\\"; //template matching images root
 		
 		if(origImage != null)
 		{
@@ -59,15 +94,16 @@ public class costumizeImg
 	        if (image != null) 
 	        {
 	            
-	            colordetected = ColorDetector.DetectColor(image, 1);
+	           // colordetected = ColorDetector.DetectColor(image, 1);
 	                       
 	              
 	           
-	            cropped = ImgOperations.cropIpl(image, colordetected.getArr());
+	            //cropped = ImgOperations.cropIpl(image, colordetected.getArr());
 	            
 	            //TODO: in case cropping and hogh didn't work well can use the orig image and try again
 	            //then compare to see who has better results and output it
-	            //cropped = image
+	            
+	        	cropped = image;
 
 				
 	            houghlines = HoughLines.HoughLines(cropped);
@@ -78,7 +114,7 @@ public class costumizeImg
 	   			
 	            	if(line != null)
 	            	{
-		            	lineNum = ImgOperations.templateMatchLib(line, pathTemp);
+		            	lineNum = ImgOperations.templateMatchLib(line, con);
 		            			            	
 		            	for(int j = 0; j < lineNum.length; j++)
 		            	{
@@ -88,30 +124,28 @@ public class costumizeImg
 		            			lineList.add(lineNum[j]);
 		            		}
 		            		
-		            	}
-		            	
-
+		            	}		   
 	            	}
-	            }
+	          }
+  
 	            
-	            
-	           
-	            
-	            
-
-	            
-	            
-	            
-	        }    
+	       
+	       }//if (image != null)     
 			
 			
-		}
-		
+		}//if origImag!=null
+	
+        
+        
         cvReleaseImage(image);
-        cvReleaseImage(origImage);           
         cvReleaseImage(cropped);
         cvReleaseImage(line);
-		return lineList;
+	
+        cvReleaseImage(origImage);
+        lineList = null;
+        return lineList;
+        
+        
 	}
 
 }

@@ -1,11 +1,9 @@
 package com.zdm.picabus.imageprocessing;
-import static com.googlecode.javacv.cpp.opencv_highgui.CV_WINDOW_AUTOSIZE;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvNamedWindow;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvShowImage;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
+
+
 
 import java.awt.Color;
 import java.awt.Graphics;

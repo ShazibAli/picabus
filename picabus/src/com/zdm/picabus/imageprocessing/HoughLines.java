@@ -17,9 +17,6 @@ import static com.googlecode.javacv.cpp.opencv_imgproc.cvCanny;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvCvtColor;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvHoughLines2;
 
-import javax.swing.JFrame;
-
-import com.googlecode.javacv.CanvasFrame;
 import com.googlecode.javacv.cpp.opencv_core.CvMemStorage;
 import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvPoint2D32f;
@@ -59,11 +56,7 @@ public class HoughLines {
         CvMemStorage storage = cvCreateMemStorage(0);
         CvSeq lines = new CvSeq();
 
-        CanvasFrame source = new CanvasFrame("Source");
-        CanvasFrame hough = new CanvasFrame("Hough");
         
-
-
         dst = cvCreateImage(cvGetSize(src), src.depth(), 1);
         colorDst = cvCreateImage(cvGetSize(src), src.depth(), 3);
 

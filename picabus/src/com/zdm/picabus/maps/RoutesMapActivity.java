@@ -14,7 +14,6 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.zdm.picabus.R;
-import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Stop;
 
 public class RoutesMapActivity extends MapActivity {
@@ -30,6 +29,8 @@ public class RoutesMapActivity extends MapActivity {
 		mapView = (MapView) findViewById(R.id.mapView);
 		
 		Intent i = getIntent();
+		
+		@SuppressWarnings("unchecked")
 		ArrayList<Stop> stops = (ArrayList<Stop>) i.getSerializableExtra("stops");
 		
 		// Displaying Zooming controls
@@ -43,9 +44,12 @@ public class RoutesMapActivity extends MapActivity {
         
         else {
     		List<Overlay> mapOverlays = mapView.getOverlays();
-			Drawable drawable = this.getResources().getDrawable(R.drawable.pin_point_icon);
-			AddItemizedOverlay itemizedOverlay = new AddItemizedOverlay(drawable, this);
-        
+			Drawable drawableRegularStop = this.getResources().getDrawable(R.drawable.pin_point_icon);
+			Drawable drawableCurrenStop = this.getResources().getDrawable(R.drawable.u_r_here_pin);
+			
+			AddItemizedOverlay itemizedOverlayRegular = new AddItemizedOverlay(drawableRegularStop, this);
+			AddItemizedOverlay itemizedOverlayFirst = new AddItemizedOverlay(drawableCurrenStop, this);
+			
 			for (int j = 0; j < stops.size(); j++) {
 
 				Stop currentStop = stops.get(j);
@@ -55,8 +59,16 @@ public class RoutesMapActivity extends MapActivity {
         		OverlayItem overlayitem = new OverlayItem(geoPoint, currentStop.getStopSequenceNumber() + "",
     					currentStop.getStopName() +  "\nETA: " + currentStop.getDepartureTimeString());
 
-    			itemizedOverlay.addOverlay(overlayitem);
-    			mapOverlays.add(itemizedOverlay);
+        		// using special pin for current user location
+        		if (j == 0) {
+        			itemizedOverlayFirst.addOverlay(overlayitem);
+        			mapOverlays.add(itemizedOverlayFirst);
+        		}
+        		else {
+        			itemizedOverlayRegular.addOverlay(overlayitem);
+        			mapOverlays.add(itemizedOverlayRegular);
+        				
+        		}
     			
     			// we want to zoom onto the source stop location	
     			if (j == 0) {

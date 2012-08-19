@@ -2,8 +2,24 @@ package com.zdm.picabus.enitities;
 
 public enum Company  {
 	EGGED("אגד"),
+	EGGED_TAAVURA("אגד תעבורה"),
 	DAN("דן"),
+	SHEEM("שאמ"),
+	NESIUT_AND_TAYARUT("נסיעות ותיירות"),
+	G_B_TOURS("גי.בי.טורס"),
+	OMNI_EXP("אומני אקספרס "),
+	ILLIT("עילית"),
+	NATEEV_EXPRESS("נתיב אקספרס"),
 	METROPOLIN("מטרופולין"),
+	SUPERBUS("סופרבוס"),
+	CONNEX("קונקס"),
+	KAVIM("קווים"),
+	METRO_DAN("מטרודן"),
+	GALIM("גלים"),
+	MOAZA_EZ_GOLAN("מועצה אזורית גולן"),
+	AFIKIM("אפיקים"),
+	DAN_NORTH("דן בצפון"),
+	EAST_JERUSALEM("מזרח ירושלים"),
 	UNKNOWN("Unknown");
 	
 	private String companyName;

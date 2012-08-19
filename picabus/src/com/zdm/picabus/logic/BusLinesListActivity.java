@@ -15,6 +15,7 @@ import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
+import com.zdm.picabus.utilities.ErrorsHandler;
 
 public class BusLinesListActivity extends ListActivity {
 
@@ -26,21 +27,50 @@ public class BusLinesListActivity extends ListActivity {
 	int popupRetVal = 0;
 	Intent resultsIntent;
 	ProgressDialog pd;
+	int timeInterval=15;
+	boolean afterGpsNull;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.buslines_list_screen);
-		
+		Intent i = getIntent();
+		afterGpsNull = i.getBooleanExtra("isGpsError", false);
 		this.pd = new ProgressDialog(this);
 		
-		// Get list of lines from OPEN CV
-		Intent i = getIntent();
-		linesList = i.getIntegerArrayListExtra("linesList");
+		if (!afterGpsNull){
+			setContentView(R.layout.buslines_list_screen);
 
-		// Show the list of lines
-		this.lineRowAdapter = new LineRowAdapter(this, R.layout.row_bus_lines,
-				linesList);
-		setListAdapter(this.lineRowAdapter);
+			// Get list of lines from OPEN CV
+			linesList = i.getIntegerArrayListExtra("linesList");
+	
+		
+			// Show the list of lines
+			this.lineRowAdapter = new LineRowAdapter(this, R.layout.row_bus_lines,
+					linesList);
+			setListAdapter(this.lineRowAdapter);
+		}
+		//after GPS was null - don't take data from the user
+		else{
+			//get previous user's session results
+			int prevLineNumber = i.getIntExtra("lineNumber", -1);
+			String prevTime = i.getStringExtra("time");
+			int prevTimeInterval = i.getIntExtra("timeInterval", -1);
+			
+			//attempt to get GPS coordinates again
+			GpsResult res = DataCollector.getGpsCoordinates(this);
+			Double lat = res.getLat();
+			Double lng = res.getLng();
+			
+			//check GPS coordinates are not null and handle
+			if (lat != null || lng != null){
+				HttpCaller.getDepartureTime(this, pd, prevLineNumber, lat, lng, prevTime, prevTimeInterval);
+				finish();
+			}
+			else{
+				ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,prevLineNumber, prevTime, prevTimeInterval);
+			}
+
+		}
 	}
 
 	@Override
@@ -51,19 +81,23 @@ public class BusLinesListActivity extends ListActivity {
 		String time = DataCollector.getCurrentTime();
 
 		// Get coordinates
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		GpsResult res = DataCollector.getGpsCoordinates(locationManager);
+		GpsResult res = DataCollector.getGpsCoordinates(this);
 		Double lat = res.getLat();
 		Double lng = res.getLng();
 
+
 		// Send data to server
-	//	if (lat != null || lng != null)
 		if (!DEBUG_MODE){
-			HttpCaller.getDepartureTime(this, pd, line_number, lat, lng, time, 15);
+			if (lat != null || lng != null){
+				HttpCaller.getDepartureTime(this, pd, line_number, lat, lng, time, timeInterval);
+				finish();
+			}
+			else{
+				ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,line_number, time, timeInterval);
+			}
 		} else {
 			 //for emulator
-			// show loading
-			HttpCaller.getDepartureTime(this, pd, line_number, 32.045816, 34.756983,"16:20:00", 15);
+			HttpCaller.getDepartureTime(this, pd, line_number, 32.045816, 34.756983,"16:20:00", timeInterval);
 		}
 
 	}

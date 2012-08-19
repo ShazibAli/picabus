@@ -6,7 +6,8 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="ij.jar"/>
-	<classpathentry kind="lib" path="javacv.jar"/>
 	<classpathentry kind="lib" path="gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="libs/javacv.jar"/>
+	<classpathentry kind="lib" path="libs/javacpp.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

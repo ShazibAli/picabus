@@ -1,11 +1,10 @@
 package com.zdm.picabus.logic;
 
-import com.zdm.picabus.R;
-import com.zdm.picabus.utilities.SettingsParser;
-
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,6 +22,12 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.SlidingDrawer.OnDrawerScrollListener;
 import android.widget.Spinner;
 
+import com.zdm.picabus.R;
+import com.zdm.picabus.locationservices.GpsCorrdinates;
+import com.zdm.picabus.utilities.DataCollector;
+import com.zdm.picabus.utilities.ErrorsHandler;
+import com.zdm.picabus.utilities.SettingsParser;
+
 public class MainScreenActivity extends Activity {
 
 	static final int NOTIFICATION_UNIQUE_ID = 139874;
@@ -33,18 +38,26 @@ public class MainScreenActivity extends Activity {
 	ImageButton searchBtn;
 	Button slideButton;
 	SlidingDrawer slidingDrawer;
+	
 	NotificationManager nm;
+	GpsCorrdinates gpsObject;
+	LocationManager locationManager;
 	
-	
+	Context context;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu_screen);
 		
+		context=this;
 		// Canceling the notification - if it was raised
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		nm.cancel(NOTIFICATION_UNIQUE_ID);
+		
+		//get GPS service
+		gpsObject = DataCollector.getGpsObject(this);
+		locationManager = DataCollector.getLocationManager(this);
 		
 		cameraBtn = (ImageButton) findViewById(R.id.button_camera);
 		historyBtn = (ImageButton) findViewById(R.id.button_history);
@@ -54,9 +67,16 @@ public class MainScreenActivity extends Activity {
 		cameraBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
+				//Check GPS coordinates available, alert if disabled
+				if (!gpsObject.isGpsEnabled(locationManager)){
+					ErrorsHandler.createGpsErrorAlert(context);
+				}
+				else{
+				//Open camera activity
 				Intent intent = new Intent(
 						"com.zdm.picabus.cameraservices.CameraActivity");
 				startActivity(intent);
+				}
 			}
 		});
 
@@ -72,9 +92,17 @@ public class MainScreenActivity extends Activity {
 		searchBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
+				
+				//Check GPS coordinates available, alert if disabled
+				if (!gpsObject.isGpsEnabled(locationManager)){
+					ErrorsHandler.createGpsErrorAlert(context);
+				}
+				else{
+				//Open Free text activity
 				Intent intent = new Intent(
 						"com.zdm.picabus.logic.ManualSearchActivity");
 				startActivity(intent);
+				}	
 			}
 		});
 		
@@ -86,6 +114,7 @@ public class MainScreenActivity extends Activity {
 			}
 		});
 
+		
 		//machine's menu button
 		
 		// slidingDrawer - preferences part
@@ -149,7 +178,7 @@ public class MainScreenActivity extends Activity {
 					spNotification.setAdapter(adapterNotification);
 				}
 				else{
-					//spNotification.setActivated(false);
+					spNotification.setEnabled(false);
 				}
 			}
 		});

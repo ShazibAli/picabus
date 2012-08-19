@@ -34,7 +34,7 @@ public class SplashActivity extends Activity implements AnimationListener {
         l.clearAnimation();
         l.startAnimation(anim);
  
-        anim = AnimationUtils.loadAnimation(this, R.anim.translate);
+        anim = AnimationUtils.loadAnimation(this, R.anim.logo_entrance);
         anim.reset();
         ImageView iv = (ImageView) findViewById(R.id.logo);
         iv.clearAnimation();

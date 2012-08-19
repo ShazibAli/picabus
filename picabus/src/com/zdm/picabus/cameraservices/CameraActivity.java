@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.zdm.picabus.imageprocessing.costumizeImg;
+import com.zdm.picabus.utilities.ErrorsHandler;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +26,19 @@ public class CameraActivity extends Activity {
 		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 	}
 
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAMERA_PIC_REQUEST) {
 
@@ -36,30 +50,37 @@ public class CameraActivity extends Activity {
 				// Send image to open cv and get result
 				List<Integer> linesList = costumizeImg.processImage(thumbnail, con);
 				// null check - dummy values for open cv for now
-				if (linesList == null) {
+/*				if (linesList == null) {
 					linesList = new ArrayList<Integer>();
 					linesList.add(45);
 					linesList.add(10);
 					linesList.add(114);
 					linesList.add(67);
 					linesList.add(624);
-				}
+				}*/
 
+				//null check - if OPEN CV result is null
+				if (linesList == null) {
+					ErrorsHandler.createNullLinesListErrorAlert(this);
+				}
+				else{
 				// open results page
 				Intent intent = new Intent(
 						"com.zdm.picabus.logic.BusLinesListActivity");
 				intent.putIntegerArrayListExtra("linesList",
 						(ArrayList<Integer>) linesList);
 				startActivity(intent);
+				}
 
 			}
 
 			else if (resultCode == RESULT_CANCELED) {
-				Intent openMainScreen = new Intent("com.zdm.picabus.MAINSCREEN");
-				startActivity(openMainScreen);
+				finish();
 			} else {
 			}
 		}
-
+		else{
+			finish();
+		}
 	}
 }

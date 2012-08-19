@@ -3,6 +3,7 @@ package com.zdm.picabus.utilities;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.content.Context;
 import android.location.LocationManager;
 
 import com.zdm.picabus.locationservices.GpsCorrdinates;
@@ -10,6 +11,8 @@ import com.zdm.picabus.locationservices.GpsResult;
 
 public class DataCollector {
 
+	static GpsCorrdinates gps;
+	static LocationManager locationManager;
 	/**
 	 * 
 	 * @return - user's current time as string XX:XX:XX
@@ -49,9 +52,9 @@ public class DataCollector {
 
 	 * @return Gps coordinates of user's location
 	 */
-	public static GpsResult getGpsCoordinates(LocationManager locationManager) {
+	public static GpsResult getGpsCoordinates(Context c) {
 
-		GpsCorrdinates gps = new GpsCorrdinates(locationManager);
+		gps = getGpsObject(c);
 		gps.getCurrentLocation();
 		Double lat = gps.getLatitude();
 		Double lng = gps.getLongitude();
@@ -66,5 +69,33 @@ public class DataCollector {
 		GpsResult res = new GpsResult(lat, lng);
 
 		return res;
+	}
+	
+	/**
+	 * 
+	 * @param c - context of android activity
+	 * @return object GpsCorrdinates, represents device's GpsCorrdinates
+	 */
+	public static GpsCorrdinates getGpsObject(Context c) {
+
+		if (locationManager==null || gps==null){
+			locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+			gps = new GpsCorrdinates(locationManager);
+		}
+		return gps;
+	}
+	
+	/**
+	 * 
+	 * @param c - context of android activity
+	 * @return object LocationManager, represents device's LocationManager
+	 */
+	public static LocationManager getLocationManager(Context c) {
+
+		if (locationManager==null || gps==null){
+			locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+			gps = new GpsCorrdinates(locationManager);
+		}
+		return locationManager;
 	}
 }

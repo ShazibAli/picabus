@@ -209,7 +209,7 @@ public class DBServices implements IDBServices {
 					.getConnection(URL);
 
 			String statement = "SELECT  * FROM " + Tables.STOPTIMES.getTableName() + ", " + Tables.STOPS.getTableName() + 
-					" where stop_times.trip_id = ? and stop_sequence > ? and stop_times.stop_id = stops.stop_id ORDER BY stop_sequence ASC";		
+					" where stop_times.trip_id = ? and stop_sequence >= ? and stop_times.stop_id = stops.stop_id ORDER BY stop_sequence ASC";		
 			PreparedStatement stmt = c.prepareStatement(statement);
 			stmt.setLong(1, tripID);
 			stmt.setInt(2,currentStopSequenceNumber);

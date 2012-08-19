@@ -14,7 +14,6 @@ import com.zdm.picabus.enitities.Trip;
 
 public class ResponseParser implements IResponseParser {
 
-	// TODO: handle errors!!!
 	public Line parseGetDepJsonResponse(JSONObject responseJson) {
 		
 		int tripCount;
@@ -24,6 +23,11 @@ public class ResponseParser implements IResponseParser {
 		List<Trip> trips = new ArrayList<Trip>(); 
 		
 		try {
+			// check if the response is empty
+			if (responseJson.getString("data").equalsIgnoreCase("empty")) {
+				return null;
+			}
+			
 			JSONObject data = responseJson.getJSONObject("data");
 			stopHeadsign = data.getString("stopHeadsign");
 			bidirectional = data.getBoolean("bidirectional");
@@ -67,8 +71,8 @@ public class ResponseParser implements IResponseParser {
 			line.setStopHeadsign(stopHeadsign);	
 		
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return line;
@@ -78,6 +82,10 @@ public class ResponseParser implements IResponseParser {
 		List<Stop> stops = new ArrayList<Stop>();
 		JSONObject data;
 		try {
+			// check if the response is empty
+			if (responseJson.getString("data").equalsIgnoreCase("empty")) {
+				return null;
+			}
 			data = responseJson.getJSONObject("data");
 			int stopCount = data.getInt("stopCount");
 			String currentStopIdentifier;
@@ -108,8 +116,8 @@ public class ResponseParser implements IResponseParser {
 				stops.add(currentStopObject);			}
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 
 		return stops;

@@ -10,6 +10,7 @@ import com.zdm.picabus.enitities.Destination;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Trip;
 import com.zdm.picabus.utilities.DestionationParser;
+import com.zdm.picabus.utilities.ErrorsHandler;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -35,51 +36,74 @@ public class GetDepartureTimeTask extends HttpAbstractTask {
 
 	@Override
 	protected void onPostExecute(String result) {
-		
+
 		JSONObject json = null;
-		try {
-			json = new JSONObject(result);
-		} catch (JSONException e) {
-			// TODO Handle the parse error
-			e.printStackTrace();
-		}
-		IResponseParser rp = new ResponseParser();
-		Line line = rp.parseGetDepJsonResponse(json);
+		Line line = null;
+		IResponseParser rp = null;
 
-		// Get the requested line number - comment in when real data!
+		// not null result from server (which means error in connectivity stage)
+		if (result != null) {
+			try {
+				json = new JSONObject(result);
+			} catch (JSONException e) {
+				// TODO Handle the parse error
+				e.printStackTrace();
+			}
 
-		if (line != null) {
-			List<Trip> trips = (List<Trip>) line.getTrips();
-			Trip firstTrip = trips.get(0);
+			rp = new ResponseParser();
+			// reponse from server
+			if (json != null) {
+				line = rp.parseGetDepJsonResponse(json);
+			}
 
-			// Parse destination
-			Destination dest = DestionationParser.parseDestination(firstTrip
-					.getDestination());
-			
-			// Prepare next intent
-			Intent resultsIntent = new Intent(
-					"com.zdm.picabus.logic.ResultBusArrivalActivity");
-			resultsIntent.putExtra("lineDataModel", line);
+			// Get necessary data from the response, and open results activity
+			if (line != null) { // Response from server contains data
+				List<Trip> trips = (List<Trip>) line.getTrips();
+				Trip firstTrip = trips.get(0);
 
+				// Parse destination
+				Destination dest = DestionationParser
+						.parseDestination(firstTrip.getDestination());
+
+				// Prepare next intent
+				Intent resultsIntent = new Intent(
+						"com.zdm.picabus.logic.ResultBusArrivalActivity");
+				resultsIntent.putExtra("lineDataModel", line);
+
+				// close the spinner
+				waitSpinner.dismiss();
+
+				// Pop-up - choose direction
+				if (line.isBiDirectional() != true) {
+					resultsIntent.putExtra("direction", 3);
+					if (firstTrip.getDirectionID() == 0) {
+						resultsIntent.putExtra("destination",
+								dest.getDestinationA());
+					} else {
+						resultsIntent.putExtra("destination",
+								dest.getDestinationB());
+					}
+					this.context.startActivity(resultsIntent);
+				} else {
+					initiatePopupWindow(dest.getDestinationA(),
+							dest.getDestinationB(), this.context, resultsIntent);
+				}
+			} else { // null result from server
+
+				// close the spinner
+				waitSpinner.dismiss();
+				// Start empty results activity
+				Intent resultsIntent = new Intent(
+						"com.zdm.picabus.logic.EmptyBusResultsActivity");
+				this.context.startActivity(resultsIntent);
+			}
+
+		} else { // null result from server
 			// close the spinner
 			waitSpinner.dismiss();
-			
-			// Pop-up - choose direction
-			if (line.isBiDirectional() != true) {
-				resultsIntent.putExtra("direction", 3);
-				if (firstTrip.getDirectionID() == 0) {
-					resultsIntent.putExtra("destination",
-							dest.getDestinationA());
-				} else {
-					resultsIntent.putExtra("destination",
-							dest.getDestinationB());
-				}
-				this.context.startActivity(resultsIntent);
-			} else {
-				initiatePopupWindow(dest.getDestinationA(),
-						dest.getDestinationB(), this.context, resultsIntent);
-			}
-		} 
+			ErrorsHandler.createConnectivityErrorAlert(this.context);
+		}
+
 	}
 
 	/**

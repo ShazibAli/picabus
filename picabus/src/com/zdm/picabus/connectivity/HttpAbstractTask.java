@@ -20,8 +20,8 @@ import android.util.Log;
 
 public abstract class HttpAbstractTask extends AsyncTask<String, String, String> {
    
-	private static final int SO_TIMEOUT = 5000;
-	private static final int CONNECTION_TIMEOUT = 5000;
+	private static final int SO_TIMEOUT = 10000;
+	private static final int CONNECTION_TIMEOUT = 10000;
 	
 	private Context mContext;
 	protected ProgressDialog waitSpinner;
@@ -57,14 +57,14 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 	@Override
 	protected String doInBackground(String... arg) { // note: this method is executed off the UI thread
 	
-		String retreturnVal = "";
+		String retreturnVal = null;
 		String serviceURL = arg[0];
 
 		
 		// Create new default http client
 		HttpClient client = new DefaultHttpClient();
-		HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); // Timeout Limit
-		HttpConnectionParams.setSoTimeout(client.getParams(), 10000);
+		HttpConnectionParams.setConnectionTimeout(client.getParams(), CONNECTION_TIMEOUT); // Timeout Limit
+		HttpConnectionParams.setSoTimeout(client.getParams(), SO_TIMEOUT);
 		HttpResponse response;
 		HttpPost post = new HttpPost(serviceURL);
 			
@@ -80,7 +80,7 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 			// Get the response status code
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
-
+					
 			if (statusCode == 200) { // Ok
 				if (response != null) { // Checking response
 					InputStream in = response.getEntity().getContent(); // Get the data in the entity
@@ -89,6 +89,7 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 			}
 		} catch (Exception e) {
 			Log.e("Error in connectivity layer, stacktrace: ", e.toString());
+			//ErrorsHandler.createConnectivityErrorAlert(mContext,ERROR_CONNECTION_TO_SERVER);
 			return null;
 		}
 		return retreturnVal; // This value will be returned to your onPostExecute(result) method

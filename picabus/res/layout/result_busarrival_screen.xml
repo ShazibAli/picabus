@@ -60,7 +60,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
 
-    
+                  <TextView
+        android:id="@+id/instructionNotification"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+    android:text="@string/click_to_be_notified"
+    android:textStyle="italic"
+    android:textSize="12dp"
+/>
     
     
 <ListView
@@ -73,4 +80,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:text="@string/no_eta"/>
+
+
 </LinearLayout>

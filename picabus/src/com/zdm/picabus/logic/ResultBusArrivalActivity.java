@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
@@ -38,18 +39,27 @@ public class ResultBusArrivalActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.result_busarrival_screen);
-
-		// saving reference to the context of this activity for the async task
-		this.context = this;
-		arrivalTimesList = new ArrayList<String>();
+		// Get main line data
 		Intent i = getIntent();
 		Line lineDataModel = (Line) i.getSerializableExtra("lineDataModel");
-		int directionChoice = (int) i.getIntExtra("direction", 9);
-		String destination = (String) i.getStringExtra("destination");
+
 		if (lineDataModel == null) {
-			// TODO
+			//open null results activity
+			Intent resultsIntent = new Intent(
+					"com.zdm.picabus.logic.EmptyBusResultsActivity");
+			this.context.startActivity(resultsIntent);
+			//finish current activity
+			finish();
 		} else {
+			setContentView(R.layout.result_busarrival_screen);
+
+			// saving reference to the context of this activity for the async
+			// task
+			this.context = this;
+			arrivalTimesList = new ArrayList<String>();
+
+			int directionChoice = (int) i.getIntExtra("direction", 9);
+			String destination = (String) i.getStringExtra("destination");
 
 			// Manage data and get arrival times list from data
 			List<Trip> trips = (List<Trip>) lineDataModel.getTrips();
@@ -89,7 +99,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 				public void onClick(View v) {
 					// creating notification Timer Task TODO: integrate in the
 					// right place
-					createNotification(10000, 10, "some stop", 5);
+					//createNotification(10000, 10, "some stop", 5);
 					HttpCaller.getRouteDetails(context, pd,
 							firstTrip.getStopSequence(), firstTrip.getTripID());
 				}
@@ -104,6 +114,14 @@ public class ResultBusArrivalActivity extends ListActivity {
 		}
 	}
 
+	//Click on specific arrival time in order to be notified
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		String arrivalTime = this.arrivalRowAdapter.getItem(position);
+		//TODO: set notification on that arrival time!
+	}
+	
+	
+	
 	private String getCompanyByString(Company company) {
 		// TODO Auto-generated method stub
 		return null;

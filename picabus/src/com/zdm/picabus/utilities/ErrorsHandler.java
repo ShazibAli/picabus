@@ -4,8 +4,6 @@ import com.zdm.picabus.cameraservices.CameraActivity;
 import com.zdm.picabus.logic.BusLinesListActivity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +11,13 @@ import android.content.Intent;
 public class ErrorsHandler {
 
 
-
+	//private static final String ERROR_SERVER_STATUS_CODE = "Cannot retrieve answer from server, please try again later";
+	private static final String ERROR_CONNECTION_TO_SERVER = "Problem connecting to server, please check your internet connection and try again";
+	private static final String ERROR_GPS_TERMINATED = "GPS is disabled in your device. Would you like to enable it?";
+	private static final String ERROR_OPEVCV_NULL_RESULT = "No lines numbers were detected. Do you want to take the photo again?";
+	private static final String ERROR_NULL_GPS_COORDINATES="Could not retrieve valid GPS coordinates. " +
+	"Click 'Try again' or 'Cancel' to return to main menu";
+	
 /**
  * Creates error message when open cv return null list of lines,
  * and suggests an option to re-take to photo
@@ -24,8 +28,7 @@ public class ErrorsHandler {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
 		alertDialogBuilder
-				.setMessage(
-						"No lines numbers were detected. Do you want to take the photo again?")
+				.setMessage(ERROR_OPEVCV_NULL_RESULT)
 				.setCancelable(false)
 				.setPositiveButton("Yes, activate my camera",
 						new DialogInterface.OnClickListener() {
@@ -58,8 +61,7 @@ public class ErrorsHandler {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
 		alertDialogBuilder
-				.setMessage(
-						"GPS is disabled in your device. Would you like to enable it?")
+				.setMessage(ERROR_GPS_TERMINATED)
 				.setCancelable(false)
 				.setPositiveButton("Yes, goto Settings Page To Enable GPS",
 						new DialogInterface.OnClickListener() {
@@ -93,11 +95,9 @@ public class ErrorsHandler {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
 		alertDialogBuilder
-				.setMessage(
-						"Could not retrieve valid GPS coordinates. " +
-						"Click 'OK' if you wish to try again or 'Cancel' to return to main menu")
+				.setMessage(ERROR_NULL_GPS_COORDINATES)
 				.setCancelable(false)
-				.setPositiveButton("OK",
+				.setPositiveButton("Try again",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								Intent intent = ((BusLinesListActivity) c).getIntent();
@@ -114,15 +114,42 @@ public class ErrorsHandler {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
-						//((BusLinesListActivity) c).getParent().finish();//close free search page
-						((BusLinesListActivity) c).finish();//close BusLinesListActivity
-						Intent openMainScreen = new Intent("com.zdm.picabus.MAINSCREEN");
-	        			c.startActivity(openMainScreen);
+						//goto main menu activity and close all other activities
+						Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						c.startActivity(intent);
 					}
 				});
 		AlertDialog alert = alertDialogBuilder.create();
 		alert.show();
 	}
+	
+	/**
+	 * Creates error message when there's a problem in connectivity layer
+	 * and returns to main menu activity
+	 * @param c - context
+	 * @param message - one of 2 error types
+	 */
+	public static void createConnectivityErrorAlert(final Context c) {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
+		alertDialogBuilder
+				.setMessage(ERROR_CONNECTION_TO_SERVER)
+				.setCancelable(false)
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+						//goto main menu activity and close all other activities
+							Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+							intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							c.startActivity(intent);
+							}
+						});
+
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+	}
+	
 	
 	public static void createGeneralErrorAlert(final Context c, String message) {
 

@@ -7,7 +7,7 @@ public class DestionationParser {
 	/**
 	 * 
 	 * @param dest - destination on format destA<->destB
-	 * @return Destination object with splitted destA and destB
+	 * @return Destination object with split destA and destB
 	 */
 	public static Destination parseDestination(String dest){
 		

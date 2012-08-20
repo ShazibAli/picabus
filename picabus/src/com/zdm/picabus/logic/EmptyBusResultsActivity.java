@@ -8,6 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * 
+ * Activity for displaying no result page for the line request
+ *  after attempting to get result page on line data
+ *
+ */
+
 public class EmptyBusResultsActivity extends Activity{
 	Button backToMainMenu;
 	

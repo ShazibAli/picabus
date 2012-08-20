@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import com.zdm.picabus.R;
 
+/**
+ * 
+ *  adapter for a time arrival in the list of arrival times result
+ *
+ */
 public class ArrivalRowAdapter extends ArrayAdapter<String> {
 
 	private ArrayList<String> items;

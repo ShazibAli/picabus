@@ -8,7 +8,11 @@ import android.widget.TextView;
 
 import com.zdm.picabus.R;
 
-
+/**
+ * 
+ * Activity for displaying no map after "get route" operation
+ *
+ */
 public class EmptyMapOverlaysResultActivity  extends Activity{
 		Button backToResults;
 		private static final String NO_ROUTE_STR = "Sorry, couldn't retrieve map locations of the current bus line";

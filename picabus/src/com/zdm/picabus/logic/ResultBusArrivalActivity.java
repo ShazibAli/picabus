@@ -25,8 +25,14 @@ import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Trip;
 
-//import com.zdm.picabus.logic.DataObject.TripObject;
 
+/**
+ * 
+ * Activity for displaying result page for the main request
+ * of line arrival time, company, station, map etc
+ * either from camera or the manual search
+ *
+ */
 public class ResultBusArrivalActivity extends ListActivity {
 
 	private ArrayList<String> arrivalTimesList = null;

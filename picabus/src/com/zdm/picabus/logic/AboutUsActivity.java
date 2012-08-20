@@ -1,9 +1,12 @@
 package com.zdm.picabus.logic;
 
-import com.zdm.picabus.R;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+
+import com.zdm.picabus.R;
 
 /**
  * 
@@ -14,9 +17,24 @@ public class AboutUsActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.aboutus_screen);
+		ImageButton shareBtn = (ImageButton) findViewById(R.id.btnShare);
+		
+		shareBtn.setOnClickListener(new View.OnClickListener(){
+
+			public void onClick(View v) {
+				Intent sendIntent = new Intent();
+				sendIntent.setAction(Intent.ACTION_SEND);
+				sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getText(R.string.share_message));
+				sendIntent.setType("text/plain");
+				startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_title))); 
+			}
+			
+		});
+		
+		
+		
 
 	}
 }

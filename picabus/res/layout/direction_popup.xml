@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/popup_element" 
-    android:background="#444444" 
+    android:background="@drawable/settings_bg" 
     android:padding="10dp" 
     android:orientation="vertical">
 

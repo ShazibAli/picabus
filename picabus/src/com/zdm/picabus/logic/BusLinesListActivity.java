@@ -15,6 +15,12 @@ import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
 
+/**
+ * 
+ * Activity for displaying list of line number results
+ * either from camera or the manual search
+ *
+ */
 public class BusLinesListActivity extends ListActivity {
 
 	private final static boolean DEBUG_MODE = true;

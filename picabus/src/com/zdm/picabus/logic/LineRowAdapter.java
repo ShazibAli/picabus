@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import com.zdm.picabus.R;
 
+/**
+ * 
+ *  adapter for a line in the list of lines result
+ *
+ */
 public class LineRowAdapter extends ArrayAdapter<Integer> {
 
 	private ArrayList<Integer> items;
@@ -34,6 +39,7 @@ public class LineRowAdapter extends ArrayAdapter<Integer> {
 		if (line != null) {
 			TextView tt = (TextView) v.findViewById(R.id.toptext);
 
+			//shows the lines
 			if (tt != null) {
 				tt.setText("Line " + line);
 			}

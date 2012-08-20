@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+/**
+ * 
+ * Activity for handling manual search of lines option
+ *
+ */
 public class ManualSearchActivity extends Activity {
 
 	ImageButton submitBtn;

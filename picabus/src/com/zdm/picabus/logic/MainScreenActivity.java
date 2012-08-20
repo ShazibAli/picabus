@@ -28,6 +28,11 @@ import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
 import com.zdm.picabus.utilities.SettingsParser;
 
+/**
+ * 
+ * Main menu activity
+ *
+ */
 public class MainScreenActivity extends Activity {
 
 	static final int NOTIFICATION_UNIQUE_ID = 139874;

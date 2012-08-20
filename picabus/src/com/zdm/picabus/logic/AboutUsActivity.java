@@ -5,6 +5,11 @@ import com.zdm.picabus.R;
 import android.app.Activity;
 import android.os.Bundle;
 
+/**
+ * 
+ * Activity for handling 'about us'
+ *
+ */
 public class AboutUsActivity extends Activity {
 
 	@Override

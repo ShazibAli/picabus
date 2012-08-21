@@ -25,13 +25,11 @@ import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Trip;
 
-
 /**
  * 
- * Activity for displaying result page for the main request
- * of line arrival time, company, station, map etc
- * either from camera or the manual search
- *
+ * Activity for displaying result page for the main request of line arrival
+ * time, company, station, map etc either from camera or the manual search
+ * 
  */
 public class ResultBusArrivalActivity extends ListActivity {
 
@@ -41,93 +39,138 @@ public class ResultBusArrivalActivity extends ListActivity {
 	Context context;
 	static final int NOTIFICATION_UNIQUE_ID = 139874;
 
+	TextView textViewLine;
+	ImageView companyImage;
+	TextView textViewStation;
+	TextView textViewLastStop;
+	ImageView routeImage;
+
+	Line lineDataModel;
+	int directionChoice;
+	String destination;
+	List<Trip> trips;
+	Trip firstTrip;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		// Get main line data
 		Intent i = getIntent();
-		Line lineDataModel = (Line) i.getSerializableExtra("lineDataModel");
+		lineDataModel = (Line) i.getSerializableExtra("lineDataModel");
 
+		// null result from server
 		if (lineDataModel == null) {
-			//open null results activity
+			// open null results activity
 			Intent resultsIntent = new Intent(
 					"com.zdm.picabus.logic.EmptyBusResultsActivity");
 			this.context.startActivity(resultsIntent);
-			//finish current activity
+			// finish current activity
 			finish();
-		} else {
+
+		}
+		// result from server contains data
+		else {
 			setContentView(R.layout.result_busarrival_screen);
 
-			// saving reference to the context of this activity for the async
-			// task
+			// save reference to context of this activity for the async task
 			this.context = this;
-			arrivalTimesList = new ArrayList<String>();
 
-			int directionChoice = (int) i.getIntExtra("direction", 9);
-			String destination = (String) i.getStringExtra("destination");
+			// get extra directions and destination data
+			directionChoice = (int) i.getIntExtra("direction", 9);
+			destination = (String) i.getStringExtra("destination");
 
-			// Manage data and get arrival times list from data
-			List<Trip> trips = (List<Trip>) lineDataModel.getTrips();
-			final Trip firstTrip = trips.get(0);
-			for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
-				Trip trip = (Trip) iterator.next();
-				if ((trip.getDirectionID() == directionChoice)
-						|| (lineDataModel.isBiDirectional() == false)) {
-					arrivalTimesList.add(trip.getEta());
-				}
-			}
-			// update fields from data results:
-			// line
-			TextView textViewLine = (TextView) findViewById(R.id.textViewLine);
-			textViewLine.setText("Line number: " + firstTrip.getLineNumber());
+			trips = (List<Trip>) lineDataModel.getTrips();
+			firstTrip = trips.get(0);
 
-			// company
-			ImageView companyImage = (ImageView) findViewById(R.id.iconCompany);
-			if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.DAN)) {
-				companyImage.setImageResource(R.drawable.dan_icon);
-			} else if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.EGGED)) {
-				companyImage.setImageResource(R.drawable.egged_icon);
-			} else if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.METROPOLIN)) {
-				companyImage.setImageResource(R.drawable.metropoline_icon);
-			} else {
-				companyImage.setImageResource(R.drawable.line_row_bus);
-			}
+			// Create a list of arrival times using the data
+			arrivalTimesList = CreateArrivalTimesList();
 
-			// station
-			TextView textViewStation = (TextView) findViewById(R.id.textViewStation);
-			textViewStation.setText("Station name: "
-					+ lineDataModel.getStopHeadsign());
+			// update fields and UI of page from data results:
+			UpdateResultsPageFields();
 
-			// getRoute
-			ImageView routeImage = (ImageView) findViewById(R.id.getRouteIcon);
-			routeImage.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					// creating notification Timer Task TODO: integrate in the
-					// right place
-					//createNotification(10000, 10, "some stop", 5);
-					HttpCaller.getRouteDetails(context, pd,
-							firstTrip.getStopSequence(), firstTrip.getTripID());
-				}
-			});
-			// last stop
-			TextView textViewLastStop = (TextView) findViewById(R.id.textViewLastStop);
-			textViewLastStop.setText("Last stop: " + destination);
-
-			this.arrivalRowAdapter = new ArrivalRowAdapter(this,
-					R.layout.row_arrival_time, arrivalTimesList);
-			setListAdapter(this.arrivalRowAdapter);
 		}
 	}
 
-	//Click on specific arrival time in order to be notified
+	/**
+	 * Creates a list of the arrival times taken from the line's data
+	 * 
+	 * @return the arrival times list
+	 */
+	private ArrayList<String> CreateArrivalTimesList() {
+
+		arrivalTimesList = new ArrayList<String>();
+		for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
+			Trip trip = (Trip) iterator.next();
+			if ((trip.getDirectionID() == directionChoice)
+					|| (lineDataModel.isBiDirectional() == false)) {
+				arrivalTimesList.add(trip.getEta());
+			}
+		}
+		return arrivalTimesList;
+	}
+
+	
+	
+	/**
+	 * Updates all the fields in results page screen activity: Line number, bus
+	 * company, station name, last stop station name, Arrival times list, and
+	 * GetRoute link
+	 */
+	private void UpdateResultsPageFields() {
+		// Set line
+		textViewLine = (TextView) findViewById(R.id.textViewLine);
+		textViewLine.setText("Line number: " + firstTrip.getLineNumber());
+
+		// Set company
+		companyImage = (ImageView) findViewById(R.id.iconCompany);
+		if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.DAN)) {
+			companyImage.setImageResource(R.drawable.dan_icon);
+		} else if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.EGGED)) {
+			companyImage.setImageResource(R.drawable.egged_icon);
+		} else if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.METROPOLIN)) {
+			companyImage.setImageResource(R.drawable.metropoline_icon);
+		} else {
+			companyImage.setImageResource(R.drawable.line_row_bus);
+		}
+
+		// Set station
+		textViewStation = (TextView) findViewById(R.id.textViewStation);
+		textViewStation.setText("Station name: "
+				+ lineDataModel.getStopHeadsign());
+
+		// Set last stop
+		textViewLastStop = (TextView) findViewById(R.id.textViewLastStop);
+		textViewLastStop.setText("Last stop: " + destination);
+
+		// Set getRoute image
+		routeImage = (ImageView) findViewById(R.id.getRouteIcon);
+		routeImage.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// creating notification Timer Task TODO: integrate in the
+				// right place
+				// createNotification(10000, 10, "some stop", 5);
+				HttpCaller.getRouteDetails(context, pd,
+						firstTrip.getStopSequence(), firstTrip.getTripID());
+			}
+		});
+
+		// Set arrival times list
+		this.arrivalRowAdapter = new ArrivalRowAdapter(this,
+				R.layout.row_arrival_time, arrivalTimesList);
+		setListAdapter(this.arrivalRowAdapter);
+	}
+
+	
+	
+	/**
+	 * Arrival time list clickHandler - Activates notifications
+	 */
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		String arrivalTime = this.arrivalRowAdapter.getItem(position);
-		//TODO: set notification on that arrival time!
+		// TODO: set notification on that arrival time!
 	}
-	
-	
-	
+
 	private String getCompanyByString(Company company) {
 		// TODO Auto-generated method stub
 		return null;

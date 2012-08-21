@@ -17,6 +17,7 @@ public class ErrorsHandler {
 	private static final String ERROR_OPEVCV_NULL_RESULT = "No lines numbers were detected. Do you want to take the photo again?";
 	private static final String ERROR_NULL_GPS_COORDINATES="Could not retrieve valid GPS coordinates. " +
 	"Click 'Try again' or 'Cancel' to return to main menu";
+	private static final String ERROR_FACEBOOK_LOGIN = "Cannot login to your facebook acount. Redirecting to Picabus";
 	
 /**
  * Creates error message when open cv return null list of lines,
@@ -151,24 +152,27 @@ public class ErrorsHandler {
 	}
 	
 	
-	public static void createGeneralErrorAlert(final Context c, String message) {
+	/**
+	 * Creates error when can't login to user's facebook acount
+	 * @param c - context
+	 */
+	public static void createFacebookErrorAlert(final Context c) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
 		alertDialogBuilder
-				.setMessage(message)
+				.setMessage(ERROR_FACEBOOK_LOGIN)
 				.setCancelable(false)
 				.setPositiveButton("OK",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
+								//goto main menu activity and close all other activities
+								Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+								intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								c.startActivity(intent);
 
 							}
 						});
-		/*alertDialogBuilder.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});*/
+
 		AlertDialog alert = alertDialogBuilder.create();
 		alert.show();
 	}

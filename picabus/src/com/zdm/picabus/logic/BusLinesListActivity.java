@@ -17,9 +17,9 @@ import com.zdm.picabus.utilities.ErrorsHandler;
 
 /**
  * 
- * Activity for displaying list of line number results
- * either from camera or the manual search
- *
+ * Activity for displaying list of line number results either from camera or the
+ * manual search
+ * 
  */
 public class BusLinesListActivity extends ListActivity {
 
@@ -31,50 +31,75 @@ public class BusLinesListActivity extends ListActivity {
 	int popupRetVal = 0;
 	Intent resultsIntent;
 	ProgressDialog pd;
-	int timeInterval=15;
+	int timeInterval = 15;
 	boolean afterGpsNull;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
+
+		// Check if this is the first run of activity, or after GPS null
+		// coordinates
 		afterGpsNull = i.getBooleanExtra("isGpsError", false);
+
+		// Open progress dialog
 		this.pd = new ProgressDialog(this);
-		
-		if (!afterGpsNull){
+
+		// Handle regular case - first time of activity
+		if (!afterGpsNull) {
 			setContentView(R.layout.buslines_list_screen);
 
 			// Get list of lines from OPEN CV
 			linesList = i.getIntegerArrayListExtra("linesList");
-	
-		
+
 			// Show the list of lines
-			this.lineRowAdapter = new LineRowAdapter(this, R.layout.row_bus_lines,
-					linesList);
+			this.lineRowAdapter = new LineRowAdapter(this,
+					R.layout.row_bus_lines, linesList);
 			setListAdapter(this.lineRowAdapter);
 		}
-		//after GPS was null - don't take data from the user
-		else{
-			//get previous user's session results
-			int prevLineNumber = i.getIntExtra("lineNumber", -1);
-			String prevTime = i.getStringExtra("time");
-			int prevTimeInterval = i.getIntExtra("timeInterval", -1);
-			
-			//attempt to get GPS coordinates again
-			GpsResult res = DataCollector.getGpsCoordinates(this);
-			Double lat = res.getLat();
-			Double lng = res.getLng();
-			
-			//check GPS coordinates are not null and handle
-			if (lat != null || lng != null){
-				HttpCaller.getDepartureTime(this, pd, prevLineNumber, lat, lng, prevTime, prevTimeInterval);
-				finish();
-			}
-			else{
-				ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,prevLineNumber, prevTime, prevTimeInterval);
-			}
-
+		// after GPS was null - don't take data from the user
+		else {
+			handleAfterGpsNullResult(i);
 		}
+	}
+
+	/**
+	 * Handles a case when GPS coordinates were null, and this activity was run
+	 * again for another attempt
+	 * 
+	 * @param i
+	 *            - current intent
+	 */
+	private void handleAfterGpsNullResult(Intent i) {
+
+		int prevLineNumber;
+		String prevTime;
+		int prevTimeInterval;
+		GpsResult res;
+		Double lat;
+		Double lng;
+
+		// get previous user's session results
+		prevLineNumber = i.getIntExtra("lineNumber", -1);
+		prevTime = i.getStringExtra("time");
+		prevTimeInterval = i.getIntExtra("timeInterval", -1);
+
+		// attempt to get GPS coordinates again
+		res = DataCollector.getGpsCoordinates(this);
+		lat = res.getLat();
+		lng = res.getLng();
+
+		// check GPS coordinates are not null and send request to server
+		if (lat != null || lng != null) {
+			HttpCaller.getDepartureTime(this, pd, prevLineNumber, lat, lng,
+					prevTime, prevTimeInterval);
+			finish();
+		} else {// error-handle
+			ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,
+					prevLineNumber, prevTime, prevTimeInterval);
+		}
+
 	}
 
 	@Override
@@ -89,23 +114,22 @@ public class BusLinesListActivity extends ListActivity {
 		Double lat = res.getLat();
 		Double lng = res.getLng();
 
-
 		// Send data to server
-		if (!DEBUG_MODE){
-			if (lat != null || lng != null){
-				HttpCaller.getDepartureTime(this, pd, line_number, lat, lng, time, timeInterval);
+		if (!DEBUG_MODE) {
+			if (lat != null || lng != null) {
+				HttpCaller.getDepartureTime(this, pd, line_number, lat, lng,
+						time, timeInterval);
 				finish();
-			}
-			else{
-				ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,line_number, time, timeInterval);
+			} else {
+				ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,
+						line_number, time, timeInterval);
 			}
 		} else {
-			 //for emulator
-			HttpCaller.getDepartureTime(this, pd, line_number, 32.045816, 34.756983,"16:20:00", timeInterval);
+			// for emulator
+			HttpCaller.getDepartureTime(this, pd, line_number, 32.045816,
+					34.756983, "16:20:00", timeInterval);
 		}
 
 	}
-
-
 
 }

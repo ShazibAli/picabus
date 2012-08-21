@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+            <Space
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:layout_gravity="fill_horizontal" />
+            
+    <ImageButton
+        android:id="@+id/facebookLoginButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription=""
+        android:src="@drawable/facebook_login"
+        android:text="" />
+
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:layout_gravity="fill_horizontal" />
+
+        <Button
+            android:id="@+id/dontLoginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/dont_login_facebook" />
+
+
+</LinearLayout>

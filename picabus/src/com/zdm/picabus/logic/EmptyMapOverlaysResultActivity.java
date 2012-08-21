@@ -32,7 +32,6 @@ public class EmptyMapOverlaysResultActivity  extends Activity{
 		backToResults.setText("Back to results page");
 		backToResults.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//goto main menu activity and close all other activities
 				finish();
 			}
 		});
@@ -40,7 +39,6 @@ public class EmptyMapOverlaysResultActivity  extends Activity{
 	
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
 		super.onBackPressed();
 		finish();
 	}

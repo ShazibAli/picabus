@@ -101,7 +101,7 @@
             </intent-filter>
         </activity>
         
-                <activity 
+        <activity 
             android:name=".logic.EmptyMapOverlaysResultActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
@@ -121,6 +121,29 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        <activity 
+            android:name=".facebook.FacebookLoginActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.facebook.FacebookLoginActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity 
+            android:name=".logic.LoginActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.logic.LoginActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+            
+         
 </application>
 
 </manifest>

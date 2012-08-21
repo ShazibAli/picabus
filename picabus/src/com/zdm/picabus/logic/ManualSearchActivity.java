@@ -14,7 +14,7 @@ import android.widget.TextView;
 /**
  * 
  * Activity for handling manual search of lines option
- *
+ * 
  */
 public class ManualSearchActivity extends Activity {
 
@@ -34,7 +34,6 @@ public class ManualSearchActivity extends Activity {
 		submitBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				// Get line number that was clicked
 				String line_str = textField.getText().toString();
 				line_number = Integer.parseInt(line_str);
@@ -42,6 +41,7 @@ public class ManualSearchActivity extends Activity {
 				// Pass the line number to lines list intent
 				List<Integer> linesList = new ArrayList<Integer>();
 				linesList.add(line_number);
+				// open new activity
 				Intent intent = new Intent(
 						"com.zdm.picabus.logic.BusLinesListActivity");
 				intent.putIntegerArrayListExtra("linesList",

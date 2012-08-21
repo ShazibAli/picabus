@@ -42,8 +42,8 @@ public class SplashActivity extends Activity implements AnimationListener {
  
     }
 	public void onAnimationEnd(Animation animation) {
-		Intent openMainScreen = new Intent("com.zdm.picabus.MAINSCREEN");
-		startActivity(openMainScreen);
+		Intent intent = new Intent("com.zdm.picabus.logic.LoginActivity");
+		startActivity(intent);
 		finish();
 		
 	}

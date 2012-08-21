@@ -34,5 +34,12 @@
         android:layout_height="wrap_content"
         
         android:src="@drawable/share" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Version 1.0 (Beta)"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

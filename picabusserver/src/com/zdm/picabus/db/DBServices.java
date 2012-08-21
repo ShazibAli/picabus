@@ -255,4 +255,23 @@ public class DBServices implements IDBServices {
 		}
 		return stops;
 	}
+
+	@Override
+	public void increaseUserPoints(long userId, int numOfPints) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateCurrentLocationReport(long tripId, double longitude,
+			double latitude, long reporterId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearReport(long tripId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

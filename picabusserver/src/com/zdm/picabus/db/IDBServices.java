@@ -29,7 +29,7 @@ public interface IDBServices {
 
 	/**
 	 * 
-	 * find the closest stop to the given latitude/longitude coordination (using "Haversine" formula).
+	 * Find the closest stop to the given latitude/longitude coordination (using "Haversine" formula).
 	 * 
 	 * 
 	 * @param latitude
@@ -39,7 +39,7 @@ public interface IDBServices {
 	 * @param isRecursive
 	 *            when set to true, search will double the radius in each iteration until a station will be found (default: false) 
 	 * @param maxNumOfIterations
-	 *            maximum number of iterations when the search is recursive (each iteration is a query)            
+	 *            maximum number of iterations when the search is recursive (each iteration translates to a query)            
 	 * 
 	 * @return bus stop containing the relevant data
 	 * @throws EmptyResultException thrown when no result was found
@@ -58,5 +58,19 @@ public interface IDBServices {
 	 */
 	public List<Stop> getRouteDetails(long tripID,
 			int currentStopSequenceNumber) throws EmptyResultException;
+	
+	public void increaseUserPoints(long userId,int numOfPints);
+	
+	public void updateCurrentLocationReport (long tripId, double longitude, double latitude, long reporterId);
+	
+	public void clearReport(long tripId);
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

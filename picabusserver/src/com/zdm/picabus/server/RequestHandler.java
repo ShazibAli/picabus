@@ -82,11 +82,32 @@ public class RequestHandler {
 			currentStopInner.addProperty("stop_code", stop.getStopCode());
 			String stopFN = STOP_PREFIX + i;	
 			stopsWrapper.add(stopFN, currentStopInner);
-		}
+		} 
 		
 		stopsWrapper.addProperty("stopCount", retrievedStops.size());
 		data.add("data", stopsWrapper);
 		return data;
 	}
+
+	
+	public boolean reportLocation(Long userIdValue, Double latValue,
+			Double lngValue, Long tripIdValue) {
+		
+		IDBServices idbs = new DBServices();
+		return idbs.reportCurrentLocation(userIdValue, lngValue, latValue, tripIdValue);
+	}
+
+	public boolean reportCheckout(Long userIdValue, Long tripIdValue) {
+		IDBServices idbs = new DBServices();
+		return idbs.reportCheckout(userIdValue,tripIdValue);
+	}
+
+	public boolean reportTextualMessage(Long userIdValue, Long tripIdValue,
+			String reportMessageValue) {
+		IDBServices idbs = new DBServices();
+		return idbs.reportTripDescription(userIdValue,tripIdValue, reportMessageValue);
+	}
+
+	
 
 }

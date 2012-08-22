@@ -313,8 +313,9 @@ public class DBServices implements IDBServices {
 	 * 
 	 * @param tripId Current trip's ID
 	 * @param reporterId Current reporter ID
+	 * @return true if the operation was successful, false otherwise
 	 */
-	private void clearReports(long tripId, long reporterId) {
+	private boolean clearReports(long tripId, long reporterId) {
 		Connection c = null;
 		try {
 			DriverManager.registerDriver(new AppEngineDriver());
@@ -322,13 +323,14 @@ public class DBServices implements IDBServices {
 					.getConnection(URL);
 
 			// clearing the location report
-			String statement = "DELETE FROM" + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
+			String statement = "DELETE FROM " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
 			PreparedStatement stmt = c.prepareStatement(statement);
 			stmt.setLong(1, tripId);
 			stmt.setLong(2, reporterId);
+			stmt.executeUpdate();
 			
 			// clearing the textual report
-			statement = "DELETE FROM" + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
+			statement = "DELETE FROM " + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
 			stmt = c.prepareStatement(statement);
 			stmt.setLong(1, tripId);
 			stmt.setLong(2, reporterId);
@@ -339,6 +341,7 @@ public class DBServices implements IDBServices {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			if (c != null)
 				try {
@@ -347,11 +350,12 @@ public class DBServices implements IDBServices {
 					// ignoring this exception
 				}
 		}
+		return true;
 		
 	}
 
 	@Override
-	public void reportCurrentLocation(long userId, double longitude, double latitude,
+	public boolean reportCurrentLocation(long userId, double longitude, double latitude,
 			long tripId) {
 		/*
 		 * Note: For now we let the DB generate the time-stamp which may be in different time zone. 
@@ -373,7 +377,7 @@ public class DBServices implements IDBServices {
 			
 			if (exists) { // update 
 
-				statement = "UPDATE " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " SET longitude = ?, latitude = ?  WHERE reporter_id = ? and trip_id = ?)";		
+				statement = "UPDATE " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " SET longitude = ?, latitude = ?  WHERE reporter_id = ? and trip_id = ?";		
 				stmt = c.prepareStatement(statement);
 				stmt.setDouble(1, longitude);
 				stmt.setDouble(2, latitude);
@@ -396,6 +400,7 @@ public class DBServices implements IDBServices {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			if (c != null)
 				try {
@@ -404,20 +409,18 @@ public class DBServices implements IDBServices {
 					// ignoring this exception
 				}
 		}
-		
+		return true;
 	}
 
 	@Override
-	public void reportCheckout(long userId, long tripId) {
+	public boolean reportCheckout(long userId, long tripId) {
 		/* on checkout we want to clear the location entry and the textual 
 		   report made by these user (later on we can do a mechanism that clears the textual reports only when the trip ends) */
-		clearReports(tripId, userId);
-		
-		
+		return clearReports(tripId, userId);
 	}
 
 	@Override
-	public void reportTripDescription(long userId, long tripId, String message) {
+	public boolean reportTripDescription(long userId, long tripId, String message) {
 		// assuming that this method will be called only if the user is checked in
 		Connection c = null;
 		try {
@@ -425,7 +428,7 @@ public class DBServices implements IDBServices {
 			c = (Connection) DriverManager
 					.getConnection(URL);
 
-			// first we will check if the user already has some points
+			// first we will check if the user already has some report
 			String statement = "SELECT reporter_id, trip_id, report FROM " + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
 			PreparedStatement stmt = c.prepareStatement(statement);
 			stmt.setLong(1, tripId);
@@ -435,7 +438,7 @@ public class DBServices implements IDBServices {
 			
 			if (exists) { // add the new textual report
 
-				statement = "UPDATE " + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " SET report = ? WHERE reporter_id = ? and trip_id = ?)";		
+				statement = "UPDATE " + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " SET report = ? WHERE reporter_id = ? and trip_id = ?";		
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, message);
 				stmt.setLong(2, userId);
@@ -455,6 +458,7 @@ public class DBServices implements IDBServices {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			if (c != null)
 				try {
@@ -463,5 +467,6 @@ public class DBServices implements IDBServices {
 					// ignoring this exception
 				}
 		}
+		return true;
 	}
 }

@@ -93,8 +93,9 @@ public interface IDBServices {
 	 *            current latitude coordinate
 	 * @param tripId
 	 *            the trip's id
+	 * @return true if the operation was successful, false otherwise 
 	 */
-	public void reportCurrentLocation(long userId, double logitude,
+	public boolean reportCurrentLocation(long userId, double logitude,
 			double latitude, long tripId);
 
 	/**
@@ -105,8 +106,9 @@ public interface IDBServices {
 	 *            the user's id
 	 * @param tripId
 	 *            the trip's id
+	 * @return true if the operation was successful, false otherwise
 	 */
-	public void reportCheckout(long userId, long tripId);
+	public boolean reportCheckout(long userId, long tripId);
 
 	/**
 	 * Enter a report message for this specific trip
@@ -118,8 +120,9 @@ public interface IDBServices {
 	 * @param reportMessage
 	 *            free text description for the given trip 
 	 *            (max length: 200 characters)
+     * @return true if the operation was successful, false otherwise
 	 */
-	public void reportTripDescription(long userId, long tripId,
+	public boolean reportTripDescription(long userId, long tripId,
 			String reportMessage);
 
 }

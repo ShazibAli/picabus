@@ -10,9 +10,11 @@ import com.google.appengine.api.rdbms.AppEngineDriver;
 import com.google.cloud.sql.jdbc.Connection;
 import com.google.cloud.sql.jdbc.PreparedStatement;
 import com.google.cloud.sql.jdbc.ResultSet;
+
 import com.zdm.picabus.db.connectivity.Tables;
 import com.zdm.picabus.server.entities.Company;
 import com.zdm.picabus.server.entities.Line;
+import com.zdm.picabus.server.entities.RealtimeLocationReport;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
@@ -468,5 +470,79 @@ public class DBServices implements IDBServices {
 				}
 		}
 		return true;
+	}
+
+	@Override
+	public Long getPointStatus(long userId) {
+		Connection c = null;
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager.getConnection(URL);
+
+			// first we will check if the user already has some report
+			String statement = "SELECT points FROM "
+					+ Tables.USERS_POINTS.getTableName()
+					+ " WHERE user_id = ? ";
+			PreparedStatement stmt = c.prepareStatement(statement);
+			
+			stmt.setLong(1, userId);
+			ResultSet rs = stmt.executeQuery();
+			boolean exists = rs.next();
+			
+			if (exists) {
+				return rs.getLong("points");
+			}
+			else return new Long(0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+					// ignoring this exception
+				}
+		}
+	}
+
+	@Override
+	public RealtimeLocationReport getRealtimeLocation(long tripId) {
+		Connection c = null;
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager.getConnection(URL);
+
+			// first we will check if the user already has some report
+			String statement = "SELECT longitude, latitude, last_report_time FROM "
+					+ Tables.CURRENT_LOCATION_REPORTS.getTableName()
+					+ " WHERE trip_id = ? ";
+			PreparedStatement stmt = c.prepareStatement(statement);
+			
+			stmt.setLong(1, tripId);
+			ResultSet rs = stmt.executeQuery();
+			boolean exists = rs.next();
+			
+			if (exists) {
+				RealtimeLocationReport rlr = new RealtimeLocationReport(tripId, 
+						rs.getDouble("longitude"), 
+						rs.getDouble("latitude"), 
+						rs.getTimestamp("reportTimestamp"), false);
+				return rlr;	
+			}
+			else {
+				return new RealtimeLocationReport();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+					// ignoring this exception
+				}
+		}
 	}
 }

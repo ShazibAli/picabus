@@ -3,6 +3,7 @@ package com.zdm.picabus.db;
 import java.util.List;
 
 import com.zdm.picabus.server.entities.Line;
+import com.zdm.picabus.server.entities.RealtimeLocationReport;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
 
@@ -71,7 +72,7 @@ public interface IDBServices {
 			throws EmptyResultException;
 
 	/**
-	 * Increase user's points 
+	 * Increase user's points
 	 * 
 	 * @param userId
 	 *            the user's id
@@ -93,7 +94,7 @@ public interface IDBServices {
 	 *            current latitude coordinate
 	 * @param tripId
 	 *            the trip's id
-	 * @return true if the operation was successful, false otherwise 
+	 * @return true if the operation was successful, false otherwise
 	 */
 	public boolean reportCurrentLocation(long userId, double logitude,
 			double latitude, long tripId);
@@ -118,11 +119,31 @@ public interface IDBServices {
 	 * @param tripId
 	 *            the trip's id
 	 * @param reportMessage
-	 *            free text description for the given trip 
-	 *            (max length: 200 characters)
-     * @return true if the operation was successful, false otherwise
+	 *            free text description for the given trip (max length: 200
+	 *            characters)
+	 * @return true if the operation was successful, false otherwise
 	 */
 	public boolean reportTripDescription(long userId, long tripId,
 			String reportMessage);
+
+	/**
+	 * Get the user's current number of points
+	 * 
+	 * @param userId
+	 *            the user's id
+	 * @return On success: the current number of points of that user, On
+	 *         failure: null
+	 */
+	public Long getPointStatus(long userId);
+
+	/**
+	 * 
+	 * @param tripId
+	 *            the trip's id
+	 * @return On success: RealtimeLocationReport object which contains all the
+	 *         reports data, if such one exists (if not, we return empty
+	 *         object), On failure: null
+	 */
+	public RealtimeLocationReport getRealtimeLocation(long tripId);
 
 }

@@ -5,16 +5,16 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
-		<servlet-name>PicabusServer</servlet-name>
-		<servlet-class>com.zdm.picabus.server.PicabusServerServlet</servlet-class>
+		<servlet-name>ServicesServlet</servlet-name>
+		<servlet-class>com.zdm.picabus.server.ServicesServlet</servlet-class>
 	</servlet>
 		<servlet>
 	<servlet-name>ReportServlet</servlet-name>
 		<servlet-class>com.zdm.picabus.server.ReportServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>PicabusServer</servlet-name>
-		<url-pattern>/picabusserver</url-pattern>
+		<servlet-name>ServicesServlet</servlet-name>
+		<url-pattern>/services</url-pattern>
 	</servlet-mapping>
 		<servlet-mapping>
 	<servlet-name>ReportServlet</servlet-name>

@@ -66,19 +66,10 @@ public class ReportServlet extends HttpServlet {
 						ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
 				return;
 			} else { // result == true
-				responseJson = generateStatusResultsJson(result);
+				responseJson = RequestUtils.generateStatusResultsJson(result);
 			}
 
-			// send back the response
-			resp.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = resp.getWriter();
-			out.print(responseJson.toString());
-
-			// Mock Data
-			// String mockData =
-			// "{\"data\": {\"tripCount\": 1,\"stopHeadsign\": \"דרארליך/שבטיישראל\",\"bidirectional\": false,\"trip0\": {\"direction\": 1,\"id\": 646734120110512,\"destination\": \"מתחםגי/ילדיטהרן-ראשוןלציון<->ת.רכבתמרכז-תלאביביפו\",\"lineNumber\": 10,\"eta\": \"08: 28: 18\",\"companyName\": \"דן\",\"stopID\": 29335,\"stopSequence\": 34,\"serviceID\": 1619376,\"routeID\": 1026368}}}";
-			// out.print(mockData);
-
+			RequestUtils.sendBackResponse(resp, responseJson);
 		}
 		
 		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.REPORT_CHECKOUT.getTaskName())) {
@@ -112,19 +103,10 @@ public class ReportServlet extends HttpServlet {
 						ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
 				return;
 			} else { // result == true
-				responseJson = generateStatusResultsJson(result);
+				responseJson = RequestUtils.generateStatusResultsJson(result);
 			}
 
-			// send back the response
-			resp.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = resp.getWriter();
-			out.print(responseJson.toString());
-
-			// Mock Data
-			// String mockData =
-			// "{\"data\": {\"tripCount\": 1,\"stopHeadsign\": \"דרארליך/שבטיישראל\",\"bidirectional\": false,\"trip0\": {\"direction\": 1,\"id\": 646734120110512,\"destination\": \"מתחםגי/ילדיטהרן-ראשוןלציון<->ת.רכבתמרכז-תלאביביפו\",\"lineNumber\": 10,\"eta\": \"08: 28: 18\",\"companyName\": \"דן\",\"stopID\": 29335,\"stopSequence\": 34,\"serviceID\": 1619376,\"routeID\": 1026368}}}";
-			// out.print(mockData);
-
+			RequestUtils.sendBackResponse(resp, responseJson);
 		}
 		
 		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.REPORT_TEXTUAL_MSG.getTaskName())) {
@@ -160,19 +142,10 @@ public class ReportServlet extends HttpServlet {
 						ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
 				return;
 			} else { // result == true
-				responseJson = generateStatusResultsJson(result);
+				responseJson = RequestUtils.generateStatusResultsJson(result);
 			}
 
-			// send back the response
-			resp.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = resp.getWriter();
-			out.print(responseJson.toString());
-
-			// Mock Data
-			// String mockData =
-			// "{\"data\": {\"tripCount\": 1,\"stopHeadsign\": \"דרארליך/שבטיישראל\",\"bidirectional\": false,\"trip0\": {\"direction\": 1,\"id\": 646734120110512,\"destination\": \"מתחםגי/ילדיטהרן-ראשוןלציון<->ת.רכבתמרכז-תלאביביפו\",\"lineNumber\": 10,\"eta\": \"08: 28: 18\",\"companyName\": \"דן\",\"stopID\": 29335,\"stopSequence\": 34,\"serviceID\": 1619376,\"routeID\": 1026368}}}";
-			// out.print(mockData);
-
+			RequestUtils.sendBackResponse(resp, responseJson);
 		}
 		
 		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.GET_LAST_REPORTED_LOCATION.getTaskName())) {
@@ -207,18 +180,14 @@ public class ReportServlet extends HttpServlet {
 				responseData = RequestUtils.generateEmptyResultsJson();
 			} 			
 
-			// send back the response
-			resp.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = resp.getWriter();
-			out.print(responseData.toString());
+			RequestUtils.sendBackResponse(resp, responseData);
 		}
 		
 		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.GET_USER_SCORE.getTaskName())) {
 			JsonObject jsonObject = RequestUtils.extractRequestPayload(req);
 			if (jsonObject == null) {
 				resp.sendError(ERROR_CODE,
-						ServerError.UNSUPPOTED_PAYLOAD_TYPE_ERROR_MSG
-								.toString());
+						ServerError.UNSUPPOTED_PAYLOAD_TYPE_ERROR_MSG.toString());
 				return;
 			}
 			JsonElement userId = jsonObject.getAsJsonObject().get("userId");
@@ -240,18 +209,14 @@ public class ReportServlet extends HttpServlet {
 				return;
 			} 			
 
-			// send back the response
-			resp.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = resp.getWriter();
-			out.print(responseData.toString());
+			RequestUtils.sendBackResponse(resp, responseData);
 		}
 		else { // case this is an unsupported task
 			resp.sendError(ERROR_CODE, ServerError.UNSUPPOTED_TASK_ERROR_MSG.toString());
-		}
-		
-		
-		
+		}	
 	}
+
+
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -259,14 +224,5 @@ public class ReportServlet extends HttpServlet {
 		out.println("Picabus server is up and running! Please refer to our services API");
 	}
 	
-	private JsonObject generateStatusResultsJson(boolean succes) {	
-		JsonObject result = new JsonObject();
-		if (succes){
-			result.addProperty("data", "success");	
-		}
-		else {
-			result.addProperty("data", "failure");
-		}
-		return result;
-	}
+
 }

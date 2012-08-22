@@ -166,7 +166,7 @@ public class MyPicabusActivity extends Activity {
 					// getting name of the user
 					facebookObject.name = profile.getString("name");
 					// getting email of the user
-					facebookObject.email = profile.getString("email");
+					//facebookObject.email = profile.getString("email");
 					// getting facebook id of the user
 					facebookObject.facebookId = profile.getString("id");
 										

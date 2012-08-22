@@ -92,7 +92,7 @@ public class LoginActivity extends Activity {
          //Only call authorize if the access_token has expired.
 		if (!facebookObject.facebook.isSessionValid()) {
 			facebookObject.facebook.authorize(this,
-				//	new String[] { "email", "publish_stream" }, //update permission according to what we will use
+					new String[] { "email", "publish_stream","user_about_me" }, //update permission according to what we will use
 					new DialogListener() {
 
 						public void onCancel() {
@@ -161,7 +161,7 @@ public class LoginActivity extends Activity {
 				try {
 					JSONObject profile = new JSONObject(json);
 					// getting name of the user
-					//facebookObject.name = profile.getString("name");
+					facebookObject.name = profile.getString("name");
 					// getting email of the user
 				//	facebookObject.email = profile.getString("email");
 					// getting facebook id of the user

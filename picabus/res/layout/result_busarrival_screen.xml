@@ -27,7 +27,7 @@
             android:layout_weight="70"
             android:contentDescription="@string/company_icon"
         android:layout_marginRight="2dip"
-        android:src="@drawable/dan_icon" />
+	 />
 
     </LinearLayout>
     

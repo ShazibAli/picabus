@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+
+    <LinearLayout
+        android:weightSum="100"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_weight="85"
+            android:id="@+id/facebookProfilePic"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_aboutus_s"
+
+ />
+
+        <TextView
+            android:id="@+id/facebookUsername"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="15"
+            android:gravity="center"
+            android:text="Username" />
+
+    </LinearLayout>
+ 
+            <TextView
+            android:id="@+id/pointsMyPicabus"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="You have earned X points!" />
+
+            <TextView
+            android:id="@+id/postToFacebookText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:text="@string/post_facebook_inst"/>
+                        
+            <ImageButton
+        android:id="@+id/postToFacebook"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription=""
+        android:src="@drawable/post_to_facebook"
+        android:text="" />
+                 
+     <ImageButton
+        android:id="@+id/logoutFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@null"
+        android:contentDescription=""
+        android:src="@drawable/facebook_logout"
+        android:text="" />
+    
+    
+</LinearLayout>

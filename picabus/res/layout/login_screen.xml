@@ -4,10 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-            <Space
-            android:layout_width="1dp"
-            android:layout_height="15dp"
-            android:layout_gravity="fill_horizontal" />
             
     <ImageButton
         android:id="@+id/facebookLoginButton"
@@ -19,10 +15,6 @@
         android:text="" />
 
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="15dp"
-            android:layout_gravity="fill_horizontal" />
 
         <Button
             android:id="@+id/dontLoginBtn"

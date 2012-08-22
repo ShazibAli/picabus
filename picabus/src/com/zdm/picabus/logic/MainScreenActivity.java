@@ -23,6 +23,7 @@ import android.widget.SlidingDrawer.OnDrawerScrollListener;
 import android.widget.Spinner;
 
 import com.zdm.picabus.R;
+import com.zdm.picabus.facebook.PicabusFacebookObject;
 import com.zdm.picabus.locationservices.GpsCorrdinates;
 import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
@@ -41,6 +42,7 @@ public class MainScreenActivity extends Activity {
 	ImageButton historyBtn;
 	ImageButton aboutUsBtn;
 	ImageButton searchBtn;
+	ImageButton myPicabusBtn;
 	Button slideButton;
 	SlidingDrawer slidingDrawer;
 
@@ -70,6 +72,7 @@ public class MainScreenActivity extends Activity {
 		historyBtn = (ImageButton) findViewById(R.id.button_history);
 		aboutUsBtn = (ImageButton) findViewById(R.id.button_aboutus);
 		searchBtn = (ImageButton) findViewById(R.id.button_search);
+		myPicabusBtn = (ImageButton) findViewById(R.id.button_mypicabus);
 
 		// Listeners for buttons:
 		cameraBtn.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +116,20 @@ public class MainScreenActivity extends Activity {
 				Intent intent = new Intent(
 						"com.zdm.picabus.logic.HistoryActivity");
 				startActivity(intent);
+			}
+		});
+
+		myPicabusBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if (PicabusFacebookObject.isLoggedInToFacebook() == true) {
+					Intent intent = new Intent(
+							"com.zdm.picabus.facebook.MyPicabusActivity");
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(
+							"com.zdm.picabus.facebook.MyPicabusLoggedOutActivity");
+					startActivity(intent);
+				}
 			}
 		});
 

@@ -26,7 +26,7 @@
         android:layout_weight="20"
         android:gravity="bottom|center_horizontal"
         android:orientation="horizontal"
-        android:weightSum="3" >
+        android:weightSum="4" >
 
         <ImageButton
             android:id="@+id/button_search"
@@ -60,6 +60,17 @@
             android:contentDescription="@string/menu_aboutus_button"
             android:src="@drawable/button_aboutus_s"
             android:text="@string/menu_aboutus_button" />
+        
+        <ImageButton
+            android:id="@+id/button_mypicabus"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@null"
+            android:contentDescription="n"
+            android:src="@drawable/application_icon"
+            android:text="" />
     </LinearLayout>
 
         <LinearLayout

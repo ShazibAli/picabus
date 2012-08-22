@@ -1,13 +1,19 @@
 package com.zdm.picabus.imageprocessing;
-import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
-import ij.process.ImageProcessor;
 
-
-
+import static com.googlecode.javacv.cpp.opencv_highgui.CV_WINDOW_AUTOSIZE;
+import static com.googlecode.javacv.cpp.opencv_highgui.cvNamedWindow;
+import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
+import static com.googlecode.javacv.cpp.opencv_highgui.cvShowImage;
+/*
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage;*/
+import java.nio.ByteBuffer;
+
+
+//import sun.text.normalizer.UBiDiProps;
+
+import android.graphics.Color;
 
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 /**
@@ -16,13 +22,45 @@ import com.googlecode.javacv.cpp.opencv_core.IplImage;
  * 
  */
 
-
 public class ColorDetector 
 {
 
 	static int [] arr = null;
 	static IplImage image = null;
 	
+	private static int GetColor(IplImage img, int x, int y)
+	{
+		int location = img.widthStep() * y + (x * 3);
+		
+		ByteBuffer buffer = img.getByteBuffer();
+		int b = (int)buffer.get(location);
+		b = b < 0 ? b + 256 : b;
+		
+		int g = (int)buffer.get(location + 1);
+		g = g < 0 ? g + 256 : g;
+
+		int r = (int)buffer.get(location + 2);
+		r = r < 0 ? r + 256 : r;
+		
+		int result = Color.rgb(r, g, b);
+		return result;
+	}
+	
+	private static void SetColor(IplImage img, int x, int y, int c)
+	{
+		int location = img.widthStep() * y + (x * 3);
+		
+		ByteBuffer buffer = img.getByteBuffer();
+		
+		byte b = (byte)Color.blue(c);
+		buffer.put(location, b);
+
+		byte g = (byte)Color.green(c);
+		buffer.put(location + 1, g);
+
+		byte r = (byte)Color.red(c);
+		buffer.put(location + 2, r);
+	}
 	/**
 	 * The algorithm converts the input image to a binary by checking is pixel color is within a given distance from a desired color.
 	 * Pixels with color close to the desired color are white, other black.
@@ -35,48 +73,57 @@ public class ColorDetector
 	*/
 	public static ColorDetector DetectColor(IplImage img, int bCrop)
 	{
-		BufferedImage buffDest = null;
+//		BufferedImage buffDest = null;
 		ColorDetector res = new ColorDetector();
 		 // Convert to ImageJ's ColorProcessor for easier pixel access
-		ColorProcessor src = toColorProcessor(img);
+		//ColorProcessor src = toColorProcessor(img);
 
         // Create output image
-		ByteProcessor dest = new ByteProcessor(src.getWidth(), src.getHeight());
+		//ByteProcessor dest = new ByteProcessor(src.getWidth(), src.getHeight());
 		
 		////////////to be configed
 		//target color
-		Color myRGB; //= new Color(250, 250, 5);
+		int myRGB; //= new Color(250, 250, 5);
 		//distance from target color - myRGB
 		//int[] delta = {100 , 100, 100}; // R,G,B
 				
 		/////////////
 		
-		myRGB = getSignColor(src);
+		myRGB = getSignColor(img);
+		
+		//IplImage dst = IplImage.create(img.width(), img.height(), img.depth(), img.nChannels());
+		IplImage dst = img.clone();
+		
 		
 		// Iterate through pixels and check if their distance from the target color is
         // Within the distance threshold, if it is set `dest` to 255.
-		for(int y = 0; y < src.getHeight(); y++)
+		for(int y = 0; y < img.height(); y++)
 		{
-			for(int x = 0; x < src.getWidth(); x++)
+			for(int x = 0; x < img.width(); x++)
 			{
-				if (distance(src.getColor(x, y), myRGB) )
+				if (distance(GetColor(img, x, y), myRGB) )
 				{
-					dest.set(x, y, 255);
+					SetColor(dst, x, y, Color.rgb(255, 255, 255));
+					//dest.set(x, y, 255);
 				}
 			}
 		}
 		
 		
-		buffDest = toBufferedImage(dest);
+//		buffDest = toBufferedImage(dst);
 		
-		img = IplImage.createFrom(buffDest);
 		
- 
-		res.setArr(DetectArea(buffDest));
+        cvNamedWindow( "Example1", CV_WINDOW_AUTOSIZE );
+        cvShowImage("Example1", img);
+        
+        String path = "d:\\temp\\testBW.jpg";
+        cvSaveImage(path, img);
+        
+		res.setArr(DetectArea(dst));
 		
 		if(bCrop == 1)
 		{
-			res.setImage(cropImg(buffDest, res.getArr()));
+			res.setImage(cropImg(dst, res.getArr()));
 		}
 		else
 		{
@@ -97,24 +144,24 @@ public class ColorDetector
 	* @param ColorProcessor image
 	* @return the color that approximately appears the most in the sign
 	*/
-	private static Color getSignColor(ColorProcessor src) 
+	private static int getSignColor(IplImage src) 
 	{
-		Color myRGB = null;
-		Color res = null;
+		int myRGB = 0;
+		int res = 0;
 		int cells = 20;
 		int spec = 256 / (cells - 1);
 		int blue, green, red;
 		int colors [][][] = new int[cells][cells][cells]; // this array holds in each slot (spec) colors -  for a spec of 25 values - 255/25 = 10.2 ~ 11
 		//the first slot is for 0-24, second 25 -50 and so on (this example is for a 1D array, ours is 3D)
 		
-		for(int y = 0; y < src.getHeight(); y++)
+		for(int y = 0; y < src.height(); y++)
 		{
-			for(int x = 0; x < src.getWidth(); x++)
+			for(int x = 0; x < src.width(); x++)
 			{
-				myRGB = src.getColor(x , y);
-				red =  myRGB.getRed() / spec;
-				green = myRGB.getGreen() / spec;
-				blue = myRGB.getBlue() / spec;
+				myRGB = GetColor(src, x , y);
+				red =  Color.red(myRGB) / spec;
+				green = Color.green(myRGB) / spec;
+				blue = Color.blue(myRGB) / spec;
 								
 				colors[red][green][blue]++;
 				
@@ -143,20 +190,19 @@ public class ColorDetector
 		}
 		
 		
-		res = new Color(maxColor[0] * spec, maxColor[1] * spec, maxColor[2] * spec);
-		
+		//res = new Color(maxColor[0] * spec, maxColor[1] * spec, maxColor[2] * spec);
+		res = Color.rgb(maxColor[0] * spec, maxColor[1] * spec, maxColor[2] * spec);
 		return res;
 	}
 
 
 	//helper method to check a BufferedImage color
-	public static boolean compareColor(BufferedImage src, Color color, int x, int y)
+	public static boolean compareColor(IplImage src, int color, int x, int y)
 	{
-		boolean colors = src.getColorModel().getBlue(src.getRGB(x , y)) == color.getBlue();
-		colors = colors && (src.getColorModel().getGreen(src.getRGB(x , y)) == color.getGreen());
-		colors = colors && (src.getColorModel().getRed(src.getRGB(x , y)) == color.getRed());
+		int c2 = GetColor(src, x, y);
 		
-		return colors;
+		boolean result = (c2 == color);
+		return result;
 	}
 	
 	/**
@@ -168,15 +214,15 @@ public class ColorDetector
          * 2 - leftmost x value 
          * 3 - rightmost x value
 	*/
-	public static int[] DetectArea(BufferedImage src)
+	public static int[] DetectArea(IplImage src)
 	{
 		
-		Color white = new Color(255, 255,255);
+		int white = Color.rgb(255, 255,255);
 		
 		
         // get dimentions
-		int srcH = src.getHeight();
-		int srcW = src.getWidth();
+		int srcH = src.height();
+		int srcW = src.width();
 		
 		//vars for maximum white line length		
 		int lineLength = 0, maxLine = 0, maxLineY = 0;
@@ -333,20 +379,19 @@ public class ColorDetector
 	* @param coordinates 
 	* @return a cropped IplImage
 	*/
-	public static IplImage cropImg(BufferedImage BFImage, int[] coord)
+	public static IplImage cropImg(IplImage BFImage, int[] coord)
 	{
 		
 		if(((coord[3] - coord[2]) == 0) || ((coord[1] - coord[0]) == 0))
 		{
-			IplImage ret = IplImage.createFrom(BFImage);
-			
-			return ret;
+			return BFImage;
 		}
-        // Create output image
-		ByteProcessor dest = new ByteProcessor(Math.abs(coord[3] - coord[2]), Math.abs(coord[1] - coord[0]));
+
+		// Create output image
+		IplImage dest = IplImage.create(Math.abs(coord[3] - coord[2]), Math.abs(coord[1] - coord[0]), 8, 3);
 		
 	
-		Color color = new Color(255	, 255, 255);
+		int color = Color.rgb(255, 255, 255);
 		
 		// Iterate through pixels and check if their distance from the target color is
         // Within the distance threshold, if it is set `dest` to 255.
@@ -359,21 +404,17 @@ public class ColorDetector
 				
 				if (compareColor(BFImage, color, x, y))
 				{
-					dest.set(xD, yD, 255);
+					SetColor(dest, xD, yD, Color.rgb(255, 255, 255));
 				}
 				else
 				{
-					dest.set(xD, yD, 0);
+					SetColor(dest, xD, yD, Color.rgb(255, 255, 255));
 				}
 			}
 		}
 		
-		BufferedImage dest2 = ColorDetector.toBufferedImage(dest);
 		
-		IplImage image = IplImage.createFrom(dest2);
-		
-		
-		return image;
+		return dest;
 		
 	}
 	
@@ -383,15 +424,15 @@ public class ColorDetector
 	
 	
 	//Helper Methods 
-	public static boolean distance(Color src,Color targetRGB)
+	public static boolean distance(int src,int targetRGB)
 	{
 		int d = 60; //d = 60
 		int[] delta = {d , d, d};
 		boolean red, green, blue, isDelta = false;
 		
-		red = (Math.abs(src.getRed() - targetRGB.getRed()) < delta[0]);
-		green =  Math.abs(src.getGreen() - targetRGB.getGreen()) < delta[1];
-		blue = Math.abs(src.getBlue() - targetRGB.getBlue()) < delta[2]; 
+		red = (Math.abs(Color.red(src) - Color.red(targetRGB)) < delta[0]);
+		green =  Math.abs(Color.green(src) - Color.green(targetRGB)) < delta[1];
+		blue = Math.abs(Color.blue(src) - Color.blue(targetRGB)) < delta[2]; 
 		
 		isDelta = red && blue && green;
 		
@@ -399,80 +440,80 @@ public class ColorDetector
 	}
 	
 	
-	/**
-     * Convert OpenCV `IplImage` to ImageJ's ImageProcessor. Depending on the type input image different instance
-     * of `ImageProcessor` will be created, for color images it will be `ColorProcessor`, for 8-bit gray level `ByteProcessor`.
-     * Other pixel types are currently not supported.
-     *
-     * @param IplImage image -  input image.
-     * @return ImageProcessor
-     */
-	public static ImageProcessor toImageProcessor(IplImage image)
-	{
-		if((image.width() > 0) && (image.height() > 0))
-		{
-			BufferedImage bImage = image.getBufferedImage();
-		
-			if (bImage.getType() ==  BufferedImage.TYPE_BYTE_GRAY)
-			{
-				return new ByteProcessor(bImage);
-			}
-			else if (bImage.getType() ==  BufferedImage.TYPE_3BYTE_BGR) 
-			{
-				return new ColorProcessor(bImage);
-			}
-		}
-		//exception
-		System.out.println("Wohohoho DUDE EXCEPTION!!!!!!!!!!!!!!!!!!!!!!!!");
-		return null; // none of the type above - invalid input	
-	}
+//	/**
+//     * Convert OpenCV `IplImage` to ImageJ's ImageProcessor. Depending on the type input image different instance
+//     * of `ImageProcessor` will be created, for color images it will be `ColorProcessor`, for 8-bit gray level `ByteProcessor`.
+//     * Other pixel types are currently not supported.
+//     *
+//     * @param IplImage image -  input image.
+//     * @return ImageProcessor
+//     */
+//	public static ImageProcessor toImageProcessor(IplImage image)
+//	{
+//		if((image.width() > 0) && (image.height() > 0))
+//		{
+//			BufferedImage bImage = image.getBufferedImage();
+//		
+//			if (bImage.getType() ==  BufferedImage.TYPE_BYTE_GRAY)
+//			{
+//				return new ByteProcessor(bImage);
+//			}
+//			else if (bImage.getType() ==  BufferedImage.TYPE_3BYTE_BGR) 
+//			{
+//				return new ColorProcessor(bImage);
+//			}
+//		}
+//		//exception
+//		System.out.println("Wohohoho DUDE EXCEPTION!!!!!!!!!!!!!!!!!!!!!!!!");
+//		return null; // none of the type above - invalid input	
+//	}
 	
-	/**
-	 * @param IplImage image -  input image.
-     * @return ColorProcessor
-     */
-	public static ColorProcessor toColorProcessor(IplImage image)
-	{
-		
-		ImageProcessor ip = toImageProcessor(image);
-		
-		if (ip instanceof ColorProcessor) {
-			ColorProcessor cp = (ColorProcessor) ip;
-			return cp;
-		}
-		
-		
-		
-		return null; //Input image is not a color image.
-	}
-	
-	/**
-	 * @param ImageProcessor image -  input image.
-     * @return BufferedImage
-     */
-	public static BufferedImage toBufferedImage(ImageProcessor image)
-	{
-		
-		BufferedImage BP = null;
-		
-			           
-        if( image.getClass().equals(ByteProcessor.class))
-        {
-        	BP = image.getBufferedImage();
-        }
-        else if (image.getClass().equals(ColorProcessor.class)) 
-        {
-        	// Create BufferedImage of RGB type that JavaCV likes
-            BP = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-            // Easiest way to transfer the data is to draw the input image on the output image,
-            // This handles all needed color representation conversions, since both are variants of
-            Graphics g = BP.getGraphics();
-            g.drawImage(image.getBufferedImage(), 0, 0, null);
-		}
-		            
-        return BP;     	       
-	}
-	
+//	/**
+//	 * @param IplImage image -  input image.
+//     * @return ColorProcessor
+//     */
+//	public static ColorProcessor toColorProcessor(IplImage image)
+//	{
+//		
+//		ImageProcessor ip = toImageProcessor(image);
+//		
+//		if (ip instanceof ColorProcessor) {
+//			ColorProcessor cp = (ColorProcessor) ip;
+//			return cp;
+//		}
+//		
+//		
+//		
+//		return null; //Input image is not a color image.
+//	}
+//	
+//	/**
+//	 * @param ImageProcessor image -  input image.
+//     * @return BufferedImage
+//     */
+//	public static BufferedImage toBufferedImage(IplImage image)
+//	{
+//		
+//		BufferedImage BP = null;
+//		
+//			           
+//        if( image.getClass().equals(ByteProcessor.class))
+//        {
+//        	BP = image.getBufferedImage();
+//        }
+//        else if (image.getClass().equals(ColorProcessor.class)) 
+//        {
+//        	// Create BufferedImage of RGB type that JavaCV likes
+//            BP = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+//            // Easiest way to transfer the data is to draw the input image on the output image,
+//            // This handles all needed color representation conversions, since both are variants of
+//            Graphics g = BP.getGraphics();
+//            g.drawImage(image.getBufferedImage(), 0, 0, null);
+//		}
+//		            
+//        return BP;     	       
+//	}
+//	
 
 	
 	

@@ -44,6 +44,7 @@ public class DBServices implements IDBServices {
 			long upperLimitTimeInMs = departureTime.getTime() + (timeIntervalInMinutes * minuteToMsFactor);
 			Time upperLimitTime = new Time(upperLimitTimeInMs);
 				
+			// TODO: remove unnecessary query
 			// build SQL statement
 			/*	String statement = "SELECT  trips.trip_id, arrival_time, stop_id, stop_sequence, stop_headsign, " +
 					"routes.route_id, service_id, direction_id, route_short_name as \"Line Number\", route_long_name, agency_name "

@@ -29,5 +29,6 @@
     <string name="dont_login_facebook">do not login, go to PICABUS!</string>
     <string name="share_title">Share Picabus with friends..</string>
     <string name="share_message">What\'s up? \nCheck out Picabus! \nBest public transportation application ever!! \nhttp://picabusapp.appspot.com</string>
+    <string name="post_facebook_inst">Click to Post to facebook about picabus</string>
 
 </resources>

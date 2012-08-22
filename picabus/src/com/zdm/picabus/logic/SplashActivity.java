@@ -42,7 +42,7 @@ public class SplashActivity extends Activity implements AnimationListener {
  
     }
 	public void onAnimationEnd(Animation animation) {
-		Intent intent = new Intent("com.zdm.picabus.logic.LoginActivity");
+		Intent intent = new Intent("com.zdm.picabus.facebook.LoginActivity");
 		startActivity(intent);
 		finish();
 		

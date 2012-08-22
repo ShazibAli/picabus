@@ -115,6 +115,7 @@
         
          <activity
             android:name=".maps.RoutesMapActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.zdm.picabus.maps.RoutesMapActivity" />
@@ -122,28 +123,38 @@
             </intent-filter>
         </activity>
         
+        
         <activity 
-            android:name=".facebook.FacebookLoginActivity"
+            android:name=".facebook.LoginActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="com.zdm.picabus.facebook.FacebookLoginActivity" />
+                <action android:name="com.zdm.picabus.facebook.LoginActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         
         <activity 
-            android:name=".logic.LoginActivity"
+            android:name=".facebook.MyPicabusActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="com.zdm.picabus.logic.LoginActivity" />
+                <action android:name="com.zdm.picabus.facebook.MyPicabusActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-        
-            
+        </activity>            
          
+                <activity 
+            android:name=".facebook.MyPicabusLoggedOutActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.facebook.MyPicabusLoggedOutActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>   
+        
+        
 </application>
 
 </manifest>

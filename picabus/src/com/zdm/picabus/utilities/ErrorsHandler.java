@@ -1,6 +1,7 @@
 package com.zdm.picabus.utilities;
 
 import com.zdm.picabus.cameraservices.CameraActivity;
+import com.zdm.picabus.facebook.LoginActivity;
 import com.zdm.picabus.logic.BusLinesListActivity;
 
 import android.app.AlertDialog;
@@ -18,6 +19,9 @@ public class ErrorsHandler {
 	private static final String ERROR_NULL_GPS_COORDINATES="Could not retrieve valid GPS coordinates. " +
 	"Click 'Try again' or 'Cancel' to return to main menu";
 	private static final String ERROR_FACEBOOK_LOGIN = "Cannot login to your facebook acount. Redirecting to Picabus";
+	private static final String ERROR_FACEBOOK_LOGIN_MY_PICABUS = "Cannot login to your facebook acount. Please try again later";
+	private static final String ERROR_FACEBOOK_LOGOUT_MY_PICABUS = "Cannot logout from your facebook acount. Please try again later";
+	
 	
 /**
  * Creates error message when open cv return null list of lines,
@@ -156,7 +160,7 @@ public class ErrorsHandler {
 	 * Creates error when can't login to user's facebook acount
 	 * @param c - context
 	 */
-	public static void createFacebookErrorAlert(final Context c) {
+	public static void createFacebookFirstLoginErrorAlert(final Context c) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
 		alertDialogBuilder
@@ -167,9 +171,52 @@ public class ErrorsHandler {
 							public void onClick(DialogInterface dialog, int id) {
 								//goto main menu activity and close all other activities
 								Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
-								intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								((LoginActivity) c).finish();
 								c.startActivity(intent);
 
+							}
+						});
+
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+	}
+	
+	/**
+	 * Creates error when can't login to user's facebook acount from my picabus
+	 * @param c - context
+	 */
+	public static void createFacebookMyPicabusLoginErrorAlert(final Context c) {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
+		alertDialogBuilder
+				.setMessage(ERROR_FACEBOOK_LOGIN_MY_PICABUS)
+				.setCancelable(false)
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								//do nothing
+							}
+						});
+
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+	}
+	
+	/**
+	 * Creates error when can't login to user's facebook acount from my picabus
+	 * @param c - context
+	 */
+	public static void createFacebookMyPicabusLogoutErrorAlert(final Context c) {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
+		alertDialogBuilder
+				.setMessage(ERROR_FACEBOOK_LOGOUT_MY_PICABUS)
+				.setCancelable(false)
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								//do nothing
 							}
 						});
 

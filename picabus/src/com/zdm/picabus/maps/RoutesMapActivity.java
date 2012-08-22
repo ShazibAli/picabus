@@ -66,8 +66,7 @@ public class RoutesMapActivity extends MapActivity {
         		}
         		else {
         			itemizedOverlayRegular.addOverlay(overlayitem);
-        			mapOverlays.add(itemizedOverlayRegular);
-        				
+        			mapOverlays.add(itemizedOverlayRegular);	
         		}
     			
     			// we want to zoom onto the source stop location	
@@ -75,19 +74,9 @@ public class RoutesMapActivity extends MapActivity {
     				mc.animateTo(geoPoint);
     				mc.setZoom(17);
     			}
-        	}
-        	
-			
-	
+        	}	
 			mapView.invalidate();
-
-	
-
-		
-
-        }
-			        
-		
+        }		        		
 	}
 	
 	

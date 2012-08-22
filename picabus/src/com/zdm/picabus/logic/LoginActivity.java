@@ -45,6 +45,7 @@ public class LoginActivity extends Activity {
 				//Open facebook login activity
             	Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
         		startActivity(intent);
+        		finish();
 			}
 			
 		});

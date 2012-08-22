@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.zdm.picabus.server.exceptions.EmptyResultException;
 import com.zdm.picabus.utils.RequestUtils;
 import com.zdm.picabus.utils.ServerError;
 
@@ -174,6 +175,76 @@ public class ReportServlet extends HttpServlet {
 
 		}
 		
+		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.GET_LAST_REPORTED_LOCATION.getTaskName())) {
+			JsonObject jsonObject = RequestUtils.extractRequestPayload(req);
+			if (jsonObject == null) {
+				resp.sendError(ERROR_CODE,
+						ServerError.UNSUPPOTED_PAYLOAD_TYPE_ERROR_MSG
+								.toString());
+				return;
+			}
+			JsonElement tripId = jsonObject.getAsJsonObject().get("tripId");
+
+			if (tripId == null ) {
+				resp.sendError(ERROR_CODE,
+						ServerError.UNSUPPOTED_JSON_PARAMS_ERROR_MSG.toString());
+				return;
+			}
+
+			Long tripIdValue = tripId.getAsLong();
+
+			RequestHandler rh = new RequestHandler();
+			JsonObject responseData;
+			
+			try {
+				responseData = rh.getRealtimeLocation(tripIdValue);
+				if (responseData == null) {
+					resp.sendError(ERROR_CODE, ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
+					return;
+				}
+				
+			} catch (EmptyResultException e) {
+				responseData = RequestUtils.generateEmptyResultsJson();
+			} 			
+
+			// send back the response
+			resp.setContentType("application/json; charset=UTF-8");
+			PrintWriter out = resp.getWriter();
+			out.print(responseData.toString());
+		}
+		
+		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.GET_USER_SCORE.getTaskName())) {
+			JsonObject jsonObject = RequestUtils.extractRequestPayload(req);
+			if (jsonObject == null) {
+				resp.sendError(ERROR_CODE,
+						ServerError.UNSUPPOTED_PAYLOAD_TYPE_ERROR_MSG
+								.toString());
+				return;
+			}
+			JsonElement userId = jsonObject.getAsJsonObject().get("userId");
+
+			if (userId == null ) {
+				resp.sendError(ERROR_CODE,
+						ServerError.UNSUPPOTED_JSON_PARAMS_ERROR_MSG.toString());
+				return;
+			}
+
+			Long userIdValue = userId.getAsLong();
+
+			RequestHandler rh = new RequestHandler();
+			JsonObject responseData;
+			
+			responseData = rh.getUserScore(userIdValue);
+			if (responseData == null) {
+				resp.sendError(ERROR_CODE, ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
+				return;
+			} 			
+
+			// send back the response
+			resp.setContentType("application/json; charset=UTF-8");
+			PrintWriter out = resp.getWriter();
+			out.print(responseData.toString());
+		}
 		else { // case this is an unsupported task
 			resp.sendError(ERROR_CODE, ServerError.UNSUPPOTED_TASK_ERROR_MSG.toString());
 		}
@@ -184,7 +255,8 @@ public class ReportServlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		
+		PrintWriter out = resp.getWriter();
+		out.println("Picabus server is up and running! Please refer to our services API");
 	}
 	
 	private JsonObject generateStatusResultsJson(boolean succes) {	

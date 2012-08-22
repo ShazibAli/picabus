@@ -277,7 +277,7 @@ public class DBServices implements IDBServices {
 			if (exists) { // add the new sum of points to the user
 				currentNumberOfPoints = rs.getLong("points");
 				currentNumberOfPoints += numOfPoints;
-				statement = "UPDATE " + Tables.USERS_POINTS.getTableName() + " SET points = ? WHERE user_id = ?)";		
+				statement = "UPDATE " + Tables.USERS_POINTS.getTableName() + " SET points = ? WHERE user_id = ?";		
 				stmt = c.prepareStatement(statement);
 				stmt.setLong(1, currentNumberOfPoints);
 				stmt.setLong(2, userId);
@@ -378,7 +378,6 @@ public class DBServices implements IDBServices {
 			boolean exists = rs.next();
 			
 			if (exists) { // update 
-
 				statement = "UPDATE " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " SET longitude = ?, latitude = ?  WHERE reporter_id = ? and trip_id = ?";		
 				stmt = c.prepareStatement(statement);
 				stmt.setDouble(1, longitude);
@@ -527,7 +526,7 @@ public class DBServices implements IDBServices {
 				RealtimeLocationReport rlr = new RealtimeLocationReport(tripId, 
 						rs.getDouble("longitude"), 
 						rs.getDouble("latitude"), 
-						rs.getTimestamp("reportTimestamp"), false);
+						rs.getTimestamp("last_report_time"), false);
 				return rlr;	
 			}
 			else {

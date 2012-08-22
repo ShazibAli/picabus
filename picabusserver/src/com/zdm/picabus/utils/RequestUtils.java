@@ -36,4 +36,10 @@ public class RequestUtils {
 		}
 		return requestPaylod;
 	}
+	
+	public static JsonObject generateEmptyResultsJson() {
+		JsonObject empty = new JsonObject();
+		empty.addProperty("data", "empty");
+		return empty;
+	}
 }

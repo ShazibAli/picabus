@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.zdm.picabus.db.DBServices;
 import com.zdm.picabus.db.IDBServices;
 import com.zdm.picabus.server.entities.Line;
+import com.zdm.picabus.server.entities.RealtimeLocationReport;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
@@ -15,10 +16,17 @@ public class RequestHandler {
 	private static final String TRIP_PREFIX = "trip";
 	private static final String STOP_PREFIX = "stop";
 	
+	private static final int NUMBER_OF_POINTS_PER_LOCATION_REPORT = 2;
+	private static final int NUMBER_OF_POINTS_PER_TEXTUAL_REPORT = 5;
+	
+	private IDBServices idbs = null;
+	
+	public RequestHandler() {
+		idbs = new DBServices();
+	}
 	public JsonObject getDepartueTimePerLine(int lineNumber, double lat, double lng,
 			String clientTimeString, int timeIntervalInMinutes) throws EmptyResultException {
 
-		IDBServices idbs = new DBServices();
 		Line retrievedLine = idbs.getNextDepartureTimePerLine(lineNumber, lat, lng, clientTimeString, timeIntervalInMinutes); 
 		
 		// validity check
@@ -56,7 +64,6 @@ public class RequestHandler {
 	}
 
 	public JsonObject getRouteDetails(long tripID, int currentStopSequenceNumber) throws EmptyResultException {
-		IDBServices idbs = new DBServices();
 		List<Stop> retrievedStops = idbs.getRouteDetails(tripID, currentStopSequenceNumber); 
 		
 		// validity check
@@ -90,22 +97,64 @@ public class RequestHandler {
 	}
 
 	
-	public boolean reportLocation(Long userIdValue, Double latValue,
+	public boolean reportLocation(final Long userIdValue, Double latValue,
 			Double lngValue, Long tripIdValue) {
 		
-		IDBServices idbs = new DBServices();
+/*		// update user's score (in a separate thread)
+		Thread increasePoints = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				idbs.increaseUserPoints(userIdValue, NUMBER_OF_POINTS_PER_REPORT);
+			}
+		});
+		increasePoints.run();
+*/		
+		idbs.increaseUserPoints(userIdValue, NUMBER_OF_POINTS_PER_LOCATION_REPORT);
 		return idbs.reportCurrentLocation(userIdValue, lngValue, latValue, tripIdValue);
 	}
 
 	public boolean reportCheckout(Long userIdValue, Long tripIdValue) {
-		IDBServices idbs = new DBServices();
 		return idbs.reportCheckout(userIdValue,tripIdValue);
 	}
 
 	public boolean reportTextualMessage(Long userIdValue, Long tripIdValue,
 			String reportMessageValue) {
-		IDBServices idbs = new DBServices();
+		idbs.increaseUserPoints(userIdValue, NUMBER_OF_POINTS_PER_TEXTUAL_REPORT);
 		return idbs.reportTripDescription(userIdValue,tripIdValue, reportMessageValue);
+	}
+
+	public JsonObject getRealtimeLocation(Long tripIdValue) throws EmptyResultException {
+
+		RealtimeLocationReport rlr = idbs.getRealtimeLocation(tripIdValue);
+		JsonObject data = null;
+		JsonObject response = null;
+		if (rlr == null) {
+			return null;
+		}
+		else if (rlr.isEmpty()) {
+			throw new EmptyResultException();
+		}
+		else {
+			response = new JsonObject();
+			data = new JsonObject();
+			data.addProperty("longitude", rlr.getLongitude());
+			data.addProperty("latitude", rlr.getLatitude());
+			data.addProperty("time_stamp_string", rlr.getReportTimestamp().toString());
+			response.add("data", data);
+		}
+		
+		return response;
+	}
+	public JsonObject getUserScore(Long userIdValue) {
+		Long points = idbs.getPointStatus(userIdValue);
+		if (points != null) {
+			JsonObject data = new JsonObject();
+			JsonObject response = new JsonObject();
+			data.addProperty("points", points);
+			response.add("data", data);
+			return response;
+		}
+		return null;
 	}
 
 	

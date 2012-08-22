@@ -39,4 +39,8 @@ public class DateUtils {
 		return c.get(Calendar.DAY_OF_WEEK); 
 	}
 
+	public static String getTodayString() {
+		return getDayString(getCurrentDayCode());
+	}
+
 }

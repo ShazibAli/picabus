@@ -18,6 +18,7 @@ import com.zdm.picabus.server.entities.RealtimeLocationReport;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
+import com.zdm.picabus.utils.DateUtils;
 
 public class DBServices implements IDBServices {
 
@@ -44,7 +45,7 @@ public class DBServices implements IDBServices {
 			Time upperLimitTime = new Time(upperLimitTimeInMs);
 				
 			// build SQL statement
-			String statement = "SELECT  trips.trip_id, arrival_time, stop_id, stop_sequence, stop_headsign, " +
+			/*	String statement = "SELECT  trips.trip_id, arrival_time, stop_id, stop_sequence, stop_headsign, " +
 					"routes.route_id, service_id, direction_id, route_short_name as \"Line Number\", route_long_name, agency_name "
 					+ "FROM " + Tables.STOPTIMES.getTableName() +", " + Tables.TRIPS.getTableName() + ", " 
 					+ Tables.ROUTES.getTableName() + ", " + Tables.AGENCY.getTableName() + " "
@@ -56,12 +57,30 @@ public class DBServices implements IDBServices {
 					+ "and route_short_name = ? "
 					+ "GROUP BY route_short_name, direction_id";
 			
+			*/
+			String dayOfTheWeek = DateUtils.getTodayString();
+			String statement = "SELECT trips.trip_id, arrival_time, stops.stop_id, stop_sequence, stop_headsign, " +
+							   "routes.route_id, trips.service_id, direction_id, route_short_name as \"Line Number\", route_long_name, agency_name " +
+								"FROM " + Tables.STOPTIMES.getTableName() +", " + Tables.TRIPS.getTableName() + ", " + Tables.CALENDAR.getTableName() + ", " 
+										+ Tables.ROUTES.getTableName() + ", " + Tables.AGENCY.getTableName() + ", " + Tables.STOPS.getTableName() + " " +
+								"WHERE  departure_time > ? " + 
+								       "and departure_time < ? " + 
+								       "and route_short_name = ? " +
+								       "and stops.stop_id = ? " +
+								       "and stops.stop_id = stop_times.stop_id " +
+								       "and stop_times.trip_id = trips.trip_id " +
+								       "and routes.route_id = trips.route_id " +
+								       "and calendar.service_id = trips.service_id " +
+								       "and agency.agency_id = routes.agency_id " +
+								       "and calendar." + dayOfTheWeek.toLowerCase() + " = 1 " +
+								"LIMIT 10";
+			
 			PreparedStatement stmt = c.prepareStatement(statement);
 			
-			stmt.setLong(1, stop.getStopID());
-			stmt.setTime(2, departureTime);
-			stmt.setTime(3, upperLimitTime);
-			stmt.setInt(4, lineNumber);
+			stmt.setTime(1, departureTime);
+			stmt.setTime(2, upperLimitTime);
+			stmt.setInt(3, lineNumber);
+			stmt.setLong(4, stop.getStopID());
 			
 			ResultSet rs = stmt.executeQuery();
 			

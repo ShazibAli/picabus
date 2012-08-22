@@ -257,21 +257,211 @@ public class DBServices implements IDBServices {
 	}
 
 	@Override
-	public void increaseUserPoints(long userId, int numOfPints) {
-		// TODO Auto-generated method stub
+	public long increaseUserPoints(long userId, int numOfPoints) {
+		Connection c = null;
+		long currentNumberOfPoints = 0;
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager
+					.getConnection(URL);
+
+			// first we will check if the user already has some points
+			String statement = "SELECT user_id, points FROM " + Tables.USERS_POINTS.getTableName() + " WHERE user_id = ?";		
+			PreparedStatement stmt = c.prepareStatement(statement);
+			stmt.setLong(1, userId);
+			ResultSet rs = stmt.executeQuery();
+			boolean exists = rs.next();
+			
+			if (exists) { // add the new sum of points to the user
+				currentNumberOfPoints = rs.getLong("points");
+				currentNumberOfPoints += numOfPoints;
+				statement = "UPDATE " + Tables.USERS_POINTS.getTableName() + " SET points = ? WHERE user_id = ?)";		
+				stmt = c.prepareStatement(statement);
+				stmt.setLong(1, currentNumberOfPoints);
+				stmt.setLong(2, userId);
+				stmt.executeUpdate();				
+				
+			}
+			else { //user still has no points
+				currentNumberOfPoints = numOfPoints;
+				statement = "INSERT INTO " + Tables.USERS_POINTS.getTableName() + " (user_id, points) VALUES (?,?)";		
+				stmt = c.prepareStatement(statement);
+				stmt.setLong(1, userId);
+				stmt.setLong(2, currentNumberOfPoints);
+				stmt.executeUpdate();
+			}
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+					// ignoring this exception
+				}
+		}
+		return currentNumberOfPoints;
+		
+	}
+
+
+
+	/**
+	 * This method is used to clear the reports entries of the given user identified by the reporter id
+	 * 
+	 * @param tripId Current trip's ID
+	 * @param reporterId Current reporter ID
+	 */
+	private void clearReports(long tripId, long reporterId) {
+		Connection c = null;
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager
+					.getConnection(URL);
+
+			// clearing the location report
+			String statement = "DELETE FROM" + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
+			PreparedStatement stmt = c.prepareStatement(statement);
+			stmt.setLong(1, tripId);
+			stmt.setLong(2, reporterId);
+			
+			// clearing the textual report
+			statement = "DELETE FROM" + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
+			stmt = c.prepareStatement(statement);
+			stmt.setLong(1, tripId);
+			stmt.setLong(2, reporterId);
+			
+			
+			stmt.executeUpdate();
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+					// ignoring this exception
+				}
+		}
 		
 	}
 
 	@Override
-	public void updateCurrentLocationReport(long tripId, double longitude,
-			double latitude, long reporterId) {
-		// TODO Auto-generated method stub
+	public void reportCurrentLocation(long userId, double longitude, double latitude,
+			long tripId) {
+		/*
+		 * Note: For now we let the DB generate the time-stamp which may be in different time zone. 
+		 * The records will be sorted by the last report time (ideally this time should be taken from the client later on) 
+		 */
+		Connection c = null;
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager
+					.getConnection(URL);
+
+			// first we will check if the user already checked in
+			String statement = "SELECT reporter_id, trip_id FROM " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
+			PreparedStatement stmt = c.prepareStatement(statement);
+			stmt.setLong(1, tripId);
+			stmt.setLong(2, userId);
+			ResultSet rs = stmt.executeQuery();
+			boolean exists = rs.next();
+			
+			if (exists) { // update 
+
+				statement = "UPDATE " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " SET longitude = ?, latitude = ?  WHERE reporter_id = ? and trip_id = ?)";		
+				stmt = c.prepareStatement(statement);
+				stmt.setDouble(1, longitude);
+				stmt.setDouble(2, latitude);
+				stmt.setLong(3, userId);
+				stmt.setLong(4, tripId);
+				stmt.executeUpdate();				
+			}
+			else { //user has no existing prior report
+				
+				statement = "INSERT INTO " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " (trip_id, longitude, latitude, reporter_id) VALUES (?,?,?,?)";		
+				stmt = c.prepareStatement(statement);
+				stmt.setLong(1, tripId);
+				stmt.setDouble(2, longitude);
+				stmt.setDouble(3, latitude);
+				stmt.setLong(4, userId);
+				
+				stmt.executeUpdate();
+			}
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+					// ignoring this exception
+				}
+		}
 		
 	}
 
 	@Override
-	public void clearReport(long tripId) {
-		// TODO Auto-generated method stub
+	public void reportCheckout(long userId, long tripId) {
+		/* on checkout we want to clear the location entry and the textual 
+		   report made by these user (later on we can do a mechanism that clears the textual reports only when the trip ends) */
+		clearReports(tripId, userId);
 		
+		
+	}
+
+	@Override
+	public void reportTripDescription(long userId, long tripId, String message) {
+		// assuming that this method will be called only if the user is checked in
+		Connection c = null;
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager
+					.getConnection(URL);
+
+			// first we will check if the user already has some points
+			String statement = "SELECT reporter_id, trip_id, report FROM " + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " WHERE trip_id = ? AND reporter_id = ?";		
+			PreparedStatement stmt = c.prepareStatement(statement);
+			stmt.setLong(1, tripId);
+			stmt.setLong(2, userId);
+			ResultSet rs = stmt.executeQuery();
+			boolean exists = rs.next();
+			
+			if (exists) { // add the new textual report
+
+				statement = "UPDATE " + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " SET report = ? WHERE reporter_id = ? and trip_id = ?)";		
+				stmt = c.prepareStatement(statement);
+				stmt.setString(1, message);
+				stmt.setLong(2, userId);
+				stmt.setLong(3, tripId);
+				stmt.executeUpdate();				
+			}
+			else { //user has no existing report
+				
+				statement = "INSERT INTO " + Tables.TEXTUAL_TRIP_REPORTS.getTableName() + " (reporter_id, trip_id, report) VALUES (?,?,?)";		
+				stmt = c.prepareStatement(statement);
+				stmt.setLong(1, userId);
+				stmt.setLong(2, tripId);
+				stmt.setString(3, message);
+				stmt.executeUpdate();
+			}
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+					// ignoring this exception
+				}
+		}
 	}
 }

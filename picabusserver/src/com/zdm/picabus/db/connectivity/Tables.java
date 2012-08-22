@@ -8,7 +8,10 @@ public enum Tables {
 	SHAPES("shapes"),
 	STOPTIMES("stop_times"),
 	STOPS("stops"),
-	TRIPS("trips");
+	TRIPS("trips"),
+	USERS_POINTS("users_points"),
+	CURRENT_LOCATION_REPORTS("current_location_reports"),
+	TEXTUAL_TRIP_REPORTS("textual_trip_reports");
 	
 	private String tableName;
 	

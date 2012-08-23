@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * 
- * Represents a single rel-time location report
+ * Represents a single real-time location report
  *
  */
 public class RealtimeLocationReport {

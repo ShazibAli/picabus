@@ -82,12 +82,15 @@ public class MyPicabusLoggedOutActivity extends Activity implements Runnable{
 									facebookObject.facebook.getAccessExpires());
 							editor.commit();
 
-							updateProfilePicture(facebookObject.facebookId);
-							//open mypicabus for logged in users
+							ProfileImageGetter profilePicRequest = new ProfileImageGetter(c);
+							profilePicRequest.execute();
+							finish();//finish current activity
+							
+							/*//open mypicabus for logged in users
 							Intent intent = new Intent(
 									"com.zdm.picabus.facebook.MyPicabusActivity");
-							startActivity(intent);
-							finish();//finish current activity
+							startActivity(intent);*/
+
 
 						}
 

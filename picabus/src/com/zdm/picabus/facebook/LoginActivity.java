@@ -112,11 +112,11 @@ public class LoginActivity extends Activity {
 
 							//get information regarding to user
 							updateProfileInformation();
-							facebookObject.updateProfilePicture(facebookObject.facebookId);
+							//facebookObject.updateProfilePicture(facebookObject.facebookId);
 							
 							//goto main menu activity and close current activities
 							Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
-							//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							intent.putExtra("loggedIn", true);
 							startActivity(intent);
 							finish();
 
@@ -137,10 +137,11 @@ public class LoginActivity extends Activity {
 
 			//update user info
 			updateProfileInformation();
-			facebookObject.updateProfilePicture(facebookObject.facebookId);
+			//facebookObject.updateProfilePicture(facebookObject.facebookId);
 
 			//goto main menu activity and close all other activities
 			Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+			intent.putExtra("loggedIn", true);
 			startActivity(intent);
 			finish();
 		}
@@ -156,17 +157,23 @@ public class LoginActivity extends Activity {
 
 			public void onComplete(String response, Object state) {
 
+				String name;
+				String facebookId;
 				Log.d("Profile", response);
 				String json = response;
 				try {
 					JSONObject profile = new JSONObject(json);
 					// getting name of the user
-					facebookObject.name = profile.getString("name");
-					// getting email of the user
-				//	facebookObject.email = profile.getString("email");
+					name = profile.getString("name");
+
 					// getting facebook id of the user
-					facebookObject.facebookId = profile.getString("id");
-										
+					facebookId = profile.getString("id");
+					
+					facebookObject.name = name;
+					facebookObject.facebookId = facebookId;		
+					
+					//get the picture
+					//facebookObject.updateProfilePicture(facebookObject.facebookId);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

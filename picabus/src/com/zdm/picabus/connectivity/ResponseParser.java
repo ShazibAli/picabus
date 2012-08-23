@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
+import com.zdm.picabus.enitities.RealtimeLocationReport;
 import com.zdm.picabus.enitities.Stop;
 import com.zdm.picabus.enitities.Trip;
 
@@ -128,11 +129,27 @@ public class ResponseParser implements IResponseParser {
 			JSONObject data = json.getJSONObject("data");
 			return data.getLong("points");
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return 0;
+	}
+
+	public RealtimeLocationReport parseRealtimeLocationResponse(JSONObject json) {
+		RealtimeLocationReport rlr = null;
+		try {
+			JSONObject data = json.getJSONObject("data");
+			double lng = data.getDouble("longitude");
+			double lat = data.getDouble("latitude");
+			String timestampString = data.getString("time_stamp_string");
+			rlr = new RealtimeLocationReport(lng, lat, timestampString, false);
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+			rlr = new RealtimeLocationReport();
+		}
+		
+		return rlr;
 	}
 
 

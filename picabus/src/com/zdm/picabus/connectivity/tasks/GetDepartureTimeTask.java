@@ -11,7 +11,7 @@ import com.zdm.picabus.connectivity.ResponseParser;
 import com.zdm.picabus.enitities.Destination;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Trip;
-import com.zdm.picabus.utilities.DestionationParser;
+import com.zdm.picabus.utilities.DestinationParser;
 import com.zdm.picabus.utilities.ErrorsHandler;
 
 import android.app.Activity;
@@ -64,7 +64,7 @@ public class GetDepartureTimeTask extends HttpAbstractTask {
 				Trip firstTrip = trips.get(0);
 
 				// Parse destination
-				Destination dest = DestionationParser
+				Destination dest = DestinationParser
 						.parseDestination(firstTrip.getDestination());
 
 				// Prepare next intent

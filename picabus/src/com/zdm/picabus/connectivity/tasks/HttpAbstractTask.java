@@ -39,9 +39,6 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 	}
 	
 	
-	
-	
-	
 	/* (non-Javadoc)
 	 * @see android.os.AsyncTask#onPreExecute()
 	 */
@@ -52,10 +49,6 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 				"Please wait...", true);
 		
 	}
-
-
-
-
 
 	@Override
 	protected String doInBackground(String... arg) { // note: this method is executed off the UI thread
@@ -89,6 +82,9 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 					InputStream in = response.getEntity().getContent(); // Get the data in the entity
 					retreturnVal = HttpCaller.readContentFromIS(in);
 				}
+			}
+			else if (statusCode == 500) {// Error
+				return null;
 			}
 		} catch (Exception e) {
 			Log.e("Error in connectivity layer, stacktrace: ", e.toString());

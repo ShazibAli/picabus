@@ -57,7 +57,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		ihc = new HttpCaller();
+		ihc = HttpCaller.getInstance();
 		// Get main line data
 		Intent i = getIntent();
 		lineDataModel = (Line) i.getSerializableExtra("lineDataModel");

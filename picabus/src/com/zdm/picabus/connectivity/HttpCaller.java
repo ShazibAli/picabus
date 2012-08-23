@@ -21,10 +21,24 @@ import android.content.Context;
 
 public class HttpCaller implements IHttpCaller {
 
+	private static HttpCaller instance = null;
+	
 	private static final String publicServerURL = "http://picabusapp.appspot.com/";
 	private static final String localServerURL = "http://10.0.0.2:8888/";
 	private static final String SERVICES = "services";
 	private static final String REPORTS = "reports";
+		
+	private HttpCaller() {
+		
+	}
+	
+	public static synchronized HttpCaller getInstance() {
+		if (instance == null) {
+			instance = new HttpCaller();
+		}
+		return instance;
+	}
+
 	
 	public static String readContentFromIS(InputStream in) throws IOException {
 		BufferedReader reader = new BufferedReader(

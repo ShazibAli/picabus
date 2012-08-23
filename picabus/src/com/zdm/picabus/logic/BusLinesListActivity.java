@@ -39,7 +39,7 @@ public class BusLinesListActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ihc = new HttpCaller();
+		ihc = HttpCaller.getInstance();
 		
 		Intent i = getIntent();
 

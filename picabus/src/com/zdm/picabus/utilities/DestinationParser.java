@@ -2,7 +2,7 @@ package com.zdm.picabus.utilities;
 
 import com.zdm.picabus.enitities.Destination;
 
-public class DestionationParser {
+public class DestinationParser {
 
 	/**
 	 * 

@@ -127,7 +127,7 @@ public class BusLinesListActivity extends ListActivity {
 		} else {
 			// for emulator
 			HttpCaller.getDepartureTime(this, pd, line_number, 32.045816,
-					34.756983, "16:20:00", timeInterval);
+					34.756983, "08:20:00", timeInterval);
 		}
 
 	}

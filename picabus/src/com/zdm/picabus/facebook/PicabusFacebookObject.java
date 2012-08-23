@@ -11,7 +11,7 @@ import android.util.Log;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.Facebook;
 
-public class PicabusFacebookObject implements Runnable {
+public class PicabusFacebookObject {
 	
 	private final String FACEBOOK_PICABUS_APP_ID = "271655816273062";
 
@@ -119,7 +119,13 @@ public class PicabusFacebookObject implements Runnable {
 	}
 	
 	
-	
+	/**
+	 * Setter for profile picture
+	 * @param picture
+	 */
+	public void setProfilePicture(Bitmap picture){
+		this.profilePicture= picture;
+	}
 	
 	
 	
@@ -230,16 +236,16 @@ public class PicabusFacebookObject implements Runnable {
 	 * 
 	 * @param userID
 	 */
-	public void updateProfilePicture(String userID) {
+	/*public void updateProfilePicture(String userID) {
 	    
 	    Thread t = new Thread(new PicabusFacebookObject());
 	    t.start();
 
-	}
+	}*/
 	
 	/**
 	 * get profile picture - thread function
-	 */
+	 *//*
     public void run()
     {
         try
@@ -258,7 +264,7 @@ public class PicabusFacebookObject implements Runnable {
 	        Log.d("TAG", "Loading Picture FAILED");
 	        e.printStackTrace();
         }
-    }
+    }*/
 	
 	
 }

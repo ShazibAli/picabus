@@ -1,5 +1,6 @@
 package com.zdm.picabus.logic;
 
+import sun.security.jca.GetInstance;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.Spinner;
 
 import com.zdm.picabus.R;
 import com.zdm.picabus.facebook.PicabusFacebookObject;
+import com.zdm.picabus.facebook.ProfileImageGetter;
 import com.zdm.picabus.locationservices.GpsCorrdinates;
 import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
@@ -121,10 +123,20 @@ public class MainScreenActivity extends Activity {
 
 		myPicabusBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (PicabusFacebookObject.isLoggedInToFacebook() == true) {
-					Intent intent = new Intent(
-							"com.zdm.picabus.facebook.MyPicabusActivity");
-					startActivity(intent);
+				Intent i = getIntent();
+				Boolean loggedIn = i.getBooleanExtra("loggedIn", false);
+				if (loggedIn) {
+					PicabusFacebookObject facebookObject = PicabusFacebookObject
+							.getFacebookInstance();
+					if (facebookObject.getProfilePicture() == null) {
+						ProfileImageGetter profilePicRequest = new ProfileImageGetter(
+								context);
+						profilePicRequest.execute();
+					} else {
+						Intent intent = new Intent(
+								"com.zdm.picabus.facebook.MyPicabusActivity");
+						startActivity(intent);
+					}
 				} else {
 					Intent intent = new Intent(
 							"com.zdm.picabus.facebook.MyPicabusLoggedOutActivity");

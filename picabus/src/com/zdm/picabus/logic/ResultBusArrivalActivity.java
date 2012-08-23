@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Trip;
@@ -50,11 +51,13 @@ public class ResultBusArrivalActivity extends ListActivity {
 	String destination;
 	List<Trip> trips;
 	Trip firstTrip;
+	IHttpCaller ihc = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		ihc = new HttpCaller();
 		// Get main line data
 		Intent i = getIntent();
 		lineDataModel = (Line) i.getSerializableExtra("lineDataModel");
@@ -150,7 +153,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 				// creating notification Timer Task TODO: integrate in the
 				// right place
 				// createNotification(10000, 10, "some stop", 5);
-				HttpCaller.getRouteDetails(context, pd,
+				ihc.getRouteDetails(context, pd,
 						firstTrip.getStopSequence(), firstTrip.getTripID());
 			}
 		});

@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
@@ -33,10 +34,13 @@ public class BusLinesListActivity extends ListActivity {
 	ProgressDialog pd;
 	int timeInterval = 15;
 	boolean afterGpsNull;
+	IHttpCaller ihc = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ihc = new HttpCaller();
+		
 		Intent i = getIntent();
 
 		// Check if this is the first run of activity, or after GPS null
@@ -92,7 +96,7 @@ public class BusLinesListActivity extends ListActivity {
 
 		// check GPS coordinates are not null and send request to server
 		if (lat != null || lng != null) {
-			HttpCaller.getDepartureTime(this, pd, prevLineNumber, lat, lng,
+			ihc.getDepartureTime(this, pd, prevLineNumber, lat, lng,
 					prevTime, prevTimeInterval);
 			finish();
 		} else {// error-handle
@@ -117,7 +121,7 @@ public class BusLinesListActivity extends ListActivity {
 		// Send data to server
 		if (!DEBUG_MODE) {
 			if (lat != null || lng != null) {
-				HttpCaller.getDepartureTime(this, pd, line_number, lat, lng,
+				ihc.getDepartureTime(this, pd, line_number, lat, lng,
 						time, timeInterval);
 				finish();
 			} else {
@@ -126,7 +130,7 @@ public class BusLinesListActivity extends ListActivity {
 			}
 		} else {
 			// for emulator
-			HttpCaller.getDepartureTime(this, pd, line_number, 32.045816,
+			ihc.getDepartureTime(this, pd, line_number, 32.045816,
 					34.756983, "08:20:00", timeInterval);
 		}
 

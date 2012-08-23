@@ -123,6 +123,18 @@ public class ResponseParser implements IResponseParser {
 		return stops;
 	}
 
+	public long parseGetScoreResponse(JSONObject json) {
+		try {
+			JSONObject data = json.getJSONObject("data");
+			return data.getLong("points");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+
 
 
 }

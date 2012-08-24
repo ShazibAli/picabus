@@ -98,9 +98,9 @@ public class ResultsExtraFeaturesActivity extends Activity {
 	private void setTextReportsUI() {
 		// set report edit text and submit button not activated
 		reportEditText.setEnabled(false);
-		reportEditText.setAlpha((float) 0.3);
+		/* reportEditText.setAlpha((float) 0.3); */
 		submitReportButton.setEnabled(false);
-		submitReportButton.setAlpha((float) 0.3);
+		/* submitReportButton.setAlpha((float) 0.3); */
 
 		submitReportButton.setOnClickListener(new View.OnClickListener() {
 
@@ -135,9 +135,9 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 					// activate report parts of page
 					reportEditText.setEnabled(true);
-					reportEditText.setAlpha((float) 1);
+					/* reportEditText.setAlpha((float) 1); */
 					submitReportButton.setEnabled(true);
-					submitReportButton.setAlpha((float) 1);
+					/* submitReportButton.setAlpha((float) 1); */
 
 					res = DataCollector.getGpsCoordinates(c);
 					if (res != null) {
@@ -152,7 +152,7 @@ public class ResultsExtraFeaturesActivity extends Activity {
 					// TODO:start background service
 
 				} else {
-					checkinButton.setActivated(false);
+					checkinButton.setEnabled(false);
 					ihc.reportCheckout(c, pd, userId, tripRes.getTripId());
 					// TODO:start background service
 				}
@@ -227,8 +227,7 @@ public class ResultsExtraFeaturesActivity extends Activity {
 		msUntilNotification = getMsUntilNotification(arrivalTime,
 				notificationDelta);
 
-
-		//if in debug and arrival time was earlier, result is negative-fix it
+		// if in debug and arrival time was earlier, result is negative-fix it
 		if (msUntilNotification < 0) {
 			if (DEBUG_MODE) {
 				msUntilNotification = 5000;
@@ -260,7 +259,8 @@ public class ResultsExtraFeaturesActivity extends Activity {
 				R.drawable.notification_icon, "Picabus Reminder",
 				System.currentTimeMillis());
 
-		Intent notificationIntent = new Intent(this, ResultsExtraFeaturesActivity.class);
+		Intent notificationIntent = new Intent(this,
+				ResultsExtraFeaturesActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
 				notificationIntent, 0);
 

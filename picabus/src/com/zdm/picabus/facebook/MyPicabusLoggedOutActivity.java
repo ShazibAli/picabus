@@ -1,7 +1,13 @@
 package com.zdm.picabus.facebook;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +21,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.facebook.android.DialogError;
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.zdm.picabus.R;
@@ -80,7 +87,8 @@ public class MyPicabusLoggedOutActivity extends Activity implements Runnable {
 							editor.putLong("access_expires",
 									facebookObject.facebook.getAccessExpires());
 							editor.commit();
-
+							
+							updateProfileInformation();
 							ProfileImageGetter profilePicRequest = new ProfileImageGetter(
 									c);
 							profilePicRequest.execute();
@@ -154,4 +162,51 @@ public class MyPicabusLoggedOutActivity extends Activity implements Runnable {
 		}
 	}
 
+	
+	/**
+	 * Get information from facebook regarding to the user
+	 */
+
+	public void updateProfileInformation() {
+		facebookObject.mAsyncRunner.request("me", new RequestListener() {
+
+			public void onComplete(String response, Object state) {
+
+				String name;
+				String facebookId;
+				Log.d("Profile", response);
+				String json = response;
+				try {
+					JSONObject profile = new JSONObject(json);
+					// getting name of the user
+					name = profile.getString("name");
+
+					// getting facebook id of the user
+					facebookId = profile.getString("id");
+
+					facebookObject.name = name;
+					facebookObject.facebookId = facebookId;
+
+					// get the picture
+					// facebookObject.updateProfilePicture(facebookObject.facebookId);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			public void onIOException(IOException e, Object state) {
+			}
+
+			public void onFileNotFoundException(FileNotFoundException e,
+					Object state) {
+			}
+
+			public void onMalformedURLException(MalformedURLException e,
+					Object state) {
+			}
+
+			public void onFacebookError(FacebookError e, Object state) {
+			}
+		});
+	}
 }

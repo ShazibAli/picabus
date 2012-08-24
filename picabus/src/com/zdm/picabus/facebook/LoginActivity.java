@@ -90,52 +90,51 @@ public class LoginActivity extends Activity {
 
 		// Only call authorize if the access_token has expired.
 		if (!facebookObject.facebook.isSessionValid()) {
-			facebookObject.facebook.authorize(this, new String[] { "email",
-					"publish_stream", "user_about_me" }, // update permission
-															// according to what
-															// we will use
-					new DialogListener() {
+			facebookObject.facebook.authorize(this,
+			/*
+			 * new String[] { "email", "publish_stream", "user_about_me" },
+			 */
+			new DialogListener() {
 
-						public void onCancel() {
-							// Function to handle cancel event
+				public void onCancel() {
+					// Function to handle cancel event
 
-						}
+				}
 
-						public void onComplete(Bundle values) {
-							// Function to handle complete event
-							// Edit Preferences and update facebook acess_token
-							SharedPreferences.Editor editor = facebookObject.mPrefs
-									.edit();
-							editor.putString("access_token",
-									facebookObject.facebook.getAccessToken());
-							editor.putLong("access_expires",
-									facebookObject.facebook.getAccessExpires());
-							editor.commit();
+				public void onComplete(Bundle values) {
+					// Function to handle complete event
+					// Edit Preferences and update facebook acess_token
+					SharedPreferences.Editor editor = facebookObject.mPrefs
+							.edit();
+					editor.putString("access_token",
+							facebookObject.facebook.getAccessToken());
+					editor.putLong("access_expires",
+							facebookObject.facebook.getAccessExpires());
+					editor.commit();
 
-							// get information regarding to user
-							updateProfileInformation();
-							// facebookObject.updateProfilePicture(facebookObject.facebookId);
+					// get information regarding to user
+					updateProfileInformation();
+					// facebookObject.updateProfilePicture(facebookObject.facebookId);
 
-							// goto main menu activity and close current
-							// activities
-							Intent intent = new Intent(
-									"com.zdm.picabus.MAINSCREEN");
-							intent.putExtra("loggedIn", true);
-							startActivity(intent);
-							finish();
+					// goto main menu activity and close current
+					// activities
+					Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+					intent.putExtra("loggedIn", true);
+					startActivity(intent);
+					finish();
 
-						}
+				}
 
-						public void onError(DialogError error) {
-							// Function to handle error
-							ErrorsHandler.createFacebookFirstLoginErrorAlert(c);
-						}
+				public void onError(DialogError error) {
+					// Function to handle error
+					ErrorsHandler.createFacebookFirstLoginErrorAlert(c);
+				}
 
-						public void onFacebookError(FacebookError fberror) {
-							ErrorsHandler.createFacebookFirstLoginErrorAlert(c);
-						}
+				public void onFacebookError(FacebookError fberror) {
+					ErrorsHandler.createFacebookFirstLoginErrorAlert(c);
+				}
 
-					});
+			});
 		} else {// access_token still valid, don't call authorize
 
 			// update user info

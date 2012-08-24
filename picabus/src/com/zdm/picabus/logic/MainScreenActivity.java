@@ -1,5 +1,12 @@
 package com.zdm.picabus.logic;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import sun.security.jca.GetInstance;
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -7,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +31,8 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.SlidingDrawer.OnDrawerScrollListener;
 import android.widget.Spinner;
 
+import com.facebook.android.FacebookError;
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
 import com.zdm.picabus.R;
 import com.zdm.picabus.facebook.PicabusFacebookObject;
 import com.zdm.picabus.facebook.ProfileImageGetter;
@@ -51,7 +61,8 @@ public class MainScreenActivity extends Activity {
 	NotificationManager nm;
 	GpsCorrdinates gpsObject;
 	LocationManager locationManager;
-
+	PicabusFacebookObject facebookObject;
+	
 	Context context;
 
 	@Override
@@ -126,8 +137,9 @@ public class MainScreenActivity extends Activity {
 				Intent i = getIntent();
 				Boolean loggedIn = i.getBooleanExtra("loggedIn", false);
 				if (loggedIn) {
-					PicabusFacebookObject facebookObject = PicabusFacebookObject
+					facebookObject = PicabusFacebookObject
 							.getFacebookInstance();
+					updateProfileInformation();
 					if (facebookObject.getProfilePicture() == null) {
 						ProfileImageGetter profilePicRequest = new ProfileImageGetter(
 								context);
@@ -299,5 +311,52 @@ public class MainScreenActivity extends Activity {
 		else{
 			super.onBackPressed();
 		}
+	}
+	
+	/**
+	 * Get information from facebook regarding to the user
+	 */
+
+	public void updateProfileInformation() {
+		facebookObject.mAsyncRunner.request("me", new RequestListener() {
+
+			public void onComplete(String response, Object state) {
+
+				String name;
+				String facebookId;
+				Log.d("Profile", response);
+				String json = response;
+				try {
+					JSONObject profile = new JSONObject(json);
+					// getting name of the user
+					name = profile.getString("name");
+
+					// getting facebook id of the user
+					facebookId = profile.getString("id");
+
+					facebookObject.name = name;
+					facebookObject.facebookId = facebookId;
+
+					// get the picture
+					// facebookObject.updateProfilePicture(facebookObject.facebookId);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			public void onIOException(IOException e, Object state) {
+			}
+
+			public void onFileNotFoundException(FileNotFoundException e,
+					Object state) {
+			}
+
+			public void onMalformedURLException(MalformedURLException e,
+					Object state) {
+			}
+
+			public void onFacebookError(FacebookError e, Object state) {
+			}
+		});
 	}
 }

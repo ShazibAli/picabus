@@ -288,4 +288,16 @@ public class MainScreenActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	
+	@Override
+	public void onBackPressed() {
+
+
+		if (slidingDrawer.isOpened()){//close sliding drawer
+			slidingDrawer.close();
+		}
+		else{
+			super.onBackPressed();
+		}
+	}
 }

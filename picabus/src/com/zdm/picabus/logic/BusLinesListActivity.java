@@ -40,7 +40,7 @@ public class BusLinesListActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ihc = HttpCaller.getInstance();
-		
+
 		Intent i = getIntent();
 
 		// Check if this is the first run of activity, or after GPS null
@@ -96,8 +96,8 @@ public class BusLinesListActivity extends ListActivity {
 
 		// check GPS coordinates are not null and send request to server
 		if (lat != null || lng != null) {
-			ihc.getDepartureTime(this, pd, prevLineNumber, lat, lng,
-					prevTime, prevTimeInterval);
+			ihc.getDepartureTime(this, pd, prevLineNumber, lat, lng, prevTime,
+					prevTimeInterval);
 			finish();
 		} else {// error-handle
 			ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,
@@ -109,20 +109,23 @@ public class BusLinesListActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		int line_number = this.lineRowAdapter.getItem(position);
+		Double lat = null;
 
+		Double lng = null;
 		// Get current time
 		String time = DataCollector.getCurrentTime();
 
 		// Get coordinates
 		GpsResult res = DataCollector.getGpsCoordinates(this);
-		Double lat = res.getLat();
-		Double lng = res.getLng();
-
+		if (res != null) {
+			lat = res.getLat();
+			lng = res.getLng();
+		}
 		// Send data to server
 		if (!DEBUG_MODE) {
 			if (lat != null || lng != null) {
-				ihc.getDepartureTime(this, pd, line_number, lat, lng,
-						time, timeInterval);
+				ihc.getDepartureTime(this, pd, line_number, lat, lng, time,
+						timeInterval);
 				finish();
 			} else {
 				ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,
@@ -130,8 +133,8 @@ public class BusLinesListActivity extends ListActivity {
 			}
 		} else {
 			// for emulator
-			ihc.getDepartureTime(this, pd, line_number, 32.045816,
-					34.756983, "08:20:00", timeInterval);
+			ihc.getDepartureTime(this, pd, line_number, 32.045816, 34.756983,
+					"08:20:00", timeInterval);
 		}
 
 	}

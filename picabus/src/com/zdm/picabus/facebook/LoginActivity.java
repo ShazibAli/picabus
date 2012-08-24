@@ -28,25 +28,26 @@ import android.widget.ImageButton;
 /**
  * 
  * login activity- user should choose if to login using facebook or not
- *
+ * 
  */
 public class LoginActivity extends Activity {
-	
+
 	ImageButton facebookLogin;
 	Button dontLoginBtn;
-	
+
 	Context c;
 	PicabusFacebookObject facebookObject;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
-		c=this;
-		
+		c = this;
+
 		facebookLogin = (ImageButton) findViewById(R.id.facebookLoginButton);
 		dontLoginBtn = (Button) findViewById(R.id.dontLoginBtn);
-		
+
 		facebookLogin.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -54,31 +55,29 @@ public class LoginActivity extends Activity {
 				facebookObject = PicabusFacebookObject.getFacebookInstance();
 				loginToFacebook();
 			}
-			
+
 		});
-		
+
 		dontLoginBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				//Open facebook login activity
-            	Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
-        		startActivity(intent);
-        		finish();
+				// Open facebook login activity
+				Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+				startActivity(intent);
+				finish();
 			}
-			
+
 		});
 	}
-	
-	
-	
-	
+
 	/**
 	 * Login the user's facebook acount
 	 */
 	public void loginToFacebook() {
-		
+
 		facebookObject.mPrefs = getPreferences(MODE_PRIVATE);
-		String access_token = facebookObject.mPrefs.getString("access_token", null);
+		String access_token = facebookObject.mPrefs.getString("access_token",
+				null);
 		long expires = facebookObject.mPrefs.getLong("access_expires", 0);
 
 		if (access_token != null) {
@@ -89,10 +88,12 @@ public class LoginActivity extends Activity {
 			facebookObject.facebook.setAccessExpires(expires);
 		}
 
-         //Only call authorize if the access_token has expired.
+		// Only call authorize if the access_token has expired.
 		if (!facebookObject.facebook.isSessionValid()) {
-			facebookObject.facebook.authorize(this,
-					new String[] { "email", "publish_stream","user_about_me" }, //update permission according to what we will use
+			facebookObject.facebook.authorize(this, new String[] { "email",
+					"publish_stream", "user_about_me" }, // update permission
+															// according to what
+															// we will use
 					new DialogListener() {
 
 						public void onCancel() {
@@ -103,19 +104,22 @@ public class LoginActivity extends Activity {
 						public void onComplete(Bundle values) {
 							// Function to handle complete event
 							// Edit Preferences and update facebook acess_token
-							SharedPreferences.Editor editor = facebookObject.mPrefs.edit();
+							SharedPreferences.Editor editor = facebookObject.mPrefs
+									.edit();
 							editor.putString("access_token",
 									facebookObject.facebook.getAccessToken());
 							editor.putLong("access_expires",
 									facebookObject.facebook.getAccessExpires());
 							editor.commit();
 
-							//get information regarding to user
+							// get information regarding to user
 							updateProfileInformation();
-							//facebookObject.updateProfilePicture(facebookObject.facebookId);
-							
-							//goto main menu activity and close current activities
-							Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+							// facebookObject.updateProfilePicture(facebookObject.facebookId);
+
+							// goto main menu activity and close current
+							// activities
+							Intent intent = new Intent(
+									"com.zdm.picabus.MAINSCREEN");
 							intent.putExtra("loggedIn", true);
 							startActivity(intent);
 							finish();
@@ -132,14 +136,13 @@ public class LoginActivity extends Activity {
 						}
 
 					});
-		}
-		else{//access_token still valid, don't call authorize
+		} else {// access_token still valid, don't call authorize
 
-			//update user info
+			// update user info
 			updateProfileInformation();
-			//facebookObject.updateProfilePicture(facebookObject.facebookId);
+			// facebookObject.updateProfilePicture(facebookObject.facebookId);
 
-			//goto main menu activity and close all other activities
+			// goto main menu activity and close all other activities
 			Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
 			intent.putExtra("loggedIn", true);
 			startActivity(intent);
@@ -147,11 +150,10 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	
 	/**
 	 * Get information from facebook regarding to the user
 	 */
-	
+
 	public void updateProfileInformation() {
 		facebookObject.mAsyncRunner.request("me", new RequestListener() {
 
@@ -168,17 +170,17 @@ public class LoginActivity extends Activity {
 
 					// getting facebook id of the user
 					facebookId = profile.getString("id");
-					
+
 					facebookObject.name = name;
-					facebookObject.facebookId = facebookId;		
-					
-					//get the picture
-					//facebookObject.updateProfilePicture(facebookObject.facebookId);
+					facebookObject.facebookId = facebookId;
+
+					// get the picture
+					// facebookObject.updateProfilePicture(facebookObject.facebookId);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
-	
+
 			public void onIOException(IOException e, Object state) {
 			}
 
@@ -194,13 +196,13 @@ public class LoginActivity extends Activity {
 			}
 		});
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		facebookObject.facebook.authorizeCallback(requestCode, resultCode, data);
+		facebookObject.facebook
+				.authorizeCallback(requestCode, resultCode, data);
 	}
-
 
 }

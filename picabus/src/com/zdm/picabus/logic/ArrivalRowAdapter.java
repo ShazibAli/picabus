@@ -10,18 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
+import com.zdm.picabus.enitities.TripResultObject;
 
 /**
  * 
  *  adapter for a time arrival in the list of arrival times result
  *
  */
-public class ArrivalRowAdapter extends ArrayAdapter<String> {
+public class ArrivalRowAdapter extends ArrayAdapter<TripResultObject> {
 
-	private ArrayList<String> items;
+	private ArrayList<TripResultObject> items;
 
 	public ArrivalRowAdapter(Context context, int textViewResourceId,
-			ArrayList<String> items) {
+			ArrayList<TripResultObject> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 	}
@@ -35,7 +36,9 @@ public class ArrivalRowAdapter extends ArrayAdapter<String> {
 			v = vi.inflate(R.layout.row_arrival_time, null);
 		}
 
-		String time = items.get(position);
+		TripResultObject res = items.get(position);
+		String time= res.getArrivalTime();
+		//String time = items.get(position);
 		if (time != null) {
 			TextView tt = (TextView) v.findViewById(R.id.textviewarrival);
 

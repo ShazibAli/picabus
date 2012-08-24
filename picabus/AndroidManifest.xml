@@ -15,7 +15,7 @@
 	<application
         android:icon="@drawable/application_icon"
         android:label="@string/app_name" 
-        android:theme="@android:style/Theme.Black.NoTitleBar">
+        android:theme="@android:style/Theme.Light.NoTitleBar">
         <uses-library android:name="com.google.android.maps" />
          <activity
             android:name=".logic.SplashActivity"
@@ -90,6 +90,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+                <activity 
+            android:name=".logic.ResultsExtraFeaturesActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.zdm.picabus.logic.ResultsExtraFeaturesActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        
         
         <activity 
             android:name=".logic.EmptyBusResultsActivity"

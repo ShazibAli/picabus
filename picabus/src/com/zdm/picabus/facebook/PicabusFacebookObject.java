@@ -176,60 +176,6 @@ public class PicabusFacebookObject {
 		this.mPrefs = mPrefs;
 	}
 
-	/**
-	 * Get information from facebook regarding to the user
-	 */
 
-	/*
-	 * public void updateProfileInformation() { mAsyncRunner.request("me", new
-	 * RequestListener() {
-	 * 
-	 * public void onComplete(String response, Object state) {
-	 * 
-	 * Log.d("Profile", response); String json = response; try { JSONObject
-	 * profile = new JSONObject(json); // getting name of the user name =
-	 * profile.getString("name"); // getting email of the user email =
-	 * profile.getString("email"); // getting facebook id of the user facebookId
-	 * = profile.getString("id");
-	 * 
-	 * } catch (JSONException e) { e.printStackTrace(); } }
-	 * 
-	 * public void onIOException(IOException e, Object state) { }
-	 * 
-	 * public void onFileNotFoundException(FileNotFoundException e, Object
-	 * state) { }
-	 * 
-	 * public void onMalformedURLException(MalformedURLException e, Object
-	 * state) { }
-	 * 
-	 * public void onFacebookError(FacebookError e, Object state) { } }); }
-	 */
-
-	/**
-	 * Function loads the users facebook profile pic
-	 * 
-	 * @param userID
-	 */
-	/*
-	 * public void updateProfilePicture(String userID) {
-	 * 
-	 * Thread t = new Thread(new PicabusFacebookObject()); t.start();
-	 * 
-	 * }
-	 */
-
-	/**
-	 * get profile picture - thread function
-	 */
-	/*
-	 * public void run() { try { String imageURL; Log.d("TAG",
-	 * "Loading Picture"); imageURL =
-	 * "http://graph.facebook.com/"+facebookId+"/picture?type=small";
-	 * 
-	 * Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new
-	 * URL(imageURL).getContent()); if (bitmap!=null){ profilePicture=bitmap; }
-	 * } catch(Exception e) { Log.d("TAG", "Loading Picture FAILED");
-	 * e.printStackTrace(); } }
-	 */
 
 }

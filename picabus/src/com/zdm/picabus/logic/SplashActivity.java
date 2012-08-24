@@ -70,6 +70,7 @@ public class SplashActivity extends Activity implements AnimationListener {
 			Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
 			intent.putExtra("loggedIn", true);
 			startActivity(intent);
+			finish();
 		}
 
 	}

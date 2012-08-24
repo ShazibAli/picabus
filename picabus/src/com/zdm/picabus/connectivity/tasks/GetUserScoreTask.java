@@ -3,9 +3,12 @@ package com.zdm.picabus.connectivity.tasks;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.widget.TextView;
 
+import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.IResponseParser;
 import com.zdm.picabus.connectivity.ResponseParser;
 
@@ -39,6 +42,10 @@ public class GetUserScoreTask extends HttpAbstractTask {
 			// reponse from server
 			if (json != null) {
 				currentScore = rp.parseGetScoreResponse(json);
+				
+				//update score in 'my picabus' page
+				TextView userPoints = (TextView) ((Activity) context).findViewById(R.id.pointsMyPicabus);//make sure that works from spinner
+				userPoints.setText("You have earned " + currentScore + " points!");
 			}
 
 		}

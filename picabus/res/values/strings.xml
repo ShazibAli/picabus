@@ -25,7 +25,7 @@
     <string name="clock_icon">clock_icon</string>
     <string name="empty_result">Sorry, no information was found for the requested line number</string>
     <string name="goto_menu">Back to main menu</string>
-    <string name="click_to_be_notified">Click an arrival time to be notified before bus arrives!</string>
+    <string name="click_to_be_notified">Click an arrival time to be notified before bus arrives, checkin on bus and get its route and current location!</string>
     <string name="dont_login_facebook">do not login, go to PICABUS!</string>
     <string name="share_title">Share Picabus with friends..</string>
     <string name="share_message">What\'s up? \nCheck out Picabus! \nBest public transportation application ever!! \nhttp://picabusapp.appspot.com</string>

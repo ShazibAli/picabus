@@ -54,6 +54,7 @@ public class DataCollector {
 	 */
 	public static GpsResult getGpsCoordinates(Context c) {
 
+		GpsResult res = null;
 		gps = getGpsObject(c);
 		gps.getCurrentLocation();
 		Double lat = gps.getLatitude();
@@ -63,11 +64,10 @@ public class DataCollector {
 		if (lat!=null && lng!=null){
 		lat = Math.floor(lat * 1000000) / 1000000;
 		lng = Math.floor(lng * 1000000) / 1000000;
-		}
 		
 		//create GPS object and return it
-		GpsResult res = new GpsResult(lat, lng);
-
+		res = new GpsResult(lat, lng);
+		}
 		return res;
 	}
 	

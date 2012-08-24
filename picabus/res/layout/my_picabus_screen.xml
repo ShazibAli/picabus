@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="15dp"
-            android:text="You have earned X points!" />
+			 />
 
             <TextView
             android:id="@+id/postToFacebookText"

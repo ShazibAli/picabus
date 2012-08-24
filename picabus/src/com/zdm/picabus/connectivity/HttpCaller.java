@@ -68,7 +68,7 @@ public class HttpCaller implements IHttpCaller {
 		};
 		
 		HttpAbstractTask hat = new GetDepartureTimeTask(mContext, waitSpinner, Tasks.GET_DEPARTURE_TIMES.getTaskName(), requestPayload);
-		hat.execute(localServerURL + SERVICES, null, null);
+		hat.execute(publicServerURLOld, null, null);
 
 
 	}
@@ -86,12 +86,12 @@ public class HttpCaller implements IHttpCaller {
 		};
 		
 		HttpAbstractTask hat = new GetRouteDetailsTask(mContext, waitSpinner, Tasks.GET_ROUTE_DETAILS.getTaskName(), requestPayload);
-		hat.execute(localServerURL + SERVICES, null, null);
+		hat.execute(publicServerURLOld, null, null);
 
 
 	}
 
-	public void reportCheckin(Context mContext, ProgressDialog waitSpinner, long userId, double longitude, double latitude,
+	public void reportCheckin(Context mContext, ProgressDialog waitSpinner, String userId, double longitude, double latitude,
 			long tripId) {
 		
 		JSONObject requestPayload = new JSONObject();
@@ -109,7 +109,7 @@ public class HttpCaller implements IHttpCaller {
 		hat.execute(localServerURL + REPORTS, null, null);
 	}
 
-	public void reportCheckout(Context mContext, ProgressDialog waitSpinner, long userId, long tripId) {
+	public void reportCheckout(Context mContext, ProgressDialog waitSpinner, String userId, long tripId) {
 		JSONObject requestPayload = new JSONObject();
 		try {		
 			requestPayload.put("userId", userId);
@@ -123,7 +123,7 @@ public class HttpCaller implements IHttpCaller {
 		hat.execute(localServerURL + REPORTS, null, null);	
 	}
 
-	public void reportTripDescription(Context mContext, ProgressDialog waitSpinner, long userId, long tripId, String message) {
+	public void reportTripDescription(Context mContext, ProgressDialog waitSpinner, String userId, long tripId, String message) {
 		JSONObject requestPayload = new JSONObject();
 		try {		
 			requestPayload.put("userId", userId);
@@ -138,7 +138,7 @@ public class HttpCaller implements IHttpCaller {
 		hat.execute(localServerURL + REPORTS, null, null);	
 	}
 
-	public void getUserScore(Context mContext, ProgressDialog waitSpinner, long userId) {
+	public void getUserScore(Context mContext, ProgressDialog waitSpinner, String userId) {
 		
 		JSONObject requestPayload = new JSONObject();
 		try {		

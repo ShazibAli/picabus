@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/notifyInst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="notify me before bus arrives!" />
+
+    <ToggleButton
+        android:id="@+id/notifyToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton" />
+
+    <TextView
+        android:id="@+id/checkinInstructionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click to checkin when you go on the bus. You will be rewarded with Picabus points" />
+
+    <Button
+        android:id="@+id/checkinButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Checkin bus" />
+
+     <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Describe current trip" />
+
+                    <EditText
+                        android:id="@+id/reportEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textMultiLine" >
+
+                        <requestFocus />
+
+                    </EditText>
+
+                    <Button
+                        android:id="@+id/submitReportBtn"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Report" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get bus route and its current location" />
+
+                    <ImageButton
+        android:id="@+id/getRouteIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        android:background="@null"
+            android:contentDescription="@string/getroute_icon"
+            android:layout_gravity="center"
+        android:src="@drawable/map_icon" />
+
+                   
+  
+</LinearLayout>

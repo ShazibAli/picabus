@@ -3,7 +3,6 @@ package com.zdm.picabus.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import com.zdm.picabus.utilities.DataCollector;
  */
 public class ManualSearchActivity extends MapActivity {
 
+	private final static boolean DEBUG_MODE = true;
 	ImageButton submitBtn;
 	TextView textField;
 	MapView mapView;
@@ -38,19 +38,17 @@ public class ManualSearchActivity extends MapActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.manual_search);
 
 		// the Digital Clock shows the current device time (by default)
-		
+
 		submitBtn = (ImageButton) findViewById(R.id.button_submit_ft);
 		textField = (TextView) findViewById(R.id.freetext_line_num);
 		mapView = (MapView) findViewById(R.id.mapViewManualSearch);
-		
-		
+
 		displayUserOnMap(mapView);
-		
 
 		submitBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -74,34 +72,47 @@ public class ManualSearchActivity extends MapActivity {
 	}
 
 	private void displayUserOnMap(MapView mapView) {
-		
-		// attempt to get GPS coordinates again
-		GpsResult res = DataCollector.getGpsCoordinates(this);
-		double lat = res.getLat();
-		double lng = res.getLng();
-		
-		// Displaying Zooming controls
-		mapView.setBuiltInZoomControls(true);
-		MapController mc = mapView.getController();
-		
-		List<Overlay> mapOverlays = mapView.getOverlays();
-		Drawable drawableCurrenStop = this.getResources().getDrawable(R.drawable.u_r_here_pin);
-		
-		AddItemizedOverlay itemizedOverlayFirst = new AddItemizedOverlay(drawableCurrenStop, this);
-  
-		GeoPoint geoPoint = new GeoPoint((int) (lat * 1E6),
-					(int) (lng * 1E6));
-    		
-    	OverlayItem overlayitem = new OverlayItem(geoPoint, "You are here", "The search is based on this location");
 
-		itemizedOverlayFirst.addOverlay(overlayitem);
-		mapOverlays.add(itemizedOverlayFirst);
-		mc.animateTo(geoPoint);
-		mc.setZoom(17);
-	
-		mapView.invalidate();
-		
-		
+		// attempt to get GPS coordinates again
+		double lat;
+		double lng;
+		GpsResult res = DataCollector.getGpsCoordinates(this);
+
+		if ((res == null) && (DEBUG_MODE)) {// TODO: change to real code
+			lat = 32.045816;
+			lng = 34.756983;
+		}
+		if (res != null) {
+			lat = res.getLat();
+			lng = res.getLng();
+
+			if (res != null || DEBUG_MODE) {
+				// Displaying Zooming controls
+				mapView.setBuiltInZoomControls(true);
+				MapController mc = mapView.getController();
+
+				List<Overlay> mapOverlays = mapView.getOverlays();
+				Drawable drawableCurrenStop = this.getResources().getDrawable(
+						R.drawable.u_r_here_pin);
+
+				AddItemizedOverlay itemizedOverlayFirst = new AddItemizedOverlay(
+						drawableCurrenStop, this);
+
+				GeoPoint geoPoint = new GeoPoint((int) (lat * 1E6),
+						(int) (lng * 1E6));
+
+				OverlayItem overlayitem = new OverlayItem(geoPoint,
+						"You are here", "The search is based on this location");
+
+				itemizedOverlayFirst.addOverlay(overlayitem);
+				mapOverlays.add(itemizedOverlayFirst);
+				mc.animateTo(geoPoint);
+				mc.setZoom(17);
+
+				mapView.invalidate();
+			}
+		}
+
 	}
 
 	@Override

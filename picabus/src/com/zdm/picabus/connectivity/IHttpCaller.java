@@ -57,7 +57,7 @@ public interface IHttpCaller {
 	 *            Trip id
 	 */
 	public void reportCheckin(Context mContext, ProgressDialog waitSpinner,
-			long userId, double longitude, double latitude, long tripId);
+			String userId, double longitude, double latitude, long tripId);
 
 	/**
 	 * 
@@ -71,7 +71,7 @@ public interface IHttpCaller {
 	 *            Trip id
 	 */
 	public void reportCheckout(Context mContext, ProgressDialog waitSpinner,
-			long userId, long tripId);
+			String userId, long tripId);
 
 	/**
 	 * 
@@ -87,7 +87,7 @@ public interface IHttpCaller {
 	 *            Report message depicting the trip
 	 */
 	public void reportTripDescription(Context mContext,
-			ProgressDialog waitSpinner, long userId, long tripId, String message);
+			ProgressDialog waitSpinner, String userId, long tripId, String message);
 
 	/**
 	 * 
@@ -99,7 +99,7 @@ public interface IHttpCaller {
 	 *            User id
 	 */
 	public void getUserScore(Context mContext, ProgressDialog waitSpinner,
-			long userId);
+			String userId);
 
 	/**
 	 * 

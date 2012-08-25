@@ -139,7 +139,6 @@ public class MainScreenActivity extends Activity {
 				if (loggedIn) {
 					facebookObject = PicabusFacebookObject
 							.getFacebookInstance();
-					updateProfileInformation();
 					if (facebookObject.getProfilePicture() == null) {
 						ProfileImageGetter profilePicRequest = new ProfileImageGetter(
 								context);
@@ -313,50 +312,4 @@ public class MainScreenActivity extends Activity {
 		}
 	}
 	
-	/**
-	 * Get information from facebook regarding to the user
-	 */
-
-	public void updateProfileInformation() {
-		facebookObject.mAsyncRunner.request("me", new RequestListener() {
-
-			public void onComplete(String response, Object state) {
-
-				String name;
-				String facebookId;
-				Log.d("Profile", response);
-				String json = response;
-				try {
-					JSONObject profile = new JSONObject(json);
-					// getting name of the user
-					name = profile.getString("name");
-
-					// getting facebook id of the user
-					facebookId = profile.getString("id");
-
-					facebookObject.name = name;
-					facebookObject.facebookId = facebookId;
-
-					// get the picture
-					// facebookObject.updateProfilePicture(facebookObject.facebookId);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			public void onIOException(IOException e, Object state) {
-			}
-
-			public void onFileNotFoundException(FileNotFoundException e,
-					Object state) {
-			}
-
-			public void onMalformedURLException(MalformedURLException e,
-					Object state) {
-			}
-
-			public void onFacebookError(FacebookError e, Object state) {
-			}
-		});
-	}
 }

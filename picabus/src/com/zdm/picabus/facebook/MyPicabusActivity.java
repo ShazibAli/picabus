@@ -50,7 +50,7 @@ public class MyPicabusActivity extends Activity {
 		// Get the facebook instance
 		facebookObject = PicabusFacebookObject.getFacebookInstance();
 		c = this;
-		updateProfileInformation();
+		//updateProfileInformation();
 
 		//update page UI and listeners, except for score
 		updateUiElements();
@@ -135,68 +135,31 @@ public class MyPicabusActivity extends Activity {
 					startActivity(intent);
 					finish();
 				}
-			}
-
-			public void onIOException(IOException e, Object state) {
-				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
-			}
-
-			public void onFileNotFoundException(FileNotFoundException e,
-					Object state) {
-				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
-			}
-
-			public void onMalformedURLException(MalformedURLException e,
-					Object state) {
-				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
-			}
-
-			public void onFacebookError(FacebookError e, Object state) {
-				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
-			}
-		});
-	}
-
-	/**
-	 * Get information from facebook regarding to the user
-	 */
-
-	public void updateProfileInformation() {
-		facebookObject.mAsyncRunner.request("me", new RequestListener() {
-
-			public void onComplete(String response, Object state) {
-
-				Log.d("Profile", response);
-				String json = response;
-				try {
-					JSONObject profile = new JSONObject(json);
-					// getting name of the user
-					facebookObject.name = profile.getString("name");
-					// getting email of the user
-					// facebookObject.email = profile.getString("email");
-					// getting facebook id of the user
-					facebookObject.facebookId = profile.getString("id");
-
-				} catch (JSONException e) {
-					e.printStackTrace();
+				else{
+					ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
 				}
 			}
 
 			public void onIOException(IOException e, Object state) {
+				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
 			}
 
 			public void onFileNotFoundException(FileNotFoundException e,
 					Object state) {
+				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
 			}
 
 			public void onMalformedURLException(MalformedURLException e,
 					Object state) {
+				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
 			}
 
 			public void onFacebookError(FacebookError e, Object state) {
+				ErrorsHandler.createFacebookMyPicabusLogoutErrorAlert(c);
 			}
 		});
 	}
+
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

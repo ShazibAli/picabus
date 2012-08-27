@@ -4,6 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+        <TextView
+        android:id="@+id/lineAndArrivalTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#8a2be2"
+        android:textStyle="bold"
+	/>
+
+ 
+        
     <TextView
         android:id="@+id/notifyInst"
         android:layout_width="wrap_content"

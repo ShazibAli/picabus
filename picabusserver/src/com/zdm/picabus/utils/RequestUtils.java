@@ -65,4 +65,18 @@ public class RequestUtils {
 		}
 		return result;
 	}
+	
+	public static JsonObject generateStatusResultsJson(boolean status, String reportType, long currentNumOfPoints) {	
+		JsonObject result = new JsonObject();
+		if (status){
+			result.addProperty("status", "success");
+			result.addProperty("Task-name", reportType);
+			result.addProperty("currentPoints", currentNumOfPoints);
+			
+		}
+		else {
+			result.addProperty("status", "failure");
+		}
+		return result;
+	}
 }

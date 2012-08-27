@@ -31,25 +31,28 @@ import com.zdm.picabus.enitities.TripResultObject;
 import com.zdm.picabus.facebook.PicabusFacebookObject;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
+import com.zdm.picabus.utilities.ErrorsHandler;
 
 public class ResultsExtraFeaturesActivity extends Activity {
 
 	private final static boolean DEBUG_MODE = true;
 	static final int NOTIFICATION_UNIQUE_ID = 139874;
+	public static final String PREFS_NAME = "resultDataPfers";
 	Context c;
 	ImageButton routeImage;
 	ToggleButton notificationToggle;
 	TextView checkinInstructionText;
 	TextView notifyInstructionText;
+	TextView lineAndArrivalTop;
 	Button checkinButton;
 	Boolean checkedIn = false;
 	EditText reportEditText;
 	Button submitReportButton;
-
+	Boolean userLoggedIn;
 	TripResultObject tripRes;
 	IHttpCaller ihc = null;
 	ProgressDialog pd;// ?
-
+	Boolean arrivedFromNotification;
 	String userId;
 
 	Timer timer;// timer for notification
@@ -60,14 +63,43 @@ public class ResultsExtraFeaturesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.results_notify_checkin_route_screen);
 		c = this;
+		Intent currIntent = getIntent();
+		// check if arrived from notification click
+		arrivedFromNotification = currIntent.getBooleanExtra(
+				"fromNotification", false);
+
 		ihc = HttpCaller.getInstance();
+
 		// get facebook user ID
-		PicabusFacebookObject pfo = PicabusFacebookObject.getFacebookInstance();
-		userId = pfo.getFacebookId();
+		if (arrivedFromNotification) {
+			userId = currIntent.getStringExtra("facebookId");
+		}
+		if (userId == null) {
+			PicabusFacebookObject pfo = PicabusFacebookObject
+					.getFacebookInstance();
+			userId = pfo.getFacebookId();
+		}
 
-		Intent intent = getIntent();
-		tripRes = (TripResultObject) intent.getSerializableExtra("Data");
+		// Check if user logged in
+		userLoggedIn = userId != null;
 
+		// get trip data, either from preferences save/notification intent/
+		// previous intent
+
+		// get trip if came from notification click
+
+		if (arrivedFromNotification) {
+			getTripResultFromPref(currIntent);
+		}
+
+		// get trip from previous activity
+		else if (tripRes == null) {
+			tripRes = (TripResultObject) currIntent
+					.getSerializableExtra("Data");
+		}
+
+		// set UI
+		lineAndArrivalTop = (TextView) findViewById(R.id.lineAndArrivalTop);
 		notificationToggle = (ToggleButton) findViewById(R.id.notifyToggle);
 		checkinInstructionText = (TextView) findViewById(R.id.checkinInstructionText);
 		notifyInstructionText = (TextView) findViewById(R.id.notifyInst);
@@ -76,6 +108,11 @@ public class ResultsExtraFeaturesActivity extends Activity {
 		reportEditText = (EditText) findViewById(R.id.reportEditText);
 		submitReportButton = (Button) findViewById(R.id.submitReportBtn);
 
+		// restore UI changes if needed
+		getUiChangesFromPref(currIntent);
+
+		//set all UI and functionality
+		setLineAndArrivalTop();
 		setNotificationToggle();
 		setCheckinButton();
 		setTextReportsUI();
@@ -83,6 +120,61 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 	}
 
+	/**
+	 * headline of page, contains line and arrival time
+	 */
+	private void setLineAndArrivalTop() {
+		int lineNum = tripRes.getLineNumber();
+		String time = 	tripRes.getArrivalTime();
+		lineAndArrivalTop.setText("Line "+lineNum+" will arrive at "+time);
+	}
+
+	/**
+	 * for notification - save activity state - UI elements
+	 */
+	private void getUiChangesFromPref(Intent intent) {
+
+		// if came from notification click
+		if (arrivedFromNotification) {
+			checkedIn = intent.getBooleanExtra("CheckinButton", false);
+		}
+
+		// else - take from shared preferences
+		/*
+		 * SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		 * checkedIn = settings.getBoolean("CheckinButton", false); if
+		 * (settings.getBoolean("notificationToggleChecked", false)) {
+		 * notificationToggle.setChecked(true); }
+		 */
+
+	}
+
+	/**
+	 * for notification - save activity state - trip data elements
+	 */
+	private void getTripResultFromPref(Intent intent) {
+
+		// if came from notification click
+		tripRes = (TripResultObject) intent
+				.getSerializableExtra("notificationTripData");
+		// else
+		/*
+		 * if (tripRes == null) { SharedPreferences settings =
+		 * getSharedPreferences(PREFS_NAME, 0); int lineNumber =
+		 * settings.getInt("lineNumber", -1); String stationName =
+		 * settings.getString("stationName", null); long tripId =
+		 * settings.getLong("tripId", -1); String arrivalTime =
+		 * settings.getString("arrivalTime", null); int stopSequence =
+		 * settings.getInt("stopSequence", -1);
+		 * 
+		 * tripRes = new TripResultObject(lineNumber, stationName, tripId,
+		 * arrivalTime, stopSequence); }
+		 */
+	}
+
+	/**
+	 * Set the link to get route (map image)
+	 */
 	private void setGetRouteLink() {
 		// Set getRoute image
 		routeImage.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +187,9 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 	}
 
+	/**
+	 * Set UI for text reports
+	 */
 	private void setTextReportsUI() {
 		// set report edit text and submit button not activated
 		reportEditText.setEnabled(false);
@@ -114,6 +209,9 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 	}
 
+	/**
+	 * Set UI and functionality for checkin button
+	 */
 	private void setCheckinButton() {
 		checkinButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -122,50 +220,66 @@ public class ResultsExtraFeaturesActivity extends Activity {
 				double lng = 0;
 				GpsResult res;
 
-				if (checkedIn == false) {
-					checkedIn = true;
-					checkinButton.setText("Checkout bus");
-					/*
-					 * Toast toast = Toast .makeText( c,
-					 * "Reports regarding to location will be sent until you checkout from bus"
-					 * , 5); toast.show();
-					 */
-					checkinInstructionText
-							.setText("Click to checkout from bus");
-
-					// activate report parts of page
-					reportEditText.setEnabled(true);
-					/* reportEditText.setAlpha((float) 1); */
-					submitReportButton.setEnabled(true);
-					/* submitReportButton.setAlpha((float) 1); */
-
-					res = DataCollector.getGpsCoordinates(c);
-					if (res != null) {
-						lat = res.getLat();
-						lng = res.getLng();
-					} else if (DEBUG_MODE) {
-						lat = 32.045816;
-						lng = 34.756983;
-					}
-					ihc.reportCheckin(c, pd, userId, lng, lat,
-							tripRes.getTripId());
-					// TODO:start background service
-
-				} else {
-					checkinButton.setEnabled(false);
-					ihc.reportCheckout(c, pd, userId, tripRes.getTripId());
-					// TODO:start background service
+				if (!userLoggedIn) {
+					ErrorsHandler.createNotLoggedInResultPageError(c);
 				}
 
+				else {
+					if (checkedIn == false) {
+						checkedIn = true;
+						checkinButton.setText("Checkout bus");
+						/*
+						 * Toast toast = Toast .makeText( c,
+						 * "Reports regarding to location will be sent until you checkout from bus"
+						 * , 5); toast.show();
+						 */
+						checkinInstructionText
+								.setText("Click to checkout from bus");
+
+						// activate report parts of page
+						reportEditText.setEnabled(true);
+						/* reportEditText.setAlpha((float) 1); */
+						submitReportButton.setEnabled(true);
+						/* submitReportButton.setAlpha((float) 1); */
+
+						res = DataCollector.getGpsCoordinates(c);
+						if (res != null) {
+							lat = res.getLat();
+							lng = res.getLng();
+						} else if (DEBUG_MODE) {
+							lat = 32.045816;
+							lng = 34.756983;
+						}
+						ihc.reportCheckin(c, pd, userId, lng, lat,
+								tripRes.getTripId());
+						// TODO:start background service
+
+					} else {
+						checkinButton.setEnabled(false);
+						ihc.reportCheckout(c, pd, userId, tripRes.getTripId());
+						// TODO:start background service
+					}
+
+				}
 			}
 		});
 
 	}
 
+	/**
+	 * Set notifications UI and functionality
+	 */
 	private void setNotificationToggle() {
 		// set notificationToggle
 		notificationToggle.setTextOn("On");
 		notificationToggle.setTextOff("Off");
+
+		// diasble if activity was opened by clicking a notification
+		if (arrivedFromNotification) {
+			notificationToggle.setChecked(true);
+			notificationToggle.setEnabled(false);
+		}
+		// set click listener
 		notificationToggle
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -192,6 +306,14 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 	}
 
+	/**
+	 * 
+	 * @param arrivalTime
+	 *            - of the bus in format XX:XX
+	 * @param notificationDelta
+	 *            - in ms - time user chose to be notified before bus arrives
+	 * @return time in ms until notification should be set
+	 */
 	private long getMsUntilNotification(String arrivalTime,
 			long notificationDelta) {
 
@@ -206,7 +328,6 @@ public class ResultsExtraFeaturesActivity extends Activity {
 			arrivalDate = formatter.parse(arrivalTime);
 			currDate = formatter.parse(currTime);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -218,6 +339,14 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 	}
 
+	/**
+	 * Create a notification for bus arrival
+	 * 
+	 * @param arrivalTime
+	 * @param lineNumber
+	 * @param stopName
+	 * @param notificationDelta
+	 */
 	private void createNotification(String arrivalTime, final int lineNumber,
 			final String stopName, final int notificationDelta) {
 
@@ -230,7 +359,7 @@ public class ResultsExtraFeaturesActivity extends Activity {
 		// if in debug and arrival time was earlier, result is negative-fix it
 		if (msUntilNotification < 0) {
 			if (DEBUG_MODE) {
-				msUntilNotification = 5000;
+				msUntilNotification = 10000;
 			} else {
 				return;
 			}
@@ -248,6 +377,13 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 	}
 
+	/**
+	 * triggers the notification defined in createNotification function
+	 * 
+	 * @param lineNumber
+	 * @param stopName
+	 * @param notificationDelta
+	 */
 	private void triggerNotification(int lineNumber, String stopName,
 			int notificationDelta) {
 		CharSequence title = "Picabus Update";
@@ -261,19 +397,71 @@ public class ResultsExtraFeaturesActivity extends Activity {
 
 		Intent notificationIntent = new Intent(this,
 				ResultsExtraFeaturesActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+
+		// put extra
+		notificationIntent.putExtra("fromNotification", true);
+		notificationIntent.putExtra("notificationTripData", tripRes);
+		notificationIntent.putExtra("CheckinButton", checkedIn);
+		notificationIntent.putExtra("facebookId", userId);
+
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				notificationIntent, 0);
 
-		notification.setLatestEventInfo(ResultsExtraFeaturesActivity.this,
-				title, message, pendingIntent);
+		notification.setLatestEventInfo(c, title, message, contentIntent);
 		notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
 
 	}
 
+	/**
+	 * Cancels a notification for bus arrival, before notification started
+	 */
 	private void cancelNotification() {
 		if (timer != null) {
 			timer.cancel();
 		}
 	};
 
+	/**
+	 * Save data if app is killed for memory reasons
+	 */
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		// Save UI state changes to the savedInstanceState.
+		// This bundle will be passed to onCreate if the process is
+		// killed and restarted.
+		savedInstanceState.putSerializable("Data", tripRes);
+	}
+
+	/**
+	 * Restore data if app is killed for memory resonse
+	 */
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		// Restore UI state from the savedInstanceState.
+		// This bundle has also been passed to onCreate.
+		tripRes = (TripResultObject) savedInstanceState.getSerializable("Data");
+	}
+
+	/**
+	 * Save data if user finished activity - for notifications
+	 */
+	/*
+	 * @Override protected void onStop() { super.onStop();
+	 * 
+	 * // save trip data SharedPreferences settings =
+	 * getSharedPreferences(PREFS_NAME, 0); SharedPreferences.Editor editor =
+	 * settings.edit(); editor.putInt("lineNumber", tripRes.getLineNumber());
+	 * editor.putString("stationName", tripRes.getStationName());
+	 * editor.putLong("tripId", tripRes.getTripId());
+	 * editor.putString("arrivalTime", tripRes.getArrivalTime());
+	 * editor.putInt("stopSequence", tripRes.getStopSequence());
+	 * 
+	 * // save page user changes editor.putBoolean("notificationToggleChecked",
+	 * notificationToggle.isChecked()); editor.putBoolean("CheckinButton",
+	 * checkedIn);
+	 * 
+	 * // Commit the edits editor.commit(); }
+	 */
 }

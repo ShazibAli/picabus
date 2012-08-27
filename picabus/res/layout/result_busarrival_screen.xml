@@ -18,6 +18,9 @@
             android:layout_weight="30"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+        	android:textColor="#8a2be2"
         	android:textAppearance="?android:attr/textAppearanceLarge" />
     
      <ImageView
@@ -31,6 +34,12 @@
 
     </LinearLayout>
     
+              <TextView
+        android:id="@+id/textViewbreak"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium" /> 
+        
      <TextView
         android:id="@+id/textViewStation"
             android:layout_width="fill_parent"
@@ -44,13 +53,19 @@
             android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
- 
-    
-              <TextView
-        android:id="@+id/arrivalTimes"
+          <TextView
+        android:id="@+id/textViewbreak"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-    android:text="@string/estimated_arrival_times"
+        android:textAppearance="?android:attr/textAppearanceMedium" /> 
+    
+        <TextView
+        android:id="@+id/arrivalTimes"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+  		  android:text="@string/estimated_arrival_times"
+  		  android:textStyle="bold"
+  		  android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
 

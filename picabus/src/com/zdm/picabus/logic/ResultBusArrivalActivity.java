@@ -137,7 +137,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 	private void UpdateResultsPageFields() {
 		// Set line
 		textViewLine = (TextView) findViewById(R.id.textViewLine);
-		textViewLine.setText("Line number: " + firstTrip.getLineNumber());
+		textViewLine.setText("					Line " + firstTrip.getLineNumber());
 
 		// Set company
 		companyImage = (ImageView) findViewById(R.id.iconCompany);

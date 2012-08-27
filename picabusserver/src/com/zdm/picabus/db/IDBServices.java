@@ -78,7 +78,7 @@ public interface IDBServices {
 	 *            the user's id
 	 * @param numOfPoints
 	 *            number of points we want to add for this user
-	 * @return current number of points of this user (after the raise)
+	 * @return on success: current number of points of this user (after the raise). on failure: -1
 	 * 
 	 */
 	public long increaseUserPoints(long userId, int numOfPoints);

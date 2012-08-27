@@ -46,34 +46,52 @@ public class RoutesMapActivity extends MapActivity {
     		List<Overlay> mapOverlays = mapView.getOverlays();
 			Drawable drawableRegularStop = this.getResources().getDrawable(R.drawable.pin_point_icon);
 			Drawable drawableCurrenStop = this.getResources().getDrawable(R.drawable.u_r_here_pin);
+			Drawable drawableCurrentLocation = this.getResources().getDrawable(R.drawable.notification_icon);
 			
 			AddItemizedOverlay itemizedOverlayRegular = new AddItemizedOverlay(drawableRegularStop, this);
 			AddItemizedOverlay itemizedOverlayFirst = new AddItemizedOverlay(drawableCurrenStop, this);
+			AddItemizedOverlay itemizedOverlayCurrentBusLocation = new AddItemizedOverlay(drawableCurrentLocation, this);
 			
 			for (int j = 0; j < stops.size(); j++) {
+				// handle bus real time location
+				if (stops.get(j).isRealtimeReport()) {
+					Stop realtimeLocation = stops.get(j);
+					GeoPoint geoPoint = new GeoPoint(
+							(int) (realtimeLocation.getLatitude() * 1E6),
+							(int) (realtimeLocation.getLongitude() * 1E6));
 
-				Stop currentStop = stops.get(j);
-        		GeoPoint geoPoint = new GeoPoint((int) (currentStop.getLatitude() * 1E6),
-    					(int) (currentStop.getLongitude() * 1E6));
-        		
-        		OverlayItem overlayitem = new OverlayItem(geoPoint, currentStop.getStopSequenceNumber() + "",
-    					currentStop.getStopName() +  "\nETA: " + currentStop.getDepartureTimeString());
+					OverlayItem overlayitem = new OverlayItem(geoPoint, "Current bus location: ","This is the last reported location of this bus. \nReported at: " + realtimeLocation.getReportTimestampString());
+					itemizedOverlayCurrentBusLocation.addOverlay(overlayitem);
+					mapOverlays.add(itemizedOverlayCurrentBusLocation);
+				}
+				// handle "regular" stops
+				else {
+				
+					Stop currentStop = stops.get(j);
+					GeoPoint geoPoint = new GeoPoint(
+							(int) (currentStop.getLatitude() * 1E6),
+							(int) (currentStop.getLongitude() * 1E6));
 
-        		// using special pin for current user location
-        		if (j == 0) {
-        			itemizedOverlayFirst.addOverlay(overlayitem);
-        			mapOverlays.add(itemizedOverlayFirst);
-        		}
-        		else {
-        			itemizedOverlayRegular.addOverlay(overlayitem);
-        			mapOverlays.add(itemizedOverlayRegular);	
-        		}
-    			
-    			// we want to zoom onto the source stop location	
-    			if (j == 0) {
-    				mc.animateTo(geoPoint);
-    				mc.setZoom(17);
-    			}
+					OverlayItem overlayitem = new OverlayItem(geoPoint,
+							currentStop.getStopSequenceNumber() + "",
+							currentStop.getStopName() + "\nETA: "
+									+ currentStop.getDepartureTimeString());
+
+					// using special pin for current user location
+					if (j == 0) {
+						itemizedOverlayFirst.addOverlay(overlayitem);
+						mapOverlays.add(itemizedOverlayFirst);
+					} else {
+						itemizedOverlayRegular.addOverlay(overlayitem);
+						mapOverlays.add(itemizedOverlayRegular);
+					}
+
+					// we want to zoom onto the source stop location
+					if (j == 0) {
+						mc.animateTo(geoPoint);
+						mc.setZoom(17);
+					}
+				}
         	}	
 			mapView.invalidate();
         }		        		

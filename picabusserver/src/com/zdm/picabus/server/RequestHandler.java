@@ -65,18 +65,18 @@ public class RequestHandler {
 
 	public JsonObject getRouteDetails(long tripID, int currentStopSequenceNumber) throws EmptyResultException {
 		List<Stop> retrievedStops = idbs.getRouteDetails(tripID, currentStopSequenceNumber); 
-		
+		RealtimeLocationReport currentBusLocation = idbs.getRealtimeLocation(tripID);
 		// validity check
-		if (retrievedStops == null) {
+		if (retrievedStops == null || currentBusLocation == null) {
 			return null;
 		} 
 
-		
 		JsonObject stopsWrapper = new JsonObject();
+		JsonObject realtimeLocationWrapper = new JsonObject();
 		JsonObject currentStopInner;
 		JsonObject data = new JsonObject();
 		
-
+		// creating the stops list 
 		for (int i=0; i < retrievedStops.size(); i++) {
 			Stop stop = retrievedStops.get(i);
 			currentStopInner = new JsonObject();
@@ -93,11 +93,23 @@ public class RequestHandler {
 		
 		stopsWrapper.addProperty("stopCount", retrievedStops.size());
 		data.add("data", stopsWrapper);
+		
+		// creating the real time location report
+		if (currentBusLocation.isEmpty()) { // relevant report doesn't exists 
+			realtimeLocationWrapper.addProperty("available", false);
+		}
+		else { // relevant report exists
+			realtimeLocationWrapper.addProperty("available", true);
+			realtimeLocationWrapper.addProperty("longitude", currentBusLocation.getLongitude());
+			realtimeLocationWrapper.addProperty("latitude", currentBusLocation.getLatitude());
+			realtimeLocationWrapper.addProperty("reportTimestampString", currentBusLocation.getReportTimestamp().toString());
+		}
+		data.add("realtimeLocation", realtimeLocationWrapper);
 		return data;
 	}
 
 	
-	public boolean reportLocation(final Long userIdValue, Double latValue,
+	public Long reportLocation(final Long userIdValue, Double latValue,
 			Double lngValue, Long tripIdValue) {
 		
 /*		// update user's score (in a separate thread)
@@ -109,18 +121,23 @@ public class RequestHandler {
 		});
 		increasePoints.run();
 */		
-		idbs.increaseUserPoints(userIdValue, NUMBER_OF_POINTS_PER_LOCATION_REPORT);
-		return idbs.reportCurrentLocation(userIdValue, lngValue, latValue, tripIdValue);
+		Long currentNumberOfPoints = idbs.increaseUserPoints(userIdValue, NUMBER_OF_POINTS_PER_LOCATION_REPORT);
+		boolean opResult = idbs.reportCurrentLocation(userIdValue, lngValue, latValue, tripIdValue);
+		return (opResult == true ? currentNumberOfPoints : -1);
 	}
 
-	public boolean reportCheckout(Long userIdValue, Long tripIdValue) {
-		return idbs.reportCheckout(userIdValue,tripIdValue);
+	public Long reportCheckout(Long userIdValue, Long tripIdValue) { 
+		// get user's current number of points
+		Long currentNumberOfPoints = idbs.getPointStatus(userIdValue);
+		boolean opResult = idbs.reportCheckout(userIdValue,tripIdValue);
+		return (opResult == true ? currentNumberOfPoints : -1);
 	}
 
-	public boolean reportTextualMessage(Long userIdValue, Long tripIdValue,
+	public Long reportTextualMessage(Long userIdValue, Long tripIdValue,
 			String reportMessageValue) {
-		idbs.increaseUserPoints(userIdValue, NUMBER_OF_POINTS_PER_TEXTUAL_REPORT);
-		return idbs.reportTripDescription(userIdValue,tripIdValue, reportMessageValue);
+		Long currentNumberOfPoints = idbs.increaseUserPoints(userIdValue, NUMBER_OF_POINTS_PER_TEXTUAL_REPORT);
+		boolean opResult = idbs.reportTripDescription(userIdValue,tripIdValue, reportMessageValue);
+		return (opResult == true ? currentNumberOfPoints : -1);
 	}
 
 	public JsonObject getRealtimeLocation(Long tripIdValue) throws EmptyResultException {

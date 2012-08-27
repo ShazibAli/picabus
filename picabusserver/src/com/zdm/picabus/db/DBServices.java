@@ -255,6 +255,8 @@ public class DBServices implements IDBServices {
 				
 				rsEmpty = false;
 			}
+			// TODO: get Realtime location
+			
 			rs.close();
 			stmt.close();
 
@@ -316,6 +318,7 @@ public class DBServices implements IDBServices {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return -1;
 		} finally {
 			if (c != null)
 				try {

@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
 import com.zdm.picabus.utils.RequestUtils;
 import com.zdm.picabus.utils.ServerError;
+import com.zdm.picabus.utils.Service;
 
 public class ReportServlet extends HttpServlet {
 
@@ -30,8 +31,8 @@ public class ReportServlet extends HttpServlet {
 		}
 		
 		// dispatching requests for handling according task name
-		if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.REPORT_LOCATION.getTaskName())) {
-
+		if (taskName.equalsIgnoreCase(Service.REPORT_LOCATION.getTaskName())) {
+			// TODO: change response
 			JsonObject jsonObject = RequestUtils.extractRequestPayload(req);
 			if (jsonObject == null) {
 				resp.sendError(ERROR_CODE,
@@ -57,22 +58,23 @@ public class ReportServlet extends HttpServlet {
 			Long tripIdValue = tripId.getAsLong();
 
 			RequestHandler rh = new RequestHandler();
-			boolean result = false;
+			long result = -1;
 			JsonObject responseJson = null;
 			result = rh.reportLocation(userIdValue, latValue, lngValue,
 					tripIdValue);
-			if (result == false) {
+			if (result == -1) {
 				resp.sendError(ERROR_CODE,
 						ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
 				return;
 			} else { // result == true
-				responseJson = RequestUtils.generateStatusResultsJson(result);
+				responseJson = RequestUtils.generateStatusResultsJson(true,Service.REPORT_LOCATION.getTaskName() ,result);
 			}
 
 			RequestUtils.sendBackResponse(resp, responseJson);
 		}
 		
-		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.REPORT_CHECKOUT.getTaskName())) {
+		else if (taskName.equalsIgnoreCase(Service.REPORT_CHECKOUT.getTaskName())) {
+			// TODO: change response
 			JsonObject jsonObject = RequestUtils.extractRequestPayload(req);
 			if (jsonObject == null) {
 				resp.sendError(ERROR_CODE,
@@ -95,21 +97,22 @@ public class ReportServlet extends HttpServlet {
 			Long tripIdValue = tripId.getAsLong();
 
 			RequestHandler rh = new RequestHandler();
-			boolean result = false;
+			long result = -1;
 			JsonObject responseJson = null;
 			result = rh.reportCheckout(userIdValue,	tripIdValue);
-			if (result == false) {
+			if (result == -1) {
 				resp.sendError(ERROR_CODE,
 						ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
 				return;
 			} else { // result == true
-				responseJson = RequestUtils.generateStatusResultsJson(result);
+				responseJson = RequestUtils.generateStatusResultsJson(true, Service.REPORT_CHECKOUT.getTaskName(), result);
 			}
 
 			RequestUtils.sendBackResponse(resp, responseJson);
 		}
 		
-		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.REPORT_TEXTUAL_MSG.getTaskName())) {
+		else if (taskName.equalsIgnoreCase(Service.REPORT_TEXTUAL_MSG.getTaskName())) {
+			// TODO: change response
 			JsonObject jsonObject = RequestUtils.extractRequestPayload(req);
 			if (jsonObject == null) {
 				resp.sendError(ERROR_CODE,
@@ -134,15 +137,15 @@ public class ReportServlet extends HttpServlet {
 			String reportMessageValue = reportMessage.getAsString();
 			
 			RequestHandler rh = new RequestHandler();
-			boolean result = false;
+			long result = -1;
 			JsonObject responseJson = null;
 			result = rh.reportTextualMessage(userIdValue, tripIdValue, reportMessageValue);
-			if (result == false) {
+			if (result == -1) {
 				resp.sendError(ERROR_CODE,
 						ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
 				return;
 			} else { // result == true
-				responseJson = RequestUtils.generateStatusResultsJson(result);
+				responseJson = RequestUtils.generateStatusResultsJson(true, Service.REPORT_TEXTUAL_MSG.getTaskName(),result);
 			}
 
 			RequestUtils.sendBackResponse(resp, responseJson);

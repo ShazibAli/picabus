@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.RealtimeLocationReport;
+import com.zdm.picabus.enitities.ReportResult;
 import com.zdm.picabus.enitities.Stop;
 import com.zdm.picabus.enitities.Trip;
 
@@ -101,6 +102,7 @@ public class ResponseParser implements IResponseParser {
 			String departureTimeString;
 			int stopCode;
 			
+			// handling the stops information
 			for (int i = 0; i < stopCount; i++) {
 				currentStopIdentifier = "stop" + i;
 				currentStop = data.getJSONObject(currentStopIdentifier);
@@ -114,7 +116,18 @@ public class ResponseParser implements IResponseParser {
 				departureTimeString = currentStop.getString("departureTime");
 				stopCode = currentStop.getInt("stop_code");
 				Stop currentStopObject = new Stop(stopCode, stopName, stopDescription, latitude, longitude, stopSequenceNumber, departureTimeString);
-				stops.add(currentStopObject);			}
+				currentStopObject.setRealtimeReport(false);
+				stops.add(currentStopObject);			
+			}
+			// handling real-time report information
+			JSONObject realtimeInfo = responseJson.getJSONObject("realtimeLocation");
+			
+			// if real time information is available, we add it to the stop list (as marked stop)
+			if (realtimeInfo.getBoolean("available") == true) {
+				Stop realtimeReportAsStop = new Stop(realtimeInfo.getDouble("latitude"), realtimeInfo.getDouble("longitude"), true, realtimeInfo.getString("reportTimestampString"));
+				stops.add(realtimeReportAsStop);
+			}
+			 
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -150,6 +163,24 @@ public class ResponseParser implements IResponseParser {
 		}
 		
 		return rlr;
+	}
+
+	public ReportResult parseReportResult(JSONObject json) {
+		ReportResult reportResult = null;
+		try {
+			String status = json.getString("status");
+			boolean result = (status.equalsIgnoreCase("success") ? true : false);
+			String reportType = json.getString("Task-name");
+			long currentNumOfPoints = json.getLong("currentPoints");
+			
+			reportResult = new ReportResult(reportType, result, currentNumOfPoints, false);
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+			reportResult = new ReportResult();
+			
+		}
+		return reportResult;
 	}
 
 

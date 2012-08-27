@@ -92,10 +92,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
                    paint.setStrokeWidth(3);
               
                    canvas.drawRect(rectBounds, paint);
-              */     
-                   
-                   
-               
+              */                
            }
        }
        

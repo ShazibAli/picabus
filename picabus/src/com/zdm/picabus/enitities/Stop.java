@@ -16,13 +16,28 @@ public class Stop implements Serializable {
 	private double longitude;
 	private int stopSequenceNumber;
 	private String departureTimeString;
+	private boolean isRealtimeReport;
+	private String reportTimestampString;
 	
 	
 	public Stop() {
 	}
-	
-	
-	
+
+	/**
+	 * @param latitude
+	 * @param longitude
+	 * @param isRealtimeReport
+	 * @param reportTimestampString
+	 */
+	public Stop(double latitude, double longitude, boolean isRealtimeReport,
+			String reportTimestampString) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.isRealtimeReport = isRealtimeReport;
+		this.reportTimestampString = reportTimestampString;
+	}
+
 	/**
 	 * @param stopID
 	 * @param stopCode
@@ -68,6 +83,42 @@ public class Stop implements Serializable {
 		this.longitude = longitude;
 		this.stopSequenceNumber = stopSequenceNumber;
 		this.departureTimeString = departureTimeString;
+	}
+
+
+
+	/**
+	 * @return the reportTimestampString
+	 */
+	public String getReportTimestampString() {
+		return reportTimestampString;
+	}
+
+
+
+	/**
+	 * @param reportTimestampString the reportTimestampString to set
+	 */
+	public void setReportTimestampString(String reportTimestampString) {
+		this.reportTimestampString = reportTimestampString;
+	}
+
+
+
+	/**
+	 * @return the isRealtimeReport
+	 */
+	public boolean isRealtimeReport() {
+		return isRealtimeReport;
+	}
+
+
+
+	/**
+	 * @param isRealtimeReport the isRealtimeReport to set
+	 */
+	public void setRealtimeReport(boolean isRealtimeReport) {
+		this.isRealtimeReport = isRealtimeReport;
 	}
 
 

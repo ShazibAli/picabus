@@ -1,9 +1,9 @@
 package com.zdm.picabus.logic;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -18,9 +18,12 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.zdm.picabus.R;
+import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.maps.AddItemizedOverlay;
 import com.zdm.picabus.utilities.DataCollector;
+import com.zdm.picabus.utilities.ErrorsHandler;
 
 /**
  * 
@@ -35,38 +38,72 @@ public class ManualSearchActivity extends MapActivity {
 	MapView mapView;
 	DigitalClock dc;
 	int line_number;
+	Context c;
+	IHttpCaller ihc = null;
+	ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.manual_search);
+		c = this;
+		// Open progress dialog
+		this.pd = new ProgressDialog(this);
+		// get http caller instance
+		ihc = HttpCaller.getInstance();
 
-		// the Digital Clock shows the current device time (by default)
-
+		// buttons
 		submitBtn = (ImageButton) findViewById(R.id.button_submit_ft);
 		textField = (TextView) findViewById(R.id.freetext_line_num);
 		mapView = (MapView) findViewById(R.id.mapViewManualSearch);
 
+		// the Digital Clock shows the current device time (by default)
 		displayUserOnMap(mapView);
 
 		submitBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
+				Double lat = null;
+				Double lng = null;
+
 				// Get line number that was clicked
 				String line_str = textField.getText().toString();
-				line_number = Integer.parseInt(line_str);
+				if (line_str.equals("")) {
+					ErrorsHandler.createNullLineManualSearchErrorAlert(c);
+				} else {
+					line_number = Integer.parseInt(line_str);
 
-				// Pass the line number to lines list intent
-				List<Integer> linesList = new ArrayList<Integer>();
-				linesList.add(line_number);
-				// open new activity
-				Intent intent = new Intent(
-						"com.zdm.picabus.logic.BusLinesListActivity");
-				intent.putIntegerArrayListExtra("linesList",
-						(ArrayList<Integer>) linesList);
-				startActivity(intent);
+					// get necessary data and send request to server
 
+					// TODO: get time interval from preferences
+					int timeInterval = 15;
+					// Get current time
+					String time = DataCollector.getCurrentTime();
+
+					// Get coordinates
+					GpsResult res = DataCollector.getGpsCoordinates(c);
+					if (res != null) {
+						lat = res.getLat();
+						lng = res.getLng();
+					}
+					// Send data to server
+					if (!DEBUG_MODE) {
+						if (lat != null || lng != null) {
+							ihc.getDepartureTime(c, pd, line_number, lat, lng,
+									time, timeInterval);
+							finish();
+						} else {
+							ErrorsHandler
+									.createNullGpsManualSearchErrorAlert(c);
+						}
+					} else {
+						// for emulator
+						ihc.getDepartureTime(c, pd, line_number, 32.045816,
+								34.756983, "08:20:00", timeInterval);
+					}
+
+				}
 			}
 		});
 	}
@@ -74,45 +111,50 @@ public class ManualSearchActivity extends MapActivity {
 	private void displayUserOnMap(MapView mapView) {
 
 		// attempt to get GPS coordinates again
-		double lat;
-		double lng;
+		double lat = 0;
+		double lng = 0;
+
 		GpsResult res = DataCollector.getGpsCoordinates(this);
 
-		if ((res == null) && (DEBUG_MODE)) {// TODO: change to real code
-			lat = 32.045816;
-			lng = 34.756983;
-		}
+		// null gps coordinates
+		if (res == null)
+			if (DEBUG_MODE) {
+				lat = 32.045816;
+				lng = 34.756983;
+			} else {
+				return;
+			}
+
+		// valid gps coordinates
 		if (res != null) {
 			lat = res.getLat();
 			lng = res.getLng();
-
-			if (res != null || DEBUG_MODE) {
-				// Displaying Zooming controls
-				mapView.setBuiltInZoomControls(true);
-				MapController mc = mapView.getController();
-
-				List<Overlay> mapOverlays = mapView.getOverlays();
-				Drawable drawableCurrenStop = this.getResources().getDrawable(
-						R.drawable.u_r_here_pin);
-
-				AddItemizedOverlay itemizedOverlayFirst = new AddItemizedOverlay(
-						drawableCurrenStop, this);
-
-				GeoPoint geoPoint = new GeoPoint((int) (lat * 1E6),
-						(int) (lng * 1E6));
-
-				OverlayItem overlayitem = new OverlayItem(geoPoint,
-						"You are here", "The search is based on this location");
-
-				itemizedOverlayFirst.addOverlay(overlayitem);
-				mapOverlays.add(itemizedOverlayFirst);
-				mc.animateTo(geoPoint);
-				mc.setZoom(17);
-
-				mapView.invalidate();
-			}
 		}
 
+		// here lat and lng are not null - continue showing map
+
+		// Displaying Zooming controls
+		mapView.setBuiltInZoomControls(true);
+		MapController mc = mapView.getController();
+
+		List<Overlay> mapOverlays = mapView.getOverlays();
+		Drawable drawableCurrenStop = this.getResources().getDrawable(
+				R.drawable.u_r_here_pin);
+
+		AddItemizedOverlay itemizedOverlayFirst = new AddItemizedOverlay(
+				drawableCurrenStop, this);
+
+		GeoPoint geoPoint = new GeoPoint((int) (lat * 1E6), (int) (lng * 1E6));
+
+		OverlayItem overlayitem = new OverlayItem(geoPoint, "You are here",
+				"The search is based on this location");
+
+		itemizedOverlayFirst.addOverlay(overlayitem);
+		mapOverlays.add(itemizedOverlayFirst);
+		mc.animateTo(geoPoint);
+		mc.setZoom(17);
+
+		mapView.invalidate();
 	}
 
 	@Override

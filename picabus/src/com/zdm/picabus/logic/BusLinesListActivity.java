@@ -32,7 +32,7 @@ public class BusLinesListActivity extends ListActivity {
 	int popupRetVal = 0;
 	Intent resultsIntent;
 	ProgressDialog pd;
-	int timeInterval = 15;
+
 	boolean afterGpsNull;
 	IHttpCaller ihc = null;
 
@@ -109,8 +109,8 @@ public class BusLinesListActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		int line_number = this.lineRowAdapter.getItem(position);
+		int timeInterval = 15;// TODO: get time interval from preferences
 		Double lat = null;
-
 		Double lng = null;
 		// Get current time
 		String time = DataCollector.getCurrentTime();

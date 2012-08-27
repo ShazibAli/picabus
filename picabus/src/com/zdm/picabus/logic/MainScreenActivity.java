@@ -1,20 +1,10 @@
 package com.zdm.picabus.logic;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import sun.security.jca.GetInstance;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,13 +21,10 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.SlidingDrawer.OnDrawerScrollListener;
 import android.widget.Spinner;
 
-import com.facebook.android.FacebookError;
-import com.facebook.android.AsyncFacebookRunner.RequestListener;
 import com.zdm.picabus.R;
 import com.zdm.picabus.facebook.PicabusFacebookObject;
 import com.zdm.picabus.facebook.ProfileImageGetter;
 import com.zdm.picabus.locationservices.GpsCorrdinates;
-import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
 import com.zdm.picabus.utilities.SettingsParser;
 
@@ -60,9 +47,8 @@ public class MainScreenActivity extends Activity {
 
 	NotificationManager nm;
 	GpsCorrdinates gpsObject;
-	LocationManager locationManager;
 	PicabusFacebookObject facebookObject;
-	
+
 	Context context;
 
 	@Override
@@ -76,10 +62,6 @@ public class MainScreenActivity extends Activity {
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		nm.cancel(NOTIFICATION_UNIQUE_ID);
 
-		// get GPS service
-		gpsObject = DataCollector.getGpsObject(this);
-		locationManager = DataCollector.getLocationManager(this);
-
 		// Menu Buttons
 		cameraBtn = (ImageButton) findViewById(R.id.button_camera);
 		historyBtn = (ImageButton) findViewById(R.id.button_history);
@@ -87,11 +69,17 @@ public class MainScreenActivity extends Activity {
 		searchBtn = (ImageButton) findViewById(R.id.button_search);
 		myPicabusBtn = (ImageButton) findViewById(R.id.button_mypicabus);
 
+		// get GPS service and check is GPS enabled
+		gpsObject = GpsCorrdinates.getGpsInstance(this);
+		if (!gpsObject.isGpsEnabled()) {
+			ErrorsHandler.createGpsErrorAlert(context);
+		}
+		
 		// Listeners for buttons:
 		cameraBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// Check GPS coordinates available, alert if disabled
-				if (!gpsObject.isGpsEnabled(locationManager)) {
+				if (!gpsObject.isGpsEnabled()) {
 					ErrorsHandler.createGpsErrorAlert(context);
 				} else {
 					// Open camera activity
@@ -113,7 +101,7 @@ public class MainScreenActivity extends Activity {
 		searchBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// Check GPS coordinates available, alert if disabled
-				if (!gpsObject.isGpsEnabled(locationManager)) {
+				if (!gpsObject.isGpsEnabled()) {
 					ErrorsHandler.createGpsErrorAlert(context);
 				} else {
 					// Open Free text activity
@@ -253,20 +241,20 @@ public class MainScreenActivity extends Activity {
 				if (slidingDrawer.isOpened()) {
 					slideButton
 							.setBackgroundResource(R.drawable.settings_icon_down);
-				} else
+				} else{
 					slideButton
 							.setBackgroundResource(R.drawable.settings_icon_up);
-				;
+				}
 			}
 
 			public void onScrollEnded() {
 				if (slidingDrawer.isOpened()) {
 					slideButton
 							.setBackgroundResource(R.drawable.settings_icon_down);
-				} else
+				} else{
 					slideButton
 							.setBackgroundResource(R.drawable.settings_icon_up);
-				;
+				}
 
 			}
 		});
@@ -274,7 +262,7 @@ public class MainScreenActivity extends Activity {
 		slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
 
 			public void onDrawerClosed() {
-				slideButton.setBackgroundResource(R.drawable.settings_icon_up);
+				/*slideButton.setBackgroundResource(R.drawable.settings_icon_up);*/
 				slidingDrawer.setClickable(false);
 			}
 		});
@@ -299,17 +287,29 @@ public class MainScreenActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 
-
-		if (slidingDrawer.isOpened()){//close sliding drawer
+		if (slidingDrawer.isOpened()) {// close sliding drawer
 			slidingDrawer.close();
-		}
-		else{
+		} else {
 			super.onBackPressed();
 		}
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if ((facebookObject != null) && (facebookObject.facebook != null)) {
+			facebookObject.facebook.extendAccessTokenIfNeeded(this, null);
+		}
+	}
 	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		gpsObject.stopLocationUpdates();
+	}
 }

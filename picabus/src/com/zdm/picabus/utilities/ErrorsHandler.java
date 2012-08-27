@@ -21,7 +21,8 @@ public class ErrorsHandler {
 	private static final String ERROR_FACEBOOK_LOGIN = "Cannot login to your facebook acount. Redirecting to Picabus";
 	private static final String ERROR_FACEBOOK_LOGIN_MY_PICABUS = "Cannot login to your facebook acount. Please try again later";
 	private static final String ERROR_FACEBOOK_LOGOUT_MY_PICABUS = "Cannot logout from your facebook acount. Please try again later";
-	
+	private static final String ERROR_NULL_GPS_COORDINATES_MANUAL_SEARCH="Could not retrieve valid GPS coordinates. Please try again later";
+	private static final String ERROR_NULL_LINE_MANUAL_SEARCH="No line number was entered. Please insert the requested bus line number";
 	
 /**
  * Creates error message when open cv return null list of lines,
@@ -128,6 +129,53 @@ public class ErrorsHandler {
 		AlertDialog alert = alertDialogBuilder.create();
 		alert.show();
 	}
+	
+	
+	
+	/**
+	 * error for manual search - when gps result is null
+	 * @param c - context
+	 */
+	public static void createNullGpsManualSearchErrorAlert(final Context c) {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
+		alertDialogBuilder
+				.setMessage(ERROR_NULL_GPS_COORDINATES_MANUAL_SEARCH)
+				.setCancelable(false)
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+	}
+	
+	/**
+	 * error when user didn't enter line number and pressed "sumbit"
+	 * @param c
+	 */
+	public static void createNullLineManualSearchErrorAlert(final Context c) {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
+		alertDialogBuilder
+				.setMessage(ERROR_NULL_LINE_MANUAL_SEARCH)
+				.setCancelable(false)
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+	}
+	
+	
+	
 	
 	/**
 	 * Creates error message when there's a problem in connectivity layer

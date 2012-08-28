@@ -174,7 +174,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		TripResultObject res = this.arrivalRowAdapter.getItem(position);
 
-		Intent intent = new Intent ("com.zdm.picabus.logic.ResultsExtraFeaturesActivity");
+		Intent intent = new Intent ("com.zdm.picabus.logic.TripManagerActivity");
 		intent.putExtra("Data", res);
 		startActivity(intent);
 	}

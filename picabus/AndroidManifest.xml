@@ -91,11 +91,11 @@
         </activity>
         
                 <activity 
-            android:name=".logic.ResultsExtraFeaturesActivity"
+            android:name=".logic.TripManagerActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="com.zdm.picabus.logic.ResultsExtraFeaturesActivity" />
+                <action android:name="com.zdm.picabus.logic.TripManagerActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

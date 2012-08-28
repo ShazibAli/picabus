@@ -18,7 +18,7 @@ public class GpsCorrdinates {
 	private LocationListener locationListener;
 	private Double lat;
 	private Double lng;
-	private Location lastLocation;
+	private Location lastLocation = null;
 
 	/**
 	 * creates GpsCorrdinates object with location manager
@@ -75,12 +75,12 @@ public class GpsCorrdinates {
 	 */
 	public void getCurrentLocation() {
 
-		lastLocation = locationManager
+/*		lastLocation = locationManager
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (lastLocation != null) {
 			lat = lastLocation.getLongitude();
 			lng = lastLocation.getLatitude();
-		}
+		}*/
 	}
 
 	/**

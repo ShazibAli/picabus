@@ -12,7 +12,7 @@
     <string name="pref_timeinterval_instruction">Please choose time interval for bus arrivals:</string>
     <string name="manual_search_instruction">Please enter the requested bus line</string>
     <string name="aboutus_title">About us</string>
-    <string name="aboutus_text">Nowadays bus passengers dont have an easy way to know when the bus they are waiting for is about to arrive. PICABUS is an enjoyable and easy to use way for checking buses schedule -just point and shoot!</string>
+    <string name="aboutus_text">Nowadays bus passengers dont have an easy way to know when the bus they are waiting for is about to arrive. \nPICABUS is an enjoyable and easy to use way for checking buses schedule -just point and shoot!</string>
     <string name="cancel_popup">Cancel</string>
     <string name="choose_bus_destination">Please choose your bus destination:</string>
     <string name="choose_line_number">Please choose a bus line number: </string>
@@ -32,5 +32,7 @@
     <string name="post_facebook_inst">Click to Post to facebook about picabus</string>
     <string name="histroy_headline">Recently searched bus lines</string>
     <string name="history_empty">No recent searches</string>
-
+    <string name="checkin_msg">Thank you for checking in! \nYour location will be shared with others until you checkout!\n(each report gives you %d points)</string>
+	<string name="checkin_failed_msg">Attemp to checkin failed.\nPlease try again later&#8230; </string>
+    
 </resources>

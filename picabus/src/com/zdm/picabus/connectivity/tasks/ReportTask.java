@@ -35,8 +35,6 @@ public class ReportTask extends HttpAbstractTask {
 		int pointsEarnedByCheckin = 0;
 
 		// TODO: this messages should be in Strings.xml
-		final String CHECKIN_MESSAGE = "Thank you for checkin! You will earn points for the time you are checked in on a bus, and reports regarding to location will be sent until you checkout from bus";
-		final String CHECKIN_ERROR_MESSAGE = "Attemp to checkin failed, please try again later";
 		final String CHECKOUT_MESSAGE = "Thank you for checkout! You have earned "
 				+ pointsEarnedByCheckin + "points";
 		final String CHECKOUT_ERROR_MESSAGE = "Attemp to checkin failed, please try again later";
@@ -77,11 +75,12 @@ public class ReportTask extends HttpAbstractTask {
 			if (taskName == Tasks.REPORT_LOCATION.getTaskName()) {
 				if (result == null) {
 					Toast toast = Toast.makeText(context,
-							CHECKIN_ERROR_MESSAGE, 5);
+							context.getResources().getString(R.string.checkin_failed_msg), Toast.LENGTH_SHORT);
 					toast.show();
 				} else { // result != null
 					/* The update was successful */
-					Toast toast = Toast.makeText(context, CHECKIN_MESSAGE, 5);
+					String message = context.getResources().getString(R.string.checkin_msg, NUMBER_OF_POINTS_PER_LOCATION_REPORT);
+					Toast toast = Toast.makeText(context, message , Toast.LENGTH_LONG);
 					toast.show();
 					// TODO:pointsOnCheckin=
 					// TODO:pointsEarnedByCheckin=pointsOnCheckin-pointOnCheckout

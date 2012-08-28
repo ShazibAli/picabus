@@ -30,5 +30,7 @@
     <string name="share_title">Share Picabus with friends..</string>
     <string name="share_message">What\'s up? \nCheck out Picabus! \nBest public transportation application ever!! \nhttp://picabusapp.appspot.com</string>
     <string name="post_facebook_inst">Click to Post to facebook about picabus</string>
+    <string name="histroy_headline">Recently searched bus lines</string>
+    <string name="history_empty">No recent searches</string>
 
 </resources>

@@ -28,7 +28,7 @@ public class GetUserScoreTask extends HttpAbstractTask {
 		JSONObject json = null;
 		IResponseParser rp = null;
 		long currentScore = 0;
-
+		waitSpinner.dismiss();
 		// not null result from server (which means error in connectivity stage)
 		if (result != null) {
 			try {
@@ -39,6 +39,7 @@ public class GetUserScoreTask extends HttpAbstractTask {
 			}
 
 			rp = new ResponseParser();
+			
 			// reponse from server
 			if (json != null) {
 				currentScore = rp.parseGetScoreResponse(json);

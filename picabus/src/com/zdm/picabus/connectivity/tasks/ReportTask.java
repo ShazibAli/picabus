@@ -20,12 +20,13 @@ public class ReportTask extends HttpAbstractTask {
 	private static final int NUMBER_OF_POINTS_PER_LOCATION_REPORT = 2;
 	private static final int NUMBER_OF_POINTS_PER_TEXTUAL_REPORT = 5;
 	private Context context;
-
+	
 	public ReportTask(Context mContext, ProgressDialog waitSpinner,
 			String taskName, JSONObject reuqestPayload) {
 		super(mContext, waitSpinner, taskName, reuqestPayload);
 
 		this.context = mContext;
+		
 	}
 
 	@Override
@@ -42,6 +43,9 @@ public class ReportTask extends HttpAbstractTask {
 				+ NUMBER_OF_POINTS_PER_TEXTUAL_REPORT + "points";
 		final String REPORT_TEXT_ERROR_MESSAGE = "Attemp to report failed, please try again later";
 
+		
+		// Dismissing progress dialod
+		waitSpinner.dismiss();
 		
 		JSONObject json = null;
 		IResponseParser rp = null;
@@ -72,7 +76,7 @@ public class ReportTask extends HttpAbstractTask {
 			// TODO: Handle this calues
 			
 			// Checkin
-			if (taskName == Tasks.REPORT_LOCATION.getTaskName()) {
+			if (taskName.equalsIgnoreCase(Tasks.REPORT_LOCATION.getTaskName())) {
 				if (result == null) {
 					Toast toast = Toast.makeText(context,
 							context.getResources().getString(R.string.checkin_failed_msg), Toast.LENGTH_SHORT);
@@ -85,7 +89,7 @@ public class ReportTask extends HttpAbstractTask {
 					// TODO:pointsOnCheckin=
 					// TODO:pointsEarnedByCheckin=pointsOnCheckin-pointOnCheckout
 				}
-			} else if (taskName == Tasks.REPORT_CHECKOUT.getTaskName()) { // Checkout
+			} else if (taskName.equalsIgnoreCase(Tasks.REPORT_CHECKOUT.getTaskName())) { // Checkout
 				if (result == null) {
 					Toast toast = Toast.makeText(context,
 							CHECKOUT_ERROR_MESSAGE, 5);
@@ -98,7 +102,7 @@ public class ReportTask extends HttpAbstractTask {
 					toast.show();
 
 				}
-			} else if (taskName == Tasks.REPORT_TEXTUAL_MSG.getTaskName()) { // text
+			} else if (taskName.equals(Tasks.REPORT_TEXTUAL_MSG.getTaskName())) { // text
 																				// report
 				if (result == null) {
 					Toast toast = Toast.makeText(context,

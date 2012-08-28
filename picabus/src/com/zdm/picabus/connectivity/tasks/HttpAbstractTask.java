@@ -33,7 +33,7 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 	
 	public HttpAbstractTask(Context mContext, ProgressDialog waitSpinner, String taskName, JSONObject reuqestPayload) {
 		this.mContext = mContext;
-		this.waitSpinner = new ProgressDialog(mContext);
+		this.waitSpinner = waitSpinner;
 		this.taskName = taskName;
 		this.requestPayload = reuqestPayload;
 	}

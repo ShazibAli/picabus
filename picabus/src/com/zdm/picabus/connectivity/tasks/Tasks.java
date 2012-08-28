@@ -11,7 +11,7 @@ public enum Tasks {
 	GET_ROUTE_DETAILS("getRouteDetails"),
 	REPORT_LOCATION("reportLocation"),
 	REPORT_CHECKOUT("reportCheckout"),
-	REPORT_TEXTUAL_MSG("reportTextualMsg"),
+	REPORT_TEXTUAL_MSG("reportTextualMsg"), 
 	GET_LAST_REPORTED_LOCATION("getLastReportedLocation"),
 	GET_USER_SCORE("getUserScore");
 

@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,59 +46,73 @@ public class TripManagerActivity extends Activity {
 	TextView notifyInstructionText;
 	TextView lineAndArrivalTop;
 	Button checkinButton;
-	Boolean checkedIn = false;
+	boolean checkedIn = false;
 	EditText reportEditText;
 	Button submitReportButton;
-	Boolean userLoggedIn;
+	boolean userLoggedIn;
 	TripResultObject tripRes;
 	IHttpCaller ihc = null;
 	ProgressDialog pd;// ?
-	Boolean arrivedFromNotification;
+	//boolean arrivedFromNotification;
 	String userId;
-
+	boolean previouslyCheckedInCurrTrip=false;
 	Timer timer;// timer for notification
-
+	Intent currIntent;
+	
+	boolean retFromNotificationAndCheckedOut;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.results_notify_checkin_route_screen);
 		c = this;
-		Intent currIntent = getIntent();
+		currIntent = getIntent();
 		// check if arrived from notification click
-		arrivedFromNotification = currIntent.getBooleanExtra(
-				"fromNotification", false);
+/*		arrivedFromNotification = currIntent.getBooleanExtra(
+				"fromNotification", false);*/
 		
 		pd = new ProgressDialog(this);
 		
 		ihc = HttpCaller.getInstance();
 
-		// get facebook user ID
-		if (arrivedFromNotification) {
-			userId = currIntent.getStringExtra("facebookId");
+		//check if the user is checked in on that trip
+		previouslyCheckedInCurrTrip = isPreviouslyCheckedInCurrTrip();
+		
+		//check if user has checked out and than clicked notification
+		retFromNotificationAndCheckedOut = isRetFromNotificationAndCheckedOut();
+		if (retFromNotificationAndCheckedOut){
+			finish();
 		}
+		
+		
+		if (previouslyCheckedInCurrTrip){
+			checkedIn=true;
+		}
+		
+		// get facebook user ID
+		if (previouslyCheckedInCurrTrip){
+			setUserIdIfCheckedIn();
+		}
+/*		if (arrivedFromNotification) {
+			userId = currIntent.getStringExtra("facebookId");
+		}*/
 		if (userId == null) {
-			PicabusFacebookObject pfo = PicabusFacebookObject
-					.getFacebookInstance();
+			PicabusFacebookObject pfo = PicabusFacebookObject.getFacebookInstance();
 			userId = pfo.getFacebookId();
 		}
 
 		// Check if user logged in
 		userLoggedIn = userId != null;
 
-		// get trip data, either from preferences save/notification intent/
-		// previous intent
-
-		// get trip if came from notification click
-
-		if (arrivedFromNotification) {
-			getTripResultFromPref(currIntent);
+		// get trip data, either from preferences or prev intent
+		
+		//if checked in on that trip
+		if (previouslyCheckedInCurrTrip){
+			setDataIfCheckedIn();
 		}
-
-		// get trip from previous activity
-		else if (tripRes == null) {
-			tripRes = (TripResultObject) currIntent
-					.getSerializableExtra("Data");
+		// else get trip from previous activity
+		else if (!retFromNotificationAndCheckedOut){
+			tripRes = (TripResultObject) currIntent.getSerializableExtra("Data");
 		}
 
 		// set UI
@@ -110,8 +125,7 @@ public class TripManagerActivity extends Activity {
 		reportEditText = (EditText) findViewById(R.id.reportEditText);
 		submitReportButton = (Button) findViewById(R.id.submitReportBtn);
 
-		// restore UI changes if needed
-		getUiChangesFromPref(currIntent);
+
 
 		//set all UI and functionality
 		setLineAndArrivalTop();
@@ -119,9 +133,90 @@ public class TripManagerActivity extends Activity {
 		setCheckinButton();
 		setTextReportsUI();
 		setGetRouteLink();
-
 	}
 
+	private boolean isRetFromNotificationAndCheckedOut() {
+		
+		boolean arrivedFromNotification = currIntent.getBooleanExtra("fromCheckinNotification", false);
+		if (arrivedFromNotification){
+			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			boolean checkInSomeTrip = settings.getBoolean("CheckinButton", false); 
+			if (!checkInSomeTrip){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+
+	@Override
+	protected void onPause() {
+
+		super.onPause();
+		
+		if (checkedIn){
+		// save trip data SharedPreferences settings =
+		  SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); 
+		  SharedPreferences.Editor editor = settings.edit(); 
+		  //set data
+		  editor.putInt("lineNumber", tripRes.getLineNumber());
+		  editor.putString("stationName", tripRes.getStationName());
+		  editor.putLong("tripId", tripRes.getTripId());
+		  editor.putString("arrivalTime", tripRes.getArrivalTime());
+		  editor.putInt("stopSequence", tripRes.getStopSequence());
+		  
+		  // save page user changes 
+		  editor.putBoolean("notificationToggleChecked",notificationToggle.isChecked()); 
+		  editor.putBoolean("CheckinButton",checkedIn);
+		  
+		  //save user Id
+		  editor.putString("facebookId", userId);
+		  
+		  // Commit the edits 
+		  editor.commit();
+		}
+	}
+	
+	private boolean isPreviouslyCheckedInCurrTrip(){
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		boolean checkInSomeTrip = settings.getBoolean("CheckinButton", false); 
+		return checkInSomeTrip;
+	}
+	
+	private void setDataIfCheckedIn(){
+		
+			  SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			  
+			  int lineNumber = settings.getInt("lineNumber", -1); 
+			  String stationName = settings.getString("stationName", null); 
+			  long tripId = settings.getLong("tripId", -1); 
+			  String arrivalTime =  settings.getString("arrivalTime", null); 
+			  int stopSequence = settings.getInt("stopSequence", -1);
+		  
+		  tripRes = new TripResultObject(lineNumber, stationName, tripId,arrivalTime, stopSequence); 
+		  }
+		 
+	private void setNotificationStateIfCheckedIn() {
+		
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		boolean notificationState = settings.getBoolean("notificationToggleChecked", false);
+		if (notificationState){
+			notificationToggle.setChecked(true);
+		}
+		notificationToggle.setEnabled(false);
+	}
+	
+	
+	private void setUserIdIfCheckedIn(){
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		String id = settings.getString("facebookId", null);
+		userId=id;
+	}
+	
 	/**
 	 * headline of page, contains line and arrival time
 	 */
@@ -134,7 +229,7 @@ public class TripManagerActivity extends Activity {
 	/**
 	 * for notification - save activity state - UI elements
 	 */
-	private void getUiChangesFromPref(Intent intent) {
+/*	private void getUiChangesFromPref(Intent intent) {
 
 		// if came from notification click
 		if (arrivedFromNotification) {
@@ -142,25 +237,25 @@ public class TripManagerActivity extends Activity {
 		}
 
 		// else - take from shared preferences
-		/*
+		
 		 * SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		 * checkedIn = settings.getBoolean("CheckinButton", false); if
 		 * (settings.getBoolean("notificationToggleChecked", false)) {
 		 * notificationToggle.setChecked(true); }
-		 */
+		 
 
-	}
+	}*/
 
 	/**
 	 * for notification - save activity state - trip data elements
 	 */
-	private void getTripResultFromPref(Intent intent) {
+/*	private void getTripResultFromPref(Intent intent) {
 
 		// if came from notification click
 		tripRes = (TripResultObject) intent
 				.getSerializableExtra("notificationTripData");
 		// else
-		/*
+		
 		 * if (tripRes == null) { SharedPreferences settings =
 		 * getSharedPreferences(PREFS_NAME, 0); int lineNumber =
 		 * settings.getInt("lineNumber", -1); String stationName =
@@ -171,8 +266,8 @@ public class TripManagerActivity extends Activity {
 		 * 
 		 * tripRes = new TripResultObject(lineNumber, stationName, tripId,
 		 * arrivalTime, stopSequence); }
-		 */
-	}
+		 
+	}*/
 
 	/**
 	 * Set the link to get route (map image)
@@ -193,17 +288,27 @@ public class TripManagerActivity extends Activity {
 	 * Set UI for text reports
 	 */
 	private void setTextReportsUI() {
-		// set report edit text and submit button not activated
-		reportEditText.setEnabled(false);
-		/* reportEditText.setAlpha((float) 0.3); */
-		submitReportButton.setEnabled(false);
-		/* submitReportButton.setAlpha((float) 0.3); */
-
+		// set report edit text and submit button not activated, unless checked in
+		if (checkedIn){
+			reportEditText.setEnabled(true);
+			submitReportButton.setEnabled(true);
+		}
+		else{
+			reportEditText.setEnabled(false);
+			submitReportButton.setEnabled(false);
+		}
+		
 		submitReportButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				// Get data that was written
 				String reportText = reportEditText.getText().toString();
+				if (reportText.length()==0 || reportText.length()>200){
+					Toast toast = Toast.makeText(c,
+							"Please enter text, limited up to 200 characters",
+							Toast.LENGTH_LONG);
+					toast.show();
+				}
 				ihc.reportTripDescription(c, pd, userId, tripRes.getTripId(),
 						reportText);
 			}
@@ -215,6 +320,13 @@ public class TripManagerActivity extends Activity {
 	 * Set UI and functionality for checkin button
 	 */
 	private void setCheckinButton() {
+		
+		if (checkedIn){
+			checkinButton.setText("Checkout bus");			 
+			checkinInstructionText
+					.setText("Click to checkout from bus");
+		}
+		
 		checkinButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -230,19 +342,13 @@ public class TripManagerActivity extends Activity {
 					if (checkedIn == false) {
 						checkedIn = true;
 						checkinButton.setText("Checkout bus");
-						/*
-						 * Toast toast = Toast .makeText( c,
-						 * "Reports regarding to location will be sent until you checkout from bus"
-						 * , 5); toast.show();
-						 */
+ 
 						checkinInstructionText
 								.setText("Click to checkout from bus");
 
 						// activate report parts of page
 						reportEditText.setEnabled(true);
-						/* reportEditText.setAlpha((float) 1); */
 						submitReportButton.setEnabled(true);
-						/* submitReportButton.setAlpha((float) 1); */
 
 						res = DataCollector.getGpsCoordinates(c);
 						if (res != null) {
@@ -252,12 +358,26 @@ public class TripManagerActivity extends Activity {
 							lat = 32.045816;
 							lng = 34.756983;
 						}
+						
+						createCheckinNotification();
+						
 						ihc.reportCheckin(c, pd, userId, lng, lat,
 								tripRes.getTripId());
 						// TODO:start background service
 
 					} else {
+						checkedIn=false;
 						checkinButton.setEnabled(false);
+						reportEditText.setEnabled(false);
+						submitReportButton.setEnabled(false);
+						//save in shared pref that user is not checked in
+						  SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); 
+						  SharedPreferences.Editor editor = settings.edit(); 
+						  editor.putBoolean("CheckinButton",checkedIn);
+						  // Commit the edits 
+						  editor.commit();
+						  
+						  //send checkout request to server
 						ihc.reportCheckout(c, pd, userId, tripRes.getTripId());
 						// TODO:start background service
 					}
@@ -276,11 +396,14 @@ public class TripManagerActivity extends Activity {
 		notificationToggle.setTextOn("On");
 		notificationToggle.setTextOff("Off");
 
-		// diasble if activity was opened by clicking a notification
-		if (arrivedFromNotification) {
+		// restore if was previously set on that trip
+		if (previouslyCheckedInCurrTrip){
+			setNotificationStateIfCheckedIn();
+		}
+/*		if (arrivedFromNotification) {
 			notificationToggle.setChecked(true);
 			notificationToggle.setEnabled(false);
-		}
+		}*/
 		// set click listener
 		notificationToggle
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -291,7 +414,7 @@ public class TripManagerActivity extends Activity {
 						if (isChecked) {
 							Toast toast = Toast.makeText(c,
 									"You will be notified before bus arrives",
-									5);
+									Toast.LENGTH_LONG);
 							toast.show();
 							createNotification(tripRes.getArrivalTime(),
 									tripRes.getLineNumber(),
@@ -299,7 +422,7 @@ public class TripManagerActivity extends Activity {
 						} else {
 							// notification canceled
 							Toast toast = Toast.makeText(c,
-									"Notification is cancelled", 5);
+									"Notification is cancelled", Toast.LENGTH_LONG);
 							toast.show();
 							cancelNotification();
 						}
@@ -389,27 +512,28 @@ public class TripManagerActivity extends Activity {
 	private void triggerNotification(int lineNumber, String stopName,
 			int notificationDelta) {
 		CharSequence title = "Picabus Update";
-		CharSequence message = "Line " + lineNumber + " is departing from "
-				+ stopName + " in " + notificationDelta + " minutes!";
+		CharSequence message = "Line " + lineNumber + " is departing from\n"
+				+ stopName + "\nin " + notificationDelta + " minutes!";
 
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		Notification notification = new Notification(
 				R.drawable.notification_icon, "Picabus Reminder",
 				System.currentTimeMillis());
 
-		Intent notificationIntent = new Intent(this,
-				TripManagerActivity.class);
+		
+/*		Intent notificationIntent = new Intent(this,
+				TripManagerActivity.class);*/
 
 		// put extra
-		notificationIntent.putExtra("fromNotification", true);
+/*		notificationIntent.putExtra("fromNotification", true);
 		notificationIntent.putExtra("notificationTripData", tripRes);
 		notificationIntent.putExtra("CheckinButton", checkedIn);
-		notificationIntent.putExtra("facebookId", userId);
+		notificationIntent.putExtra("facebookId", userId);*/
 
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				notificationIntent, 0);
+/*		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				notificationIntent, 0);*/
 
-		notification.setLatestEventInfo(c, title, message, contentIntent);
+		notification.setLatestEventInfo(c, title, message, null);
 		notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
 
 	}
@@ -423,28 +547,81 @@ public class TripManagerActivity extends Activity {
 		}
 	};
 
+	
+	
+	private void createCheckinNotification() {
+
+		// set notification
+		Timer timer = new Timer();
+		TimerTask timerTask = new TimerTask() {
+			@Override
+			public void run() {
+				triggerCheckinNotification();
+			}
+		};
+		timer.schedule(timerTask, 0);
+
+	}
+
+	/**
+	 * triggers the notification defined in createNotification function
+	 * 
+	 * @param lineNumber
+	 * @param stopName
+	 * @param notificationDelta
+	 */
+	private void triggerCheckinNotification() {
+		CharSequence title = "Picabus Update";
+		CharSequence message = "You are now checked in on the bus, \nclick here to checkout";
+
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		Notification notification = new Notification(
+				R.drawable.notification_icon, "Picabus Reminder",
+				System.currentTimeMillis());
+
+		Intent notificationIntent = new Intent(this,
+				TripManagerActivity.class);
+
+		notificationIntent.putExtra("fromNotificationCheckin", true);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				notificationIntent, 0);
+		
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.setLatestEventInfo(c, title, message, contentIntent);
+		notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
+
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Save data if app is killed for memory reasons
 	 */
-	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
+	//@Override
+/*	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		// Save UI state changes to the savedInstanceState.
 		// This bundle will be passed to onCreate if the process is
 		// killed and restarted.
 		savedInstanceState.putSerializable("Data", tripRes);
-	}
+	}*/
 
 	/**
 	 * Restore data if app is killed for memory resonse
 	 */
-	@Override
+/*	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		// Restore UI state from the savedInstanceState.
 		// This bundle has also been passed to onCreate.
 		tripRes = (TripResultObject) savedInstanceState.getSerializable("Data");
-	}
+	}*/
 
 	/**
 	 * Save data if user finished activity - for notifications

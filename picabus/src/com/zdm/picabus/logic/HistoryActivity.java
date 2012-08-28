@@ -35,16 +35,18 @@ public class HistoryActivity extends ListActivity {
 	LocalStorageServices storage;
 	UserHistory item;
 	Context context;
+	ProgressDialog pd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.history_screen);
-		
+		this.pd = new ProgressDialog(this);
+		context = this;
 		storage = new LocalStorageServices();
 		
-		
+		// TODO: handle case where there is no history item or no history at all
 		/*	
 		historyList = storage.getUserHistory(this);
 		
@@ -69,82 +71,29 @@ public class HistoryActivity extends ListActivity {
 	
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		
-		Collection<Trip> trips = null;
-		String stopHeadsign = null;
-		Trip trip = null;
-		String comp;
 		IHttpCaller ihc = null;
 		UserHistory hist = null;
 		int line_number = (Integer) this.lineRowAdapter.getItem(position);
-		Line lineDataModel = null;
-		ProgressDialog pd;
-		
+		String time = DataCollector.getCurrentTime();
 		ihc = HttpCaller.getInstance();
 		
-		for(UserHistory histItem: historyList)
+		// TODO: get time interval from preferences
+		int timeInterval = 15;
+		
+		// TODO: handle case where there is no history item or no history at all
+		/*for(UserHistory histItem: historyList)
 		{
 			if(histItem.getLineNumber() == line_number)
 			{
 				hist = histItem;
 				break;
 			}
-		} 
+		} */
 		
 		
-	
-		/*eta
-		tripID	
-		stopSequence, routeID, serviceID
-			*/
-		/*			comp = hist.getCompanyName();
-		trip = new Trip(tripID, destination, hist.getDirection(), hist.getLineNumber(), eta, Company.getCompanyByString(comp), hist.getStopID(), stopSequence, routeID, serviceID);
-		lineDataModel = new Line(false, trips, stopHeadsign);
-		
-		// Pass the line number to lines list intent
-		List<Integer> linesList = new ArrayList<Integer>();
-		linesList.add(line_number);
-		// open new activity
-		Intent intent = new Intent(
-				"com.zdm.picabus.logic.ResultBusArrivalActivity");
-		intent.putIntegerArrayListExtra("lineDataModel",
-				Line lineDataModel);
-		intent.put
-		startActivity(intent);
-
-	}
-		
-		
-		Double lat = null;		
-		Double lng = null;
-		// Get current time
-		String time = DataCollector.getCurrentTime();
-
-		// Get coordinates
-		GpsResult res = DataCollector.getGpsCoordinates(this);
-		if (res != null) {
-			lat = res.getLat();
-			lng = res.getLng();
-		}
-		// Send data to server
-		if (!DEBUG_MODE) {
-			if (lat != null || lng != null) {
-				ihc.getDepartureTime(this, pd, line_number, lat, lng, time,
-						timeInterval);
-				finish();
-			} else {
-				ErrorsHandler.createNullGpsCoordinatesErrorAlert(this,
-						line_number, time, timeInterval);
-			}
-		} else {
-			// for emulator
-			ihc.getDepartureTime(this, pd, line_number, 32.045816, 34.756983,
-					"08:20:00", timeInterval);
-		}
-
-	}
-
-
-	*/
+		//ihc.getDepartureTime(context, pd, line_number, hist.getLatitude(), hist.getLongitude(), time, timeInterval);
+		//for debug:
+		ihc.getDepartureTime(context, pd, line_number, 32.045816, 34.756983, time, timeInterval);
 	
 	}	
 }

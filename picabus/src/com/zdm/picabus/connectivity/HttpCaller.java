@@ -25,7 +25,7 @@ public class HttpCaller implements IHttpCaller {
 	
 	private static final String publicServerURLOld = "http://picabusapp.appspot.com/picabusserver";
 	private static final String publicServerURL = "http://picabusapp.appspot.com/";
-	private static final String localServerURL = "http://10.0.0.2:8888/";
+	private static final String localServerURL = "http://10.0.0.1:8888/";
 	private static final String SERVICES = "services";
 	private static final String REPORTS = "reports";
 		

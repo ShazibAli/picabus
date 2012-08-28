@@ -2,19 +2,7 @@ package com.zdm.picabus.facebook;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.net.MalformedURLException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.facebook.android.DialogError;
-import com.facebook.android.FacebookError;
-import com.facebook.android.AsyncFacebookRunner.RequestListener;
-import com.facebook.android.Facebook.DialogListener;
-import com.zdm.picabus.R;
-import com.zdm.picabus.connectivity.IHttpCaller;
-import com.zdm.picabus.utilities.ErrorsHandler;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -26,6 +14,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
+import com.zdm.picabus.R;
+import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.connectivity.IHttpCaller;
+import com.zdm.picabus.utilities.ErrorsHandler;
 
 public class MyPicabusActivity extends Activity {
 
@@ -47,6 +44,8 @@ public class MyPicabusActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_picabus_screen);
 
+		pd = new ProgressDialog(this);
+		
 		// Get the facebook instance
 		facebookObject = PicabusFacebookObject.getFacebookInstance();
 		c = this;
@@ -57,8 +56,8 @@ public class MyPicabusActivity extends Activity {
 
 		// get score - result will update UI
 		//TODO:uncomment and check when server available
-		/*ihc = HttpCaller.getInstance();
-		ihc.getUserScore(c, pd, facebookObject.getFacebookId());*/
+		ihc = HttpCaller.getInstance();
+		ihc.getUserScore(c, pd, facebookObject.getFacebookId());
 		
 	}
 

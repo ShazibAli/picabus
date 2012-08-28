@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DigitalClock;
@@ -41,6 +42,9 @@ public class ManualSearchActivity extends MapActivity {
 	Context c;
 	IHttpCaller ihc = null;
 	ProgressDialog pd;
+	Double lat = null;
+	Double lng = null;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +68,6 @@ public class ManualSearchActivity extends MapActivity {
 		submitBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Double lat = null;
-				Double lng = null;
 
 				// Get line number that was clicked
 				String line_str = textField.getText().toString();
@@ -82,11 +84,24 @@ public class ManualSearchActivity extends MapActivity {
 					String time = DataCollector.getCurrentTime();
 
 					// Get coordinates
-					GpsResult res = DataCollector.getGpsCoordinates(c);
+				GpsResult res = DataCollector.getGpsCoordinates(c);
 					if (res != null) {
 						lat = res.getLat();
 						lng = res.getLng();
 					}
+					
+		/*			LocationHandler.LocationResult locationResult = new LocationHandler.LocationResult() {
+				
+						@Override
+						public void gotLocation(Location location) {
+							setCurrentLocation(location);
+						}
+
+					};
+					
+					LocationHandler myLocation = new LocationHandler();
+					myLocation.getLocation(c, locationResult);*/
+					
 					// Send data to server
 					if (!DEBUG_MODE) {
 						if (lat != null || lng != null) {
@@ -107,6 +122,13 @@ public class ManualSearchActivity extends MapActivity {
 			}
 		});
 	}
+	
+/*	private void setCurrentLocation(Location location) {
+		// TODO Auto-generated method stub
+		lat = location.getLatitude();
+		lng = location.getLongitude();
+	}*/
+	
 
 	private void displayUserOnMap(MapView mapView) {
 

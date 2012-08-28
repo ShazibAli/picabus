@@ -33,7 +33,7 @@ import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
 
-public class ResultsExtraFeaturesActivity extends Activity {
+public class TripManagerActivity extends Activity {
 
 	private final static boolean DEBUG_MODE = true;
 	static final int NOTIFICATION_UNIQUE_ID = 139874;
@@ -67,7 +67,9 @@ public class ResultsExtraFeaturesActivity extends Activity {
 		// check if arrived from notification click
 		arrivedFromNotification = currIntent.getBooleanExtra(
 				"fromNotification", false);
-
+		
+		pd = new ProgressDialog(this);
+		
 		ihc = HttpCaller.getInstance();
 
 		// get facebook user ID
@@ -396,7 +398,7 @@ public class ResultsExtraFeaturesActivity extends Activity {
 				System.currentTimeMillis());
 
 		Intent notificationIntent = new Intent(this,
-				ResultsExtraFeaturesActivity.class);
+				TripManagerActivity.class);
 
 		// put extra
 		notificationIntent.putExtra("fromNotification", true);

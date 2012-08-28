@@ -7,11 +7,13 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zdm.picabus.R;
 import com.zdm.picabus.enitities.Company;
@@ -29,6 +31,8 @@ import com.zdm.picabus.utilities.DestinationParser;
  */
 public class ResultBusArrivalActivity extends ListActivity {
 
+	public static final String PREFS_NAME = "resultDataPfers";
+	
 	private ArrayList<TripResultObject> arrivalTimesList = null;
 	private ArrivalRowAdapter arrivalRowAdapter;
 	ProgressDialog pd;
@@ -174,9 +178,19 @@ public class ResultBusArrivalActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		TripResultObject res = this.arrivalRowAdapter.getItem(position);
 
-		Intent intent = new Intent ("com.zdm.picabus.logic.TripManagerActivity");
-		intent.putExtra("Data", res);
-		startActivity(intent);
+		//check if allowed to enter trip manager for curr trip
+		if (CanEnterTripManager(res.getTripId())){
+			Intent intent = new Intent ("com.zdm.picabus.logic.TripManagerActivity");
+			intent.putExtra("Data", res);
+			startActivity(intent);	
+		}
+		else{
+			  Toast toast = Toast.makeText(context,
+			  context.getResources().getString(R.string.not_allowed_enter_trip)
+			  ,Toast.LENGTH_LONG);
+			  toast.show();
+		}
+
 	}
 
 	private String getCompanyByString(Company company) {
@@ -184,5 +198,25 @@ public class ResultBusArrivalActivity extends ListActivity {
 		return null;
 	}
 
+	private boolean CanEnterTripManager(long tripId){
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		
+		//is checked in somewhere
+		boolean checkedInSomeTrip = settings.getBoolean("CheckinButton", false); 
+		
+		if (checkedInSomeTrip){
+			long checkedIntripId = settings.getLong("tripId", -1); 
+			if (tripId==checkedIntripId) {
+				return true; //checked in for curr trip
+			}
+			else{
+				return false;//checked in on another trip
+			}
+		}
+		else{ 
+			return true; //not checked in for any trip
+		}
+
+	}
 
 }

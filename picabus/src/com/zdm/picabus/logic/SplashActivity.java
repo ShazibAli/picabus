@@ -1,9 +1,5 @@
 package com.zdm.picabus.logic;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -20,14 +15,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.facebook.android.AsyncFacebookRunner.RequestListener;
-import com.facebook.android.FacebookError;
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.Facebook;
 import com.zdm.picabus.R;
-import com.zdm.picabus.facebook.PicabusFacebookObject;
+import com.zdm.picabus.facebook.BaseRequestListener;
+import com.zdm.picabus.facebook.FacbookIdentity;
+import com.zdm.picabus.facebook.SessionStore;
+
 
 public class SplashActivity extends Activity implements AnimationListener {
 
-	PicabusFacebookObject facebookObject;
 	Context c;
 
 	public void onAttachedToWindow() {
@@ -67,13 +64,15 @@ public class SplashActivity extends Activity implements AnimationListener {
 			startActivity(intent);
 			finish();
 		} else {
+			requestUserData();//get user's id
 			Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
-			intent.putExtra("loggedIn", true);
 			startActivity(intent);
 			finish();
 		}
 
 	}
+
+
 
 	public void onAnimationRepeat(Animation animation) {
 		// TODO Auto-generated method stub
@@ -85,73 +84,60 @@ public class SplashActivity extends Activity implements AnimationListener {
 
 	}
 
-	public Boolean checkFacebookLogin() {
+	private boolean checkFacebookLogin() {
 
-		facebookObject = PicabusFacebookObject.getFacebookInstance();
-		facebookObject.mPrefs = getPreferences(MODE_PRIVATE);
-		String access_token = facebookObject.mPrefs.getString("access_token",
-				null);
-		long expires = facebookObject.mPrefs.getLong("access_expires", 0);
+		// Create the Facebook Object using the app id.
+		FacbookIdentity.mFacebook = new Facebook(FacbookIdentity.APP_ID);
+		// Instantiate the asynrunner object for asynchronous api calls.
+		FacbookIdentity.mAsyncRunner = new AsyncFacebookRunner(
+				FacbookIdentity.mFacebook);
 
-		if (access_token != null) {
-			facebookObject.facebook.setAccessToken(access_token);
-		}
+		// restore session if one exists
+		SessionStore.restore(FacbookIdentity.mFacebook, this);
 
-		if (expires != 0) {
-			facebookObject.facebook.setAccessExpires(expires);
-		}
-
-		if (facebookObject.facebook.isSessionValid()) {// access token valid-no
-														// need to login
-			// update user info
-			updateProfileInformation();
+		// get user data if valid session
+		if (FacbookIdentity.mFacebook.isSessionValid()) {
 			return true;
-		} else {
+		}
+		else{
 			return false;
 		}
 
 	}
 
-	public void updateProfileInformation() {
-		facebookObject.mAsyncRunner.request("me", new RequestListener() {
 
-			public void onComplete(String response, Object state) {
+	/**
+	 * Request user details (to get user id)
+	 */
+	public void requestUserData() {
+		FacbookIdentity.mAsyncRunner.request("me", new UserRequestListener());
+	}
 
-				String name;
-				String facebookId;
-				Log.d("Profile", response);
-				String json = response;
-				try {
-					JSONObject profile = new JSONObject(json);
-					// getting name of the user
-					name = profile.getString("name");
+	/**
+	 * Callback for fetching current user's id.
+	 */
+	public class UserRequestListener extends BaseRequestListener {
 
-					// getting facebook id of the user
-					facebookId = profile.getString("id");
-
-					facebookObject.name = name;
-					facebookObject.facebookId = facebookId;
-
-					// get the picture
-					// facebookObject.updateProfilePicture(facebookObject.facebookId);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+		public void onComplete(final String response, final Object state) {
+			JSONObject jsonObject;
+			try {
+				jsonObject = new JSONObject(response);
+				FacbookIdentity.userUID = jsonObject.getString("id");
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
+		}
 
-			public void onIOException(IOException e, Object state) {
+	}
+	
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (FacbookIdentity.mFacebook != null) {
+			if (FacbookIdentity.mFacebook.isSessionValid()) {
+				FacbookIdentity.mFacebook.extendAccessTokenIfNeeded(this, null);
 			}
-
-			public void onFileNotFoundException(FileNotFoundException e,
-					Object state) {
-			}
-
-			public void onMalformedURLException(MalformedURLException e,
-					Object state) {
-			}
-
-			public void onFacebookError(FacebookError e, Object state) {
-			}
-		});
+		}
 	}
 }

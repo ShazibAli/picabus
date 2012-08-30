@@ -1,29 +1,13 @@
 package com.zdm.picabus.facebook;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.facebook.android.DialogError;
-import com.facebook.android.FacebookError;
-import com.facebook.android.AsyncFacebookRunner.RequestListener;
-import com.facebook.android.Facebook.DialogListener;
-import com.zdm.picabus.R;
-import com.zdm.picabus.facebook.PicabusFacebookObject;
-import com.zdm.picabus.utilities.ErrorsHandler;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.zdm.picabus.R;
 
 /**
  * 
@@ -32,176 +16,169 @@ import android.widget.ImageButton;
  */
 public class LoginActivity extends Activity {
 
-	ImageButton facebookLogin;
-	Button dontLoginBtn;
-
-	Context c;
-	PicabusFacebookObject facebookObject;
+	//private boolean loginActivity=true;
+	//private final static int AUTHORIZE_ACTIVITY_RESULT_CODE = 0;
+	private Button dontLoginBtn;
+	//private LoginButton mLoginButton;
+	private ImageButton gotoMyPicabusBtn;
+	//private String[] permissions = {};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
-		c = this;
 
-		facebookLogin = (ImageButton) findViewById(R.id.facebookLoginButton);
-		dontLoginBtn = (Button) findViewById(R.id.dontLoginBtn);
+		// facebook login UI and functionality definitions
+		//initFacebookSessionAndDefinitions();
 
-		facebookLogin.setOnClickListener(new View.OnClickListener() {
+		// dont login UI and definition
+		dontLoginToFacebookUiAndDef();
+		gotoMyPicabusUiAndDef();
+	}
 
+	private void gotoMyPicabusUiAndDef() {
+		
+		gotoMyPicabusBtn = (ImageButton) findViewById(R.id.loginAtMyPicabusButton);
+		
+		gotoMyPicabusBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// facebook login
-				facebookObject = PicabusFacebookObject.getFacebookInstance();
-				loginToFacebook();
+				Intent intent = new Intent(
+						"com.zdm.picabus.facebook.MyPicabusPageActivity");
+				intent.putExtra("fromLogin", true);
+				startActivity(intent);
+				finish();
 			}
-
 		});
+		
+	}
 
+	/**
+	 * init dontlogin button and functionality
+	 */
+	private void dontLoginToFacebookUiAndDef() {
+
+		dontLoginBtn = (Button) findViewById(R.id.dontLoginBtn);
 		dontLoginBtn.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
-				// Open facebook login activity
 				Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
 				startActivity(intent);
 				finish();
 			}
-
 		});
 	}
 
-	/**
-	 * Login the user's facebook acount
-	 */
-	public void loginToFacebook() {
+/*	*//**
+	 * Create facebook objects, restore session if exists, define login/logout
+	 * actions and get user's data
+	 *//*
+	private void initFacebookSessionAndDefinitions() {
 
-		facebookObject.mPrefs = getPreferences(MODE_PRIVATE);
-		String access_token = facebookObject.mPrefs.getString("access_token",
-				null);
-		long expires = facebookObject.mPrefs.getLong("access_expires", 0);
+		// Create the Facebook Object using the app id.
+		FacbookIdentity.mFacebook = new Facebook(FacbookIdentity.APP_ID);
+		// Instantiate the asynrunner object for asynchronous api calls.
+		FacbookIdentity.mAsyncRunner = new AsyncFacebookRunner(
+				FacbookIdentity.mFacebook);
 
-		if (access_token != null) {
-			facebookObject.facebook.setAccessToken(access_token);
+		// restore session if one exists
+		SessionStore.restore(FacbookIdentity.mFacebook, this);
+		SessionEvents.addAuthListener(new FbAPIsAuthListener());
+		SessionEvents.addLogoutListener(new FbAPIsLogoutListener());
+
+		// login logout button
+		mLoginButton = (LoginButton) findViewById(R.id.facebookLoginButton);
+		mLoginButton.init(this, AUTHORIZE_ACTIVITY_RESULT_CODE,
+				FacbookIdentity.mFacebook, permissions);
+	}
+
+	*//**
+	 * Request user details (to get user id)
+	 *//*
+	public void requestUserData() {
+		FacbookIdentity.mAsyncRunner.request("me", new UserRequestListener());
+	}
+
+	*//**
+	 * Callback for fetching current user's id.
+	 *//*
+	public class UserRequestListener extends BaseRequestListener {
+
+		public void onComplete(final String response, final Object state) {
+			JSONObject jsonObject;
+			try {
+				jsonObject = new JSONObject(response);
+				FacbookIdentity.userUID = jsonObject.getString("id");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 
-		if (expires != 0) {
-			facebookObject.facebook.setAccessExpires(expires);
-		}
+	}
 
-		// Only call authorize if the access_token has expired.
-		if (!facebookObject.facebook.isSessionValid()) {
-			facebookObject.facebook.authorize(this,
-			/*
-			 * new String[] { "email", "publish_stream", "user_about_me" },
-			 */
-			new DialogListener() {
+	*//**
+	 * The Callback for notifying the application when authorization succeeds or
+	 * fails.
+	 *//*
+	public class FbAPIsAuthListener implements AuthListener,Serializable{
 
-				public void onCancel() {
-					// Function to handle cancel event
+		*//**
+		 * 
+		 *//*
+		private static final long serialVersionUID = 1L;
 
-				}
-
-				public void onComplete(Bundle values) {
-					// Function to handle complete event
-					// Edit Preferences and update facebook acess_token
-					SharedPreferences.Editor editor = facebookObject.mPrefs
-							.edit();
-					editor.putString("access_token",
-							facebookObject.facebook.getAccessToken());
-					editor.putLong("access_expires",
-							facebookObject.facebook.getAccessExpires());
-					editor.commit();
-
-					// get information regarding to user
-					updateProfileInformation();
-					// facebookObject.updateProfilePicture(facebookObject.facebookId);
-
-					// goto main menu activity and close current
-					// activities
-					Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
-					intent.putExtra("loggedIn", true);
-					startActivity(intent);
-					finish();
-
-				}
-
-				public void onError(DialogError error) {
-					// Function to handle error
-					ErrorsHandler.createFacebookFirstLoginErrorAlert(c);
-				}
-
-				public void onFacebookError(FacebookError fberror) {
-					ErrorsHandler.createFacebookFirstLoginErrorAlert(c);
-				}
-
-			});
-		} else {// access_token still valid, don't call authorize
-
-			// update user info
-			updateProfileInformation();
-			// facebookObject.updateProfilePicture(facebookObject.facebookId);
-
-			// goto main menu activity and close all other activities
+		public void onAuthSucceed() {
+			if (loginActivity){
+			requestUserData();
 			Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
-			intent.putExtra("loggedIn", true);
 			startActivity(intent);
 			finish();
+			}
+		}
+
+		public void onAuthFail(String error) {
+			if (loginActivity){
+			Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+			startActivity(intent);
+			finish();
+			}
 		}
 	}
 
-	/**
-	 * Get information from facebook regarding to the user
-	 */
+	*//**
+	 * The Callback for notifying the application when log out starts and
+	 * finishes.
+	 *//*
 
-	public void updateProfileInformation() {
-		facebookObject.mAsyncRunner.request("me", new RequestListener() {
+	public class FbAPIsLogoutListener implements LogoutListener {
 
-			public void onComplete(String response, Object state) {
-
-				String name;
-				String facebookId;
-				Log.d("Profile", response);
-				String json = response;
-				try {
-					JSONObject profile = new JSONObject(json);
-					// getting name of the user
-					name = profile.getString("name");
-
-					// getting facebook id of the user
-					facebookId = profile.getString("id");
-
-					facebookObject.name = name;
-					facebookObject.facebookId = facebookId;
-
-					// get the picture
-					// facebookObject.updateProfilePicture(facebookObject.facebookId);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			public void onIOException(IOException e, Object state) {
-			}
-
-			public void onFileNotFoundException(FileNotFoundException e,
-					Object state) {
-			}
-
-			public void onMalformedURLException(MalformedURLException e,
-					Object state) {
-			}
-
-			public void onFacebookError(FacebookError e, Object state) {
-			}
-		});
+		public void onLogoutBegin() {
+		}
+		public void onLogoutFinish() {
+		}
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+	public void onResume() {
+		super.onResume();
+		if (FacbookIdentity.mFacebook != null) {
+			if (FacbookIdentity.mFacebook.isSessionValid()) {
 
-		facebookObject.facebook
-				.authorizeCallback(requestCode, resultCode, data);
+				FacbookIdentity.mFacebook.extendAccessTokenIfNeeded(this, null);
+			}
+		}
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		// activity result from authorization flow
+		case AUTHORIZE_ACTIVITY_RESULT_CODE: {
+			FacbookIdentity.mFacebook.authorizeCallback(requestCode,
+					resultCode, data);
+			break;
+		}
+
+		}
+	}*/
 
 }

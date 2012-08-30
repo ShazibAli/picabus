@@ -5,16 +5,28 @@
     android:orientation="vertical" >
 
             
-    <ImageButton
-        android:id="@+id/facebookLoginButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:contentDescription=""
-        android:src="@drawable/facebook_login"
-        android:text="" />
-
-
+                        <View
+         android:layout_width="fill_parent"
+         android:layout_height="40dip"
+ />
+                        <TextView
+            android:id="@+id/loginAtMyPicabusTxt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Login to Picabus using 'My picabus' page!"
+			 />        <ImageButton
+            android:id="@+id/loginAtMyPicabusButton"
+            android:src="@drawable/mypicabus_icon"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:layout_height="wrap_content" />
+                        <View
+         android:layout_width="fill_parent"
+         android:layout_height="30dip"
+ />
 
         <Button
             android:id="@+id/dontLoginBtn"

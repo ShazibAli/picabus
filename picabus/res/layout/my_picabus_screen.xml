@@ -1,34 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
 
-    <LinearLayout
-        android:weightSum="100"
+        <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
+        android:padding="6dip"
+        android:layout_height="?android:attr/listPreferredItemHeight">
         <ImageView
-            android:layout_weight="85"
             android:id="@+id/facebookProfilePic"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/button_aboutus_s"
-
- />
-
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="6dip" />
         <TextView
-            android:id="@+id/facebookUsername"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="15"
-            android:gravity="center"
-            android:text="Username" />
+            android:id="@+id/txtFacebookUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/facebookProfilePic" />
+        
+        <com.zdm.picabus.facebook.LoginButton
+            android:id="@+id/login"
+            android:src="@drawable/facebook_login"
+            android:layout_toRightOf="@+id/facebookProfilePic"
+            android:layout_below="@+id/txtFacebookUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    
+            <View
+         android:layout_width="fill_parent"
+         android:layout_height="1dip"
+         android:background="#FF909090" />
+    
 
-    </LinearLayout>
  
             <TextView
             android:id="@+id/pointsMyPicabus"
@@ -47,22 +55,37 @@
                         
             <ImageButton
         android:id="@+id/postToFacebook"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
         android:contentDescription=""
         android:src="@drawable/post_to_facebook"
-        android:text="" />
-                 
-     <ImageButton
-        android:id="@+id/logoutFacebook"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:background="@null"
-        android:contentDescription=""
-        android:src="@drawable/facebook_logout"
-        android:text="" />
+        android:layout_gravity="center"
+		/>
+             
+
     
+                        <View
+         android:layout_width="fill_parent"
+         android:layout_height="13dip"
+ />
+          
+                                    <TextView
+            android:id="@+id/appRequestText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+                        android:textStyle="italic"
+                    android:text="Send picabus app request to friends!"
+			 />
+                                    
+        <Button
+        android:id="@+id/sendAppRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/application_icon"
+
+                android:layout_gravity="center"
+		/>
     
 </LinearLayout>

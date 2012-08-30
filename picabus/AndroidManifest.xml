@@ -24,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name=".logic.MainScreenActivity"
             android:screenOrientation="portrait"
@@ -145,26 +146,18 @@
             </intent-filter>
         </activity>
         
-        <activity 
-            android:name=".facebook.MyPicabusActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="com.zdm.picabus.facebook.MyPicabusActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>            
-         
+                
                 <activity 
-            android:name=".facebook.MyPicabusLoggedOutActivity"
+            android:name=".facebook.MyPicabusPageActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="com.zdm.picabus.facebook.MyPicabusLoggedOutActivity" />
+                <action android:name="com.zdm.picabus.facebook.MyPicabusPageActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>   
-        
+        </activity>           
+                
+                
         
 </application>
 

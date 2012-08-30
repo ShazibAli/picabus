@@ -4,13 +4,20 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.zdm.picabus.R;
+
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 
+/**
+ * Class is used for getting user's facebook profile image from network, using async task
+ *
+ */
 	public class ProfileImageGetter  extends AsyncTask<String, Integer, Bitmap> {
 	    
 		Context context;
@@ -22,19 +29,21 @@ import android.util.Log;
 		
 	        @Override
 	        protected void onPostExecute(Bitmap result) {
-	             PicabusFacebookObject facebookObject = PicabusFacebookObject.getFacebookInstance();
+	             /*PicabusFacebookObject facebookObject = PicabusFacebookObject.getFacebookInstance();
 	             facebookObject.setProfilePicture(result);
 	             //Goto mypicabus page
 	             Intent intent = new Intent(
 							"com.zdm.picabus.facebook.MyPicabusActivity");
-				 context.startActivity(intent);
+				 context.startActivity(intent);*/
+	        	ImageView mUserPic = (ImageView)  ((Activity) context).findViewById(R.id.facebookProfilePic);
+	        	mUserPic.setImageBitmap(result);
 	        }
 
 			@Override
 			public Bitmap doInBackground(String... params) {
 				// TODO Auto-generated method stub
-				PicabusFacebookObject facebookObject = PicabusFacebookObject.getFacebookInstance();
-				String facebookId = facebookObject.getFacebookId();
+				
+				String facebookId = FacbookIdentity.userUID;
 				
 				URL facebookGraphUrl = null;
 		        Bitmap profileImageBitmap = null;

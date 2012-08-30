@@ -198,6 +198,12 @@ public class ResultBusArrivalActivity extends ListActivity {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param tripId
+	 * @return true if user is allowed to enter trip 'tripId', otherwise false
+	 * user is allowed only if not checked in to any trip, or if checked in to 'tripId'
+	 */
 	private boolean CanEnterTripManager(long tripId){
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		

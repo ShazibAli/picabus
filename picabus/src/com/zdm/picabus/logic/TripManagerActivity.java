@@ -29,7 +29,7 @@ import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.enitities.TripResultObject;
-import com.zdm.picabus.facebook.PicabusFacebookObject;
+import com.zdm.picabus.facebook.FacbookIdentity;
 import com.zdm.picabus.locationservices.GpsResult;
 import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
@@ -97,9 +97,7 @@ public class TripManagerActivity extends Activity {
 		 */
 
 		if (userId == null) {
-			PicabusFacebookObject pfo = PicabusFacebookObject
-					.getFacebookInstance();
-			userId = pfo.getFacebookId();
+			userId = FacbookIdentity.getUserId();
 		}
 
 		// Check if user logged in

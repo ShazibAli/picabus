@@ -16,6 +16,7 @@
         android:label="@string/app_name" 
         android:theme="@android:style/Theme.Light.NoTitleBar">
         <uses-library android:name="com.google.android.maps" />
+        <service android:name="com.zdm.picabus.services.ReportLocationService" />
          <activity
             android:name=".logic.SplashActivity"
             android:label="@string/app_name" >

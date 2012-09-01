@@ -31,6 +31,7 @@ import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.enitities.TripResultObject;
 import com.zdm.picabus.facebook.FacbookIdentity;
 import com.zdm.picabus.locationservices.GpsResult;
+import com.zdm.picabus.services.ReportLocationService;
 import com.zdm.picabus.utilities.DataCollector;
 import com.zdm.picabus.utilities.ErrorsHandler;
 
@@ -58,6 +59,7 @@ public class TripManagerActivity extends Activity {
 	private Timer timer;// timer for notification
 	private Intent currIntent;
 	private boolean retFromNotificationAndCheckedOut;
+	Intent serviceIntent;
 
 	// private boolean arrivedFromNotification;
 
@@ -359,7 +361,10 @@ public class TripManagerActivity extends Activity {
 
 						ihc.reportCheckin(c, pd, userId, lng, lat,
 								tripRes.getTripId());
-						// TODO:start background service
+						serviceIntent = new Intent(c, ReportLocationService.class);
+						serviceIntent.putExtra("userId", Long.valueOf(userId));
+						serviceIntent.putExtra("tripId", tripRes.getTripId());
+						startService(serviceIntent);
 
 					} else {
 						checkedIn = false;
@@ -376,7 +381,8 @@ public class TripManagerActivity extends Activity {
 
 						// send checkout request to server
 						ihc.reportCheckout(c, pd, userId, tripRes.getTripId());
-						// TODO:start background service
+						stopService(serviceIntent);
+
 					}
 
 				}

@@ -47,7 +47,7 @@ public class HistoryActivity extends ListActivity {
 		storage = new LocalStorageServices();
 		
 		// TODO: handle case where there is no history item or no history at all
-		/*	
+		
 		historyList = storage.getUserHistory(this);
 		
 	
@@ -55,10 +55,10 @@ public class HistoryActivity extends ListActivity {
 		{
 			linesList.add(hist.getLineNumber());
 		} 
-		*/
+		/*
 		linesList.add(25);
 		linesList.add(26);
-		linesList.add(27);
+		linesList.add(27); */
 		
 		
 		// Show the list of lines
@@ -81,19 +81,19 @@ public class HistoryActivity extends ListActivity {
 		int timeInterval = 15;
 		
 		// TODO: handle case where there is no history item or no history at all
-		/*for(UserHistory histItem: historyList)
+		for(UserHistory histItem: historyList)
 		{
 			if(histItem.getLineNumber() == line_number)
 			{
 				hist = histItem;
 				break;
 			}
-		} */
+		}
 		
 		
-		//ihc.getDepartureTime(context, pd, line_number, hist.getLatitude(), hist.getLongitude(), time, timeInterval);
+		ihc.getDepartureTime(context, pd, line_number, hist.getLatitude(), hist.getLongitude(), time, timeInterval);
 		//for debug:
-		ihc.getDepartureTime(context, pd, line_number, 32.045816, 34.756983, time, timeInterval);
+		//ihc.getDepartureTime(context, pd, line_number, 32.045816, 34.756983, time, timeInterval);
 	
 	}	
 }

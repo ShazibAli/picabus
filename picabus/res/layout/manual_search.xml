@@ -17,13 +17,14 @@
         android:gravity="bottom|center_horizontal"
         android:orientation="horizontal"
         android:weightSum="3" >
-
+
         <EditText
             android:id="@+id/freetext_line_num"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
+            android:hint="@string/manual_search_hint"
             android:inputType="number" />
 
         <ImageButton
@@ -36,13 +37,12 @@
             android:src="@drawable/submit_ft_icon"
             android:text="@string/ft_submit_button" />
     </LinearLayout>
-
-    <DigitalClock
-        android:id="@+id/digitalClock"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:text="digital_clock" />
+
+    <AnalogClock
+        android:id="@+id/analogClock1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
     <com.google.android.maps.MapView
         xmlns:android="http://schemas.android.com/apk/res/android"

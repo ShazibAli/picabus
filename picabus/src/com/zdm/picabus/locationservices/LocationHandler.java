@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 
 public class LocationHandler {
 	private Timer timer1;
@@ -17,8 +18,11 @@ public class LocationHandler {
     private double lat;
     private double lng;
    
+    public void stopLoactionUpdates() {
+    	this.timer1.cancel();
+    }
     
-    public boolean getLocation(Context context, LocationResult result) {
+    public boolean getLocation(Context context, LocationResult result, long delayInterval, long repeatInterval) {
         //I use LocationResult callback class to pass location value from MyLocation to user code.
         locationResult=result;
         if(lm==null)
@@ -36,14 +40,14 @@ public class LocationHandler {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
         if(network_enabled)
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
-        timer1=new Timer();
-        timer1.schedule(new GetLastLocation(), 0);
+        timer1 = new Timer();
+        timer1.schedule(new GetLastLocation(), delayInterval, repeatInterval);
         return true;
     }
 
     LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
-            timer1.cancel();
+    //        timer1.cancel();
             locationResult.gotLocation(location);
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerNetwork);
@@ -55,7 +59,7 @@ public class LocationHandler {
 
     LocationListener locationListenerNetwork = new LocationListener() {
         public void onLocationChanged(Location location) {
-            timer1.cancel();
+ //           timer1.cancel();
             locationResult.gotLocation(location);
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerGps);
@@ -68,6 +72,7 @@ public class LocationHandler {
     class GetLastLocation extends TimerTask {
         @Override
         public void run() {
+        	
              lm.removeUpdates(locationListenerGps);
              lm.removeUpdates(locationListenerNetwork);
 
@@ -95,6 +100,7 @@ public class LocationHandler {
                  return;
              }
              locationResult.gotLocation(null);
+             
         }
     }
 

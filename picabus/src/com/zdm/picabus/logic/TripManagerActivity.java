@@ -361,7 +361,7 @@ public class TripManagerActivity extends Activity {
 
 						ihc.reportCheckin(c, pd, userId, lng, lat,
 								tripRes.getTripId());
-						serviceIntent = new Intent(c, ReportLocationService.class);
+						serviceIntent = new Intent(getApplicationContext(), ReportLocationService.class);
 						serviceIntent.putExtra("userId", Long.valueOf(userId));
 						serviceIntent.putExtra("tripId", tripRes.getTripId());
 						startService(serviceIntent);

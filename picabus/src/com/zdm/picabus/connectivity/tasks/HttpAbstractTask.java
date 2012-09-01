@@ -67,7 +67,8 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 		try {
 			StringEntity se = new StringEntity(requestPayload.toString());
 			post.addHeader(CustomHeader.TASK_NAME.getHeaderName(), taskName);
-			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json; charset=UTF-8"));	
+
 			post.setEntity(se);
 
 			// Execute the request

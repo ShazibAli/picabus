@@ -250,15 +250,12 @@ public class MyPicabusPageActivity extends Activity {
 				final String name = jsonObject.getString("name");
 				FacbookIdentity.userUID = jsonObject.getString("id");
 
-				// final String picURL = jsonObject.getString("picture");
-
 				mHandler.post(new Runnable() {
 					public void run() {
 						mText.setText("Welcome " + name + "!");
 						ProfileImageGetter profilePicRequest = new ProfileImageGetter(
 								c);
 						profilePicRequest.execute();
-						// mUserPic.setImageBitmap(Utility.getBitmap(Utility.userUID));
 					}
 				});
 

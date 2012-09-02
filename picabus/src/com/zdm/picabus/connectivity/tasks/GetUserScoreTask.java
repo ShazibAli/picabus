@@ -23,6 +23,14 @@ public class GetUserScoreTask extends HttpAbstractTask {
 		this.context = mContext;
 	}
 
+	public GetUserScoreTask(Activity activity, Context mContext, ProgressDialog waitSpinner,
+			String taskName, JSONObject reuqestPayload) {
+		super(mContext, waitSpinner, taskName, reuqestPayload);
+
+		this.context = mContext;
+	}
+	
+
 	@Override
 	protected void onPostExecute(String result) {
 		JSONObject json = null;

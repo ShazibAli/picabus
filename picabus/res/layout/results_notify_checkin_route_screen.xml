@@ -1,99 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" 
+            android:descendantFocusability="beforeDescendants"
+			android:focusableInTouchMode="true">
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:background="@color/back_grey"
+                android:gravity="left|center"
+                android:padding="7dp"
+                android:text="@string/my_trip_status"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/lineAndArrivalTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light_purple"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/checkinButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_top_margin"
+                    android:text="Checkin bus" />
+
+                <ImageButton
+                    android:id="@+id/getRouteIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="@dimen/small_top_margin"
+                    android:background="@null"
+                    android:contentDescription="@string/getroute_icon"
+                    android:src="@drawable/map_bus_icon" />
+
+                <ToggleButton
+                    android:id="@+id/notifyToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/small_left_margin"
+                    android:textOff="@string/notify_me"
+                    android:textOn="@string/cancel_notification" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/notifyInst"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="@dimen/small_top_margin"
+                android:background="@color/back_grey"
+                android:gravity="left|center"
+                android:padding="7dp"
+                android:text="@string/trip_reports"
+                android:textSize="18dp" />
+
+            <EditText
+                android:id="@+id/reportEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_top_margin"
+                android:ems="10"
+                android:hint="@string/report_hint"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/submitReportBtn"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/send_report" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+            <ListView
+                android:id="@+id/listReports"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:divider="#b5b5b5"
+                android:dividerHeight="1dp"
+                android:listSelector="@drawable/list_selector" >
 
-        <TextView
-            android:id="@+id/notifyInst"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="notify me before bus arrives!" />
-
-        <ToggleButton
-            android:id="@+id/notifyToggle"
-            android:layout_width="93dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="ToggleButton" />
+            </ListView>
+        </LinearLayout>
 
-    </LinearLayout>
 
-        <TextView
-        android:id="@+id/lineAndArrivalTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#8a2be2"
-        android:textStyle="bold"
-	/>
-
-    <TextView
-        android:id="@+id/checkinInstructionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checkin_exp" />
-
-    <Button
-        android:id="@+id/checkinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center"
-        android:text="Checkin bus" />
-
-     <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Describe current trip" />
-
-                    <EditText
-                        android:id="@+id/reportEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/report_hint"
-                        android:inputType="textMultiLine" >
-
-                        <requestFocus />
-
-                    </EditText>
-
-                    <Button
-                        android:id="@+id/submitReportBtn"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:text="@string/send_report" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            android:id="@+id/textView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Get bus route and its current location" />
-
-                        <ImageButton
-                            android:id="@+id/getRouteIcon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginLeft="20dp"
-                            android:background="@null"
-                            android:contentDescription="@string/getroute_icon"
-                            android:src="@drawable/map_bus_icon" />
-
-                    </LinearLayout>
-
-                    
-  
-</LinearLayout>

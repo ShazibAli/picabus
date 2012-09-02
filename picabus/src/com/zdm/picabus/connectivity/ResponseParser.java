@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.RealtimeLocationReport;
+import com.zdm.picabus.enitities.Report;
 import com.zdm.picabus.enitities.ReportResult;
 import com.zdm.picabus.enitities.Stop;
 import com.zdm.picabus.enitities.Trip;
@@ -181,6 +182,26 @@ public class ResponseParser implements IResponseParser {
 			
 		}
 		return reportResult;
+	}
+
+	public ArrayList<Report> parseTripReports(JSONObject json) {
+		ArrayList<Report> reports = new ArrayList<Report>();
+		try {
+			int numOfReports = json.getInt("numOfReports");
+			
+			for (int i = 0; i < numOfReports; i++) {
+				JSONObject currentReport = json.getJSONObject("report_" + i);
+				reports.add(new Report((long) -1, currentReport
+						.getLong("reporterId"), currentReport
+						.getString("report"), currentReport
+						.getString("reportTime")));
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+			
+		}
+		return reports;
 	}
 
 

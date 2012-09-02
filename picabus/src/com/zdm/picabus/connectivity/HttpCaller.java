@@ -8,16 +8,18 @@ import java.io.InputStreamReader;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+
 import com.zdm.picabus.connectivity.tasks.GetDepartureTimeTask;
 import com.zdm.picabus.connectivity.tasks.GetLastReportedLocationTask;
 import com.zdm.picabus.connectivity.tasks.GetRouteDetailsTask;
+import com.zdm.picabus.connectivity.tasks.GetTextualReports;
 import com.zdm.picabus.connectivity.tasks.GetUserScoreTask;
 import com.zdm.picabus.connectivity.tasks.HttpAbstractTask;
 import com.zdm.picabus.connectivity.tasks.ReportTask;
 import com.zdm.picabus.connectivity.tasks.Tasks;
-
-import android.app.ProgressDialog;
-import android.content.Context;
+import com.zdm.picabus.logic.TripManagerActivity;
 
 public class HttpCaller implements IHttpCaller {
 
@@ -165,6 +167,18 @@ public class HttpCaller implements IHttpCaller {
 		hat.execute(localServerURL + REPORTS, null, null);
 
 		
+	}
+
+	public void getTripTextualReports(long tripId, TripManagerActivity tripManagerActivity) {
+		JSONObject requestPayload = new JSONObject();
+		try {
+			requestPayload.put("tripId", tripId);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		};
+		HttpAbstractTask hat = new GetTextualReports(tripManagerActivity, null, null, Tasks.GET_TRIP_REPORTS.getTaskName(), requestPayload);
+		hat.execute(localServerURL + REPORTS, null, null);
 	}
 
 

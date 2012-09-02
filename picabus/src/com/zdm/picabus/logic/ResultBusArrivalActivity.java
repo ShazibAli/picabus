@@ -141,7 +141,7 @@ public class ResultBusArrivalActivity extends ListActivity {
 	private void UpdateResultsPageFields() {
 		// Set line
 		textViewLine = (TextView) findViewById(R.id.textViewLine);
-		textViewLine.setText("					Line " + firstTrip.getLineNumber());
+		textViewLine.setText(Integer.toString(firstTrip.getLineNumber()));
 
 		// Set company
 		companyImage = (ImageView) findViewById(R.id.iconCompany);
@@ -157,12 +157,12 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 		// Set station
 		textViewStation = (TextView) findViewById(R.id.textViewStation);
-		textViewStation.setText("Station name: "
-				+ lineDataModel.getStopHeadsign());
+		textViewStation.setText(
+				lineDataModel.getStopHeadsign());
 
 		// Set last stop
 		textViewLastStop = (TextView) findViewById(R.id.textViewLastStop);
-		textViewLastStop.setText("Last stop: " + destination);
+		textViewLastStop.setText(destination);
 
 		// Set arrival times list
 		this.arrivalRowAdapter = new ArrivalRowAdapter(this,

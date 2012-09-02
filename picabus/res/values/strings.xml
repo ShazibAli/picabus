@@ -8,6 +8,7 @@
     <string name="menu_history_button">history</string>
     <string name="ft_submit_button">submit</string>
     <string name="menu_aboutus_button">about us</string>
+        <string name="menu_mypicabus_button">my picabus</string>
     <string name="no_lines">no bus lines were taken</string>
     <string name="pref_timeinterval_instruction">Please choose time interval for bus arrivals:</string>
     <string name="manual_search_instruction">Please enter the requested bus line</string>

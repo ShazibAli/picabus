@@ -3,9 +3,13 @@
    android:orientation="vertical"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
+   android:background="@drawable/bus_results_bg"
    >
 
-    
+                            <View
+         android:layout_width="fill_parent"
+         android:layout_height="77dip"
+ />
     <LinearLayout
         android:weightSum="100"
         android:layout_width="fill_parent"
@@ -15,68 +19,57 @@
 
     <TextView
         android:id="@+id/textViewLine"
-            android:layout_weight="30"
+            android:layout_weight="35"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right"
             android:textStyle="bold"
-        	android:textColor="#8a2be2"
-        	android:textAppearance="?android:attr/textAppearanceLarge" />
+        	android:textColor="#451179"
+        	android:textAppearance="?android:attr/textAppearanceSmall" />
     
      <ImageView
         android:id="@+id/iconCompany"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="70"
+            android:layout_weight="65"
             android:contentDescription="@string/company_icon"
         android:layout_marginRight="2dip"
 	 />
 
     </LinearLayout>
     
-              <TextView
-        android:id="@+id/textViewbreak"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" /> 
-        
+                                    <View
+         android:layout_width="fill_parent"
+         android:layout_height="5dip"
+ />
      <TextView
         android:id="@+id/textViewStation"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textColor="#451179"
+            android:paddingRight="18dip"
+            android:layout_gravity="right"
+            android:textSize="10dp"
+ />
 
-   
+                                      <View
+         android:layout_width="fill_parent"
+         android:layout_height="10dip"
+ /> 
           <TextView
         android:id="@+id/textViewLastStop"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_gravity="right"
+            android:paddingRight="18dip"
+            android:textSize="10dp"
+            android:textColor="#451179"
+ />
     
-          <TextView
-        android:id="@+id/textViewbreak"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" /> 
-    
-        <TextView
-        android:id="@+id/arrivalTimes"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"
-  		  android:text="@string/estimated_arrival_times"
-  		  android:textStyle="bold"
-  		  android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    
-
-                  <TextView
-        android:id="@+id/instructionNotification"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-    android:text="@string/click_to_be_notified"
-    android:textStyle="italic"
-    android:textSize="12dp"
-/>
+                                      <View
+         android:layout_width="fill_parent"
+         android:layout_height="65dip"
+ /> 
     
     
 <ListView

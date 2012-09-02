@@ -2,6 +2,7 @@ package com.zdm.picabus.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +23,14 @@ public class RequestUtils {
 		StringBuffer sb = new StringBuffer();
 		String line = null;
 		try {
+			req.setCharacterEncoding("UTF-8");
 			BufferedReader reader = req.getReader();
 			while ((line = reader.readLine()) != null)
 				sb.append(line);
 		} catch (Exception e) { 
 			return null;
 		}
-
+		
 		String jsonAsString = sb.toString();
 		JsonParser parser = new JsonParser();
 		JsonObject requestPaylod = null;

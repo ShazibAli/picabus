@@ -1,9 +1,11 @@
 package com.zdm.picabus.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.zdm.picabus.server.entities.Line;
 import com.zdm.picabus.server.entities.RealtimeLocationReport;
+import com.zdm.picabus.server.entities.Report;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
 
@@ -78,7 +80,8 @@ public interface IDBServices {
 	 *            the user's id
 	 * @param numOfPoints
 	 *            number of points we want to add for this user
-	 * @return on success: current number of points of this user (after the raise). on failure: -1
+	 * @return on success: current number of points of this user (after the
+	 *         raise). on failure: -1
 	 * 
 	 */
 	public long increaseUserPoints(long userId, int numOfPoints);
@@ -146,4 +149,11 @@ public interface IDBServices {
 	 */
 	public RealtimeLocationReport getRealtimeLocation(long tripId);
 
+	/**
+	 * 
+	 * @param tripId
+	 *            the trip's id
+	 * @return All reports that are available for this trip
+	 */
+	public ArrayList<Report> getTextualReports(long tripId);
 }

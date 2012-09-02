@@ -214,6 +214,34 @@ public class ReportServlet extends HttpServlet {
 
 			RequestUtils.sendBackResponse(resp, responseData);
 		}
+		else if (taskName.equalsIgnoreCase(com.zdm.picabus.utils.Service.GET_TRIP_REPORTS.getTaskName())) {
+			JsonObject jsonObject = RequestUtils.extractRequestPayload(req);
+			if (jsonObject == null) {
+				resp.sendError(ERROR_CODE,
+						ServerError.UNSUPPOTED_PAYLOAD_TYPE_ERROR_MSG.toString());
+				return;
+			}
+			JsonElement tripId = jsonObject.getAsJsonObject().get("tripId");
+
+			if (tripId == null ) {
+				resp.sendError(ERROR_CODE,
+						ServerError.UNSUPPOTED_JSON_PARAMS_ERROR_MSG.toString());
+				return;
+			}
+
+			Long tripIdValue = tripId.getAsLong();
+
+			RequestHandler rh = new RequestHandler();
+			JsonObject responseData;
+			
+			responseData = rh.getTripReports(tripIdValue);
+			if (responseData == null) {
+				resp.sendError(ERROR_CODE, ServerError.DB_CONNECTION_ISSUES_ERROR_MSG.toString());
+				return;
+			} 			
+
+			RequestUtils.sendBackResponse(resp, responseData);
+		}
 		else { // case this is an unsupported task
 			resp.sendError(ERROR_CODE, ServerError.UNSUPPOTED_TASK_ERROR_MSG.toString());
 		}	

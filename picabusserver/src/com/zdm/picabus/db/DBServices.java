@@ -3,18 +3,21 @@ package com.zdm.picabus.db;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.appengine.api.rdbms.AppEngineDriver;
 import com.google.cloud.sql.jdbc.Connection;
 import com.google.cloud.sql.jdbc.PreparedStatement;
 import com.google.cloud.sql.jdbc.ResultSet;
-
 import com.zdm.picabus.db.connectivity.Tables;
 import com.zdm.picabus.server.entities.Company;
 import com.zdm.picabus.server.entities.Line;
 import com.zdm.picabus.server.entities.RealtimeLocationReport;
+import com.zdm.picabus.server.entities.Report;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
@@ -59,7 +62,9 @@ public class DBServices implements IDBServices {
 					+ "GROUP BY route_short_name, direction_id";
 			
 			*/
-			String dayOfTheWeek = DateUtils.getTodayString();
+//			String dayOfTheWeek = DateUtils.getTodayString();
+			// TODO: debug 
+			String dayOfTheWeek = "sunday";
 			String statement = "SELECT trips.trip_id, arrival_time, stops.stop_id, stop_sequence, stop_headsign, " +
 							   "routes.route_id, trips.service_id, direction_id, route_short_name as \"Line Number\", route_long_name, agency_name " +
 								"FROM " + Tables.STOPTIMES.getTableName() +", " + Tables.TRIPS.getTableName() + ", " + Tables.CALENDAR.getTableName() + ", " 
@@ -401,12 +406,14 @@ public class DBServices implements IDBServices {
 			boolean exists = rs.next();
 			
 			if (exists) { // update 
+				Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 				statement = "UPDATE " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " SET longitude = ?, latitude = ?  WHERE reporter_id = ? and trip_id = ?";		
 				stmt = c.prepareStatement(statement);
 				stmt.setDouble(1, longitude);
 				stmt.setDouble(2, latitude);
 				stmt.setLong(3, userId);
 				stmt.setLong(4, tripId);
+		//		stmt.setTimestamp(5, null);
 				stmt.executeUpdate();				
 			}
 			else { //user has no existing prior report
@@ -555,6 +562,40 @@ public class DBServices implements IDBServices {
 			else {
 				return new RealtimeLocationReport();
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException ignore) {
+					// ignoring this exception
+				}
+		}
+	}
+
+	@Override
+	public ArrayList<Report> getTextualReports(long tripId) {
+		Connection c = null;
+		try {
+			DriverManager.registerDriver(new AppEngineDriver());
+			c = (Connection) DriverManager.getConnection(URL);
+
+			String statement = "SELECT reporter_id, report, report_time FROM "
+					+ Tables.TEXTUAL_TRIP_REPORTS.getTableName()
+					+ " WHERE trip_id = ? ";
+			PreparedStatement stmt = c.prepareStatement(statement);
+			
+			stmt.setLong(1, tripId);
+			ResultSet rs = stmt.executeQuery();
+
+			ArrayList<Report> reports = new ArrayList<Report>(); 
+			while (rs.next()) {
+				reports.add(new Report(tripId, rs.getLong("reporter_id"), rs.getString("report"), rs.getTimestamp("report_time").toString()));
+			}
+			return reports;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

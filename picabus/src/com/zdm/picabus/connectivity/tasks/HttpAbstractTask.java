@@ -45,9 +45,10 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 	@Override
 	protected void onPreExecute() { // note: this method is executed by the UI thread
 		super.onPreExecute();
-		waitSpinner = ProgressDialog.show(mContext, "Loading",
-				"Please wait...", true);
-		
+		if (waitSpinner != null) {
+			waitSpinner = ProgressDialog.show(mContext, "Loading",
+					"Please wait...", true);
+		}
 	}
 
 	@Override

@@ -2,7 +2,9 @@ package com.zdm.picabus.logic;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,11 +18,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -28,6 +33,7 @@ import android.widget.ToggleButton;
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.connectivity.IHttpCaller;
+import com.zdm.picabus.enitities.Report;
 import com.zdm.picabus.enitities.TripResultObject;
 import com.zdm.picabus.facebook.FacbookIdentity;
 import com.zdm.picabus.locationservices.GpsResult;
@@ -61,6 +67,16 @@ public class TripManagerActivity extends Activity {
 	private boolean retFromNotificationAndCheckedOut;
 	Intent serviceIntent;
 
+	
+	//TODO: daniel list
+//	static final String KEY_SONG = "song"; // parent node
+	static final String KEY_ID = "id";
+	static final String KEY_REPORTER = "reporter";
+	static final String KEY_REPORT = "report";
+	static final String KEY_REPORT_TIME = "reportTime";
+	static final String KEY_THUMB_URL = "thumb_url";
+    ListView list;
+    ReportsListAdapter adapter;
 	// private boolean arrivedFromNotification;
 
 	@Override
@@ -121,6 +137,49 @@ public class TripManagerActivity extends Activity {
 		setCheckinButton();
 		setTextReportsUI();
 		setGetRouteLink();
+		
+		// TODO: get the list of reports (that will update the list post HTTP request)
+		//HttpCaller.getInstance().getTripTextualReports(tripRes.getTripId(), this);
+		HttpCaller.getInstance().getTripTextualReports(10, this);
+	}
+	
+	public void insertFacebookData(){
+		 list=(ListView)findViewById(R.id.listReports);
+		 
+	}
+
+	public void populateReportsList(ArrayList<Report> reports) {
+		ArrayList<HashMap<String, String>> reportsList = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> map;
+		
+		Integer idCounter = 0;
+		for (Report report : reports) {
+			map = new HashMap<String, String>();
+			// adding each child node to HashMap 
+	        map.put(KEY_ID, idCounter.toString());
+	        map.put(KEY_REPORTER, report.getReporterId().toString());
+	        map.put(KEY_REPORT, report.getReport());
+	        map.put(KEY_REPORT_TIME, report.getReportTimeString());
+	        reportsList.add(map);
+	        idCounter++;
+		}
+ 
+        list=(ListView)findViewById(R.id.listReports);
+ 
+        // Getting adapter by passing xml data ArrayList
+        adapter=new ReportsListAdapter(this, reportsList);
+        list.setAdapter(adapter);
+ 
+        // Click event for single list row
+        list.setOnItemClickListener(new OnItemClickListener() {
+ 
+      
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+            	Toast.makeText(c, "Item Clicked", Toast.LENGTH_LONG).show();
+            }
+
+        });
 	}
 
 	/**
@@ -143,7 +202,6 @@ public class TripManagerActivity extends Activity {
 
 		lineAndArrivalTop = (TextView) findViewById(R.id.lineAndArrivalTop);
 		notificationToggle = (ToggleButton) findViewById(R.id.notifyToggle);
-		checkinInstructionText = (TextView) findViewById(R.id.checkinInstructionText);
 		checkinButton = (Button) findViewById(R.id.checkinButton);
 		routeImage = (ImageButton) findViewById(R.id.getRouteIcon);
 		reportEditText = (EditText) findViewById(R.id.reportEditText);
@@ -322,7 +380,6 @@ public class TripManagerActivity extends Activity {
 
 		if (checkedIn) {
 			checkinButton.setText("Checkout bus");
-			checkinInstructionText.setText("Click to checkout from bus");
 		}
 
 		checkinButton.setOnClickListener(new View.OnClickListener() {
@@ -340,10 +397,7 @@ public class TripManagerActivity extends Activity {
 					if (checkedIn == false) {
 						checkedIn = true;
 						checkinButton.setText("Checkout bus");
-
-						checkinInstructionText
-								.setText("Click to checkout from bus");
-
+						
 						// activate report parts of page
 						reportEditText.setEnabled(true);
 						submitReportButton.setEnabled(true);

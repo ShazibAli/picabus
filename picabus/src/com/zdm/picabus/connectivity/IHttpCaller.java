@@ -3,6 +3,8 @@ package com.zdm.picabus.connectivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import com.zdm.picabus.logic.TripManagerActivity;
+
 public interface IHttpCaller {
 
 	/**
@@ -87,7 +89,8 @@ public interface IHttpCaller {
 	 *            Report message depicting the trip
 	 */
 	public void reportTripDescription(Context mContext,
-			ProgressDialog waitSpinner, String userId, long tripId, String message);
+			ProgressDialog waitSpinner, String userId, long tripId,
+			String message);
 
 	/**
 	 * 
@@ -112,4 +115,13 @@ public interface IHttpCaller {
 	 */
 	public void getLastReportedLocation(Context mContext,
 			ProgressDialog waitSpinner, long tripId);
+
+	/**
+	 * 
+	 * @param tripId
+	 *            Trip Id
+	 * @param tripManagerActivity
+	 *            Reference to the activity we wish to update
+	 */
+	public void getTripTextualReports(long tripId, TripManagerActivity tripManagerActivity);
 }

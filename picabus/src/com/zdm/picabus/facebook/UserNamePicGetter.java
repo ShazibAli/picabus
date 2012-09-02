@@ -15,6 +15,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Class is used for getting user's facebook profile image from network, using
@@ -24,12 +26,15 @@ import android.util.Log;
 public class UserNamePicGetter extends
 		AsyncTask<String, Integer, ExternalUserIdentity> {
 
-	Context context;
-	String facebookId;
+	private TextView reporterNameTextView; 
+	private ImageView reporterImageView;
+	private String facebookId;
 
-	public UserNamePicGetter(Context c, String userId) {
-		this.context = c;
-		facebookId = userId;
+	public UserNamePicGetter(String userId, TextView reporterNameTextView, ImageView reporterImageView) {
+		
+		this.facebookId = userId;
+		this.reporterImageView = reporterImageView;
+		this.reporterNameTextView = reporterNameTextView;
 	}
 
 	@Override
@@ -43,11 +48,13 @@ public class UserNamePicGetter extends
 		profilePic = result.getUserProfilePic();
 
 		if (userName != null) {
-			// bla bla
+			reporterNameTextView.setText(userName);
 		}
 		if (profilePic != null) {
-			// bla bla
+			reporterImageView.setImageBitmap(profilePic);
 		}
+		
+		
 
 	}
 

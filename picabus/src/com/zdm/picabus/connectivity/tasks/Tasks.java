@@ -13,7 +13,8 @@ public enum Tasks {
 	REPORT_CHECKOUT("reportCheckout"),
 	REPORT_TEXTUAL_MSG("reportTextualMsg"), 
 	GET_LAST_REPORTED_LOCATION("getLastReportedLocation"),
-	GET_USER_SCORE("getUserScore");
+	GET_USER_SCORE("getUserScore"),
+	GET_TRIP_REPORTS("getTripReports");
 
 	private String taskName;
 

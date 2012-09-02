@@ -3,15 +3,13 @@
    android:orientation="vertical"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
+   android:background="@drawable/choose_busline_bg"
    >
 
-    <TextView
-        android:id="@+id/textViewLine"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-    android:text="@string/choose_line_number"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
+                        <View
+         android:layout_width="fill_parent"
+         android:layout_height="45dip"
+ />
 
 
 <ListView

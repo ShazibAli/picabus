@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
@@ -22,8 +23,6 @@ import android.widget.SlidingDrawer.OnDrawerScrollListener;
 import android.widget.Spinner;
 
 import com.zdm.picabus.R;
-import com.zdm.picabus.facebook.SessionEvents;
-import com.zdm.picabus.facebook.SessionEvents.AuthListener;
 import com.zdm.picabus.locationservices.GpsCorrdinates;
 import com.zdm.picabus.utilities.ErrorsHandler;
 import com.zdm.picabus.utilities.SettingsParser;
@@ -44,7 +43,7 @@ public class MainScreenActivity extends Activity {
 	ImageButton myPicabusBtn;
 	Button slideButton;
 	SlidingDrawer slidingDrawer;
-
+	LinearLayout slideBg;
 	NotificationManager nm;
 	GpsCorrdinates gpsObject;
 
@@ -67,9 +66,9 @@ public class MainScreenActivity extends Activity {
 			ErrorsHandler.createGpsErrorAlert(context);
 		}
 
-		//UI and listeners
+		// UI and listeners
 		setListenersForUi();
-		
+
 		// Adds sliding drawer and application settings inside
 		addSlidingDrawer();
 		addSettingsToSlidingDrawer();
@@ -79,7 +78,7 @@ public class MainScreenActivity extends Activity {
 	 * Set page UI and click listeners
 	 */
 	private void setListenersForUi() {
-		
+
 		// Menu Buttons
 		cameraBtn = (ImageButton) findViewById(R.id.button_camera);
 		historyBtn = (ImageButton) findViewById(R.id.button_history);
@@ -87,60 +86,59 @@ public class MainScreenActivity extends Activity {
 		searchBtn = (ImageButton) findViewById(R.id.button_search);
 		myPicabusBtn = (ImageButton) findViewById(R.id.button_mypicabus);
 		// Listeners for buttons:
-				cameraBtn.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						// Check GPS coordinates available, alert if disabled
-						if (!gpsObject.isGpsEnabled()) {
-							ErrorsHandler.createGpsErrorAlert(context);
-						} else {
-							// Open camera activity
-							Intent intent = new Intent(
-									"com.zdm.picabus.cameraservices.CameraActivity");
-							startActivity(intent);
-						}
-					}
-				});
+		cameraBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// Check GPS coordinates available, alert if disabled
+				if (!gpsObject.isGpsEnabled()) {
+					ErrorsHandler.createGpsErrorAlert(context);
+				} else {
+					// Open camera activity
+					Intent intent = new Intent(
+							"com.zdm.picabus.cameraservices.CameraActivity");
+					startActivity(intent);
+				}
+			}
+		});
 
-				aboutUsBtn.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						Intent intent = new Intent(
-								"com.zdm.picabus.logic.AboutUsActivity");
-						startActivity(intent);
-					}
-				});
+		aboutUsBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(
+						"com.zdm.picabus.logic.AboutUsActivity");
+				startActivity(intent);
+			}
+		});
 
-				searchBtn.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						// Check GPS coordinates available, alert if disabled
-						if (!gpsObject.isGpsEnabled()) {
-							ErrorsHandler.createGpsErrorAlert(context);
-						} else {
-							// Open Free text activity
-							Intent intent = new Intent(
-									"com.zdm.picabus.logic.ManualSearchActivity");
-							startActivity(intent);
-						}
-					}
-				});
+		searchBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// Check GPS coordinates available, alert if disabled
+				if (!gpsObject.isGpsEnabled()) {
+					ErrorsHandler.createGpsErrorAlert(context);
+				} else {
+					// Open Free text activity
+					Intent intent = new Intent(
+							"com.zdm.picabus.logic.ManualSearchActivity");
+					startActivity(intent);
+				}
+			}
+		});
 
-				historyBtn.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						Intent intent = new Intent(
-								"com.zdm.picabus.logic.HistoryActivity");
-						startActivity(intent);
-					}
-				});
+		historyBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(
+						"com.zdm.picabus.logic.HistoryActivity");
+				startActivity(intent);
+			}
+		});
 
-				myPicabusBtn.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						Intent intent = new Intent(
-								"com.zdm.picabus.facebook.MyPicabusPageActivity");
-						startActivity(intent);
-					}
-				});
-		
+		myPicabusBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(
+						"com.zdm.picabus.facebook.MyPicabusPageActivity");
+				startActivity(intent);
+			}
+		});
+
 	}
-
 
 	/**
 	 * Add setting UI to the sliding drawer
@@ -219,12 +217,13 @@ public class MainScreenActivity extends Activity {
 
 		slideButton = (Button) findViewById(R.id.slideButton);
 		slidingDrawer = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
-
+		slideBg = (LinearLayout) findViewById(R.id.contentLayout);
 		// Sliding drawers Events
 		slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
 			public void onDrawerOpened() {
 				slideButton
 						.setBackgroundResource(R.drawable.settings_icon_down);
+				slideBg.setBackgroundResource(R.drawable.setting_bg_opened);
 				slidingDrawer.setClickable(true);
 			}
 		});
@@ -234,9 +233,9 @@ public class MainScreenActivity extends Activity {
 				if (slidingDrawer.isOpened()) {
 					slideButton
 							.setBackgroundResource(R.drawable.settings_icon_down);
-				} else{
-					slideButton
-							.setBackgroundResource(R.drawable.settings_icon_up);
+					slideBg.setBackgroundResource(R.drawable.setting_bg_opened);
+				} else {
+					slideBg.setBackgroundResource(R.drawable.setting_bg_opened);
 				}
 			}
 
@@ -244,9 +243,11 @@ public class MainScreenActivity extends Activity {
 				if (slidingDrawer.isOpened()) {
 					slideButton
 							.setBackgroundResource(R.drawable.settings_icon_down);
-				} else{
+					slideBg.setBackgroundResource(R.drawable.setting_bg_opened);
+				} else {
 					slideButton
 							.setBackgroundResource(R.drawable.settings_icon_up);
+					slideBg.setBackgroundResource(R.drawable.settings_bg);
 				}
 
 			}
@@ -255,7 +256,8 @@ public class MainScreenActivity extends Activity {
 		slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
 
 			public void onDrawerClosed() {
-				/*slideButton.setBackgroundResource(R.drawable.settings_icon_up);*/
+				
+				 slideButton.setBackgroundResource(R.drawable.settings_icon_up);	 
 				slidingDrawer.setClickable(false);
 			}
 		});
@@ -290,7 +292,6 @@ public class MainScreenActivity extends Activity {
 			super.onBackPressed();
 		}
 	}
-
 
 	@Override
 	protected void onDestroy() {

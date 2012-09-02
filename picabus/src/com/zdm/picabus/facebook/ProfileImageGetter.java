@@ -29,12 +29,7 @@ import android.widget.ImageView;
 		
 	        @Override
 	        protected void onPostExecute(Bitmap result) {
-	             /*PicabusFacebookObject facebookObject = PicabusFacebookObject.getFacebookInstance();
-	             facebookObject.setProfilePicture(result);
-	             //Goto mypicabus page
-	             Intent intent = new Intent(
-							"com.zdm.picabus.facebook.MyPicabusActivity");
-				 context.startActivity(intent);*/
+
 	        	ImageView mUserPic = (ImageView)  ((Activity) context).findViewById(R.id.facebookProfilePic);
 	        	mUserPic.setImageBitmap(result);
 	        }

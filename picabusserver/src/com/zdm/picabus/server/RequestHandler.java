@@ -1,5 +1,6 @@
 package com.zdm.picabus.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -7,6 +8,7 @@ import com.zdm.picabus.db.DBServices;
 import com.zdm.picabus.db.IDBServices;
 import com.zdm.picabus.server.entities.Line;
 import com.zdm.picabus.server.entities.RealtimeLocationReport;
+import com.zdm.picabus.server.entities.Report;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
@@ -170,6 +172,28 @@ public class RequestHandler {
 			data.addProperty("points", points);
 			response.add("data", data);
 			return response;
+		}
+		return null;
+	}
+	public JsonObject getTripReports(Long tripIdValue) {
+		ArrayList<Report> reports = idbs.getTextualReports(tripIdValue);
+		if (reports != null) {
+			JsonObject response = new JsonObject();
+			JsonObject currentReport;
+			int reportCount = 0;
+			
+			for (int i = 0; i < reports.size(); i++) {
+				Report currentReportObj = reports.get(i);
+				currentReport = new JsonObject();
+				currentReport.addProperty("reporterId", currentReportObj.getReporterId());
+				currentReport.addProperty("reportTime", currentReportObj.getReportTimeString());
+				currentReport.addProperty("report", currentReportObj.getReport());
+				response.add("report_" + reportCount, currentReport);
+				reportCount++;
+			}
+			response.addProperty("numOfReports", reportCount);
+			return response;
+			
 		}
 		return null;
 	}

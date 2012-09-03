@@ -37,14 +37,11 @@ public class ResultBusArrivalActivity extends ListActivity {
 	private ArrivalRowAdapter arrivalRowAdapter;
 	ProgressDialog pd;
 	Context context;
-
-
 	TextView textViewLine;
 	ImageView companyImage;
 	TextView textViewStation;
 	TextView textViewLastStop;
 	ImageView routeImage;
-
 	Line lineDataModel;
 	String destination;
 	List<Trip> trips;
@@ -62,11 +59,10 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 		// null result from server
 		if (lineDataModel == null) {
-			// open null results activity
+			// open null results activity and finish current
 			Intent resultsIntent = new Intent(
 					"com.zdm.picabus.logic.EmptyBusResultsActivity");
 			this.context.startActivity(resultsIntent);
-			// finish current activity
 			finish();
 
 		}

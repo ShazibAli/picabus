@@ -23,10 +23,17 @@ import android.widget.ImageView;
 		Context context;
 		String facebookId;
 		
+		/**
+		 * Constructor
+		 * @param c - context
+		 */
 		public ProfileImageGetter(Context c) {
 			this.context=c;
 		}
 		
+		/**
+		 * Update UI according to result
+		 */
 	        @Override
 	        protected void onPostExecute(Bitmap result) {
 
@@ -34,9 +41,11 @@ import android.widget.ImageView;
 	        	mUserPic.setImageBitmap(result);
 	        }
 
+	        /**
+	         * Get profile picture from URL
+	         */
 			@Override
 			public Bitmap doInBackground(String... params) {
-				// TODO Auto-generated method stub
 				
 				String facebookId = FacbookIdentity.userUID;
 				

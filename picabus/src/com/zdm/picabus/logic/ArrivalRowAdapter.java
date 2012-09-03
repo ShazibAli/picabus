@@ -21,12 +21,21 @@ public class ArrivalRowAdapter extends ArrayAdapter<TripResultObject> {
 
 	private ArrayList<TripResultObject> items;
 
+	/** 
+	 * constructor
+	 * @param context
+	 * @param textViewResourceId
+	 * @param items - list of trips
+	 */
 	public ArrivalRowAdapter(Context context, int textViewResourceId,
 			ArrayList<TripResultObject> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 	}
 
+	/**
+	 * Updates the view of each item on the list
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;

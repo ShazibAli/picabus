@@ -47,5 +47,6 @@
 	<string name="my_trip_status">My Trip Status</string>
 	<string name="map_exp">View bus route and it\'s current location</string>
 	<string name="short_checkin_exp">Checkin/Checkout from this trip</string>
+	<string name="Checkin_bus_btn_text">Checkin bus</string>
     
 </resources>

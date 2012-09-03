@@ -11,8 +11,6 @@ import android.content.Intent;
 
 public class ErrorsHandler {
 
-
-	//private static final String ERROR_SERVER_STATUS_CODE = "Cannot retrieve answer from server, please try again later";
 	private static final String ERROR_CONNECTION_TO_SERVER = "Problem connecting to server, please check your internet connection and try again";
 	private static final String ERROR_GPS_TERMINATED = "GPS is disabled in your device. Would you like to enable it?";
 	private static final String ERROR_OPEVCV_NULL_RESULT = "No lines numbers were detected. Do you want to take the photo again?";
@@ -273,6 +271,10 @@ public class ErrorsHandler {
 		alert.show();
 	}
 	
+	/**
+	 * Creates error when attempting to checkin without being logged in
+	 * @param c - context
+	 */
 	public static void createNotLoggedInResultPageError(final Context c) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);

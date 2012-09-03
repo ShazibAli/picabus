@@ -10,7 +10,6 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -30,6 +29,12 @@ public class UserNamePicGetter extends
 	private ImageView reporterImageView;
 	private String facebookId;
 
+	/**
+	 * Constructor.
+	 * @param userId
+	 * @param reporterNameTextView - field to update UI later
+	 * @param reporterImageView  - field to update UI later
+	 */
 	public UserNamePicGetter(String userId, TextView reporterNameTextView, ImageView reporterImageView) {
 		
 		this.facebookId = userId;

@@ -199,7 +199,6 @@ public class MainScreenActivity extends Activity {
 
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						// TODO Auto-generated method stub
 						if (isChecked) {
 							spNotification.setAdapter(adapterNotification);
 						} else {
@@ -295,7 +294,6 @@ public class MainScreenActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		gpsObject.stopLocationUpdates();
 	}

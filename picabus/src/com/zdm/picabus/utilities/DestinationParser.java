@@ -2,6 +2,12 @@ package com.zdm.picabus.utilities;
 
 import com.zdm.picabus.enitities.Destination;
 
+/**
+ * 
+ * Class used for parsing destination field as created on server
+ * into 2 seperated destinations
+ *
+ */
 public class DestinationParser {
 
 	/**

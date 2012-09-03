@@ -23,6 +23,8 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 import com.zdm.picabus.R;
+import com.zdm.picabus.connectivity.HttpCaller;
+import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.facebook.SessionEvents.AuthListener;
 import com.zdm.picabus.facebook.SessionEvents.LogoutListener;
 import com.zdm.picabus.facebook.BaseDialogListener;
@@ -39,9 +41,8 @@ public class MyPicabusPageActivity extends Activity {
 	private final static int AUTHORIZE_ACTIVITY_RESULT_CODE = 0;
 	private ProgressDialog pd;
 	TextView userPoints;
-	private boolean cameFromLoginPage=false;
-	
-	// String[] permissions = {"publish_stream"};
+	private boolean cameFromLoginPage = false;
+	IHttpCaller ihc = null;
 	String[] permissions = {};
 
 	/** Called when the activity is first created. */
@@ -49,7 +50,6 @@ public class MyPicabusPageActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_picabus_screen);
-
 		mHandler = new Handler();
 
 		mText = (TextView) MyPicabusPageActivity.this
@@ -67,21 +67,26 @@ public class MyPicabusPageActivity extends Activity {
 		setPostAndAppRequestFunctionality();
 
 		// get user's score - result will update UI
-		// TODO: uncomment inside!
 		getUserScore();
-		
+
+		// Check is user arrived from login page or for main menu
+		// in order to handle 'back' button
 		getBooleanCameFromLoginPage();
 
 	}
 
 	/**
-	 * set field 'cameFromLoginPage' to true if came from login page. false otherwise
+	 * set field 'cameFromLoginPage' to true if came from login page. false
+	 * otherwise
 	 */
 	private void getBooleanCameFromLoginPage() {
-		Intent currIntent=getIntent();
+		Intent currIntent = getIntent();
 		cameFromLoginPage = currIntent.getBooleanExtra("fromLogin", false);
 	}
 
+	/**
+	 * Handle 'on resume' on activity life cycle, handle access token if needed
+	 */
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -95,13 +100,16 @@ public class MyPicabusPageActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Facebook's activity result handler
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		// activity result from authorization flow
 		case AUTHORIZE_ACTIVITY_RESULT_CODE: {
-			FacbookIdentity.mFacebook.authorizeCallback(requestCode, resultCode,
-					data);
+			FacbookIdentity.mFacebook.authorizeCallback(requestCode,
+					resultCode, data);
 			break;
 		}
 
@@ -136,9 +144,9 @@ public class MyPicabusPageActivity extends Activity {
 	 */
 	private void getUserScore() {
 		pd = new ProgressDialog(this);
-		// TODO:uncomment and check when server available
-		// ihc = HttpCaller.getInstance();
-		// ihc.getUserScore(c, pd, facebookObject.getFacebookId());
+
+		ihc = HttpCaller.getInstance();
+		ihc.getUserScore(c, pd, FacbookIdentity.getUserId());
 
 	}
 
@@ -178,25 +186,26 @@ public class MyPicabusPageActivity extends Activity {
 		if (!FacbookIdentity.mFacebook.isSessionValid()) {
 			Util.showAlert(this, "Warning", "You must first log in.");
 		} else {
-			FacbookIdentity.mFacebook.dialog(this, "feed", new DialogListener() {
+			FacbookIdentity.mFacebook.dialog(this, "feed",
+					new DialogListener() {
 
-				public void onFacebookError(FacebookError e) {
-				}
+						public void onFacebookError(FacebookError e) {
+						}
 
-				public void onError(DialogError e) {
-				}
+						public void onError(DialogError e) {
+						}
 
-				public void onComplete(Bundle values) {
-				}
+						public void onComplete(Bundle values) {
+						}
 
-				public void onCancel() {
-				}
-			});
+						public void onCancel() {
+						}
+					});
 		}
 	}
 
 	/**
-	 *  Send an app request to friends
+	 * Send an app request to friends
 	 * 
 	 */
 
@@ -205,12 +214,12 @@ public class MyPicabusPageActivity extends Activity {
 			Util.showAlert(this, "Warning", "You must first log in.");
 		} else {
 			Bundle params = new Bundle();
-			params.putString("message", "Hi, I'm using Picabus when waiting for a bus!");// getString(R.string.request_message));
+			params.putString("message",
+					"Hi, I'm using Picabus when waiting for a bus!");// getString(R.string.request_message));
 			FacbookIdentity.mFacebook.dialog(MyPicabusPageActivity.this,
 					"apprequests", params, new AppRequestsListener());
 		}
 	}
-
 
 	/**
 	 * callback for the apprequests dialog which sends an app request to user's
@@ -245,8 +254,6 @@ public class MyPicabusPageActivity extends Activity {
 			JSONObject jsonObject;
 			try {
 				jsonObject = new JSONObject(response);
-
-				// final String picURL = jsonObject.getString("picture");
 				final String name = jsonObject.getString("name");
 				FacbookIdentity.userUID = jsonObject.getString("id");
 
@@ -260,7 +267,6 @@ public class MyPicabusPageActivity extends Activity {
 				});
 
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -308,17 +314,20 @@ public class MyPicabusPageActivity extends Activity {
 		FacbookIdentity.mAsyncRunner.request("me", params,
 				new UserRequestListener());
 	}
-	
+
+	/**
+	 * Handle back button action - if user came from login page, return user to
+	 * main menu
+	 */
 	@Override
 	public void onBackPressed() {
 
-		if (cameFromLoginPage){
+		if (cameFromLoginPage) {
 			Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
 			startActivity(intent);
 			finish();
-		}
-		else{
-		super.onBackPressed();
+		} else {
+			super.onBackPressed();
 		}
 	}
 

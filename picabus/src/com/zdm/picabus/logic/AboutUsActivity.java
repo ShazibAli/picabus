@@ -11,7 +11,7 @@ import com.zdm.picabus.R;
 /**
  * 
  * Activity for handling 'about us'
- *
+ * 
  */
 public class AboutUsActivity extends Activity {
 
@@ -19,22 +19,21 @@ public class AboutUsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.aboutus_screen);
+
+		// share picabus in several medias
 		ImageButton shareBtn = (ImageButton) findViewById(R.id.btnShare);
-		
-		shareBtn.setOnClickListener(new View.OnClickListener(){
+
+		shareBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				Intent sendIntent = new Intent();
 				sendIntent.setAction(Intent.ACTION_SEND);
-				sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getText(R.string.share_message));
+				sendIntent.putExtra(Intent.EXTRA_TEXT,
+						getResources().getText(R.string.share_message));
 				sendIntent.setType("text/plain");
-				startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_title))); 
+				startActivity(Intent.createChooser(sendIntent, getResources()
+						.getText(R.string.share_title)));
 			}
-			
 		});
-		
-		
-		
-
 	}
 }

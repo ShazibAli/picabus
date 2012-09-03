@@ -50,7 +50,6 @@ public class TripManagerActivity extends Activity {
 	private Context c;
 	private ImageButton routeImage;
 	private ToggleButton notificationToggle;
-	private TextView checkinInstructionText;
 	private TextView lineAndArrivalTop;
 	private Button checkinButton;
 	private boolean checkedIn = false;
@@ -89,30 +88,19 @@ public class TripManagerActivity extends Activity {
 		pd = new ProgressDialog(this);
 		ihc = HttpCaller.getInstance();
 
-		// check if arrived from notification click
-		/*
-		 * arrivedFromNotification = currIntent.getBooleanExtra(
-		 * "fromNotification", false);
-		 */
-
 		// check if user has checked out and than clicked checkin notification
 		retFromNotificationAndCheckedOut = isRetFromNotificationAndCheckedOut();
 		if (retFromNotificationAndCheckedOut) {
 			finish();
 		}
 
-		// if user is checked in on that trip - set checkIn field, and get user
-		// id
+		// if user is checked in on that trip-set checkIn field and get userid
 		previouslyCheckedInCurrTrip = isPreviouslyCheckedInCurrTrip();
 		if (previouslyCheckedInCurrTrip) {
 			checkedIn = true;
 			setUserIdIfCheckedIn();
 		}
 
-		/*
-		 * if (arrivedFromNotification) { userId =
-		 * currIntent.getStringExtra("facebookId"); }
-		 */
 
 		if (userId == null) {
 			userId = FacbookIdentity.getUserId();
@@ -457,10 +445,7 @@ public class TripManagerActivity extends Activity {
 		if (previouslyCheckedInCurrTrip) {
 			setNotificationStateIfCheckedIn();
 		}
-		/*
-		 * if (arrivedFromNotification) { notificationToggle.setChecked(true);
-		 * notificationToggle.setEnabled(false); }
-		 */
+ 
 		// set click listener
 		notificationToggle
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -579,24 +564,6 @@ public class TripManagerActivity extends Activity {
 				R.drawable.notification_icon, "Picabus Reminder",
 				System.currentTimeMillis());
 
-		/*
-		 * Intent notificationIntent = new Intent(this,
-		 * TripManagerActivity.class);
-		 */
-
-		// put extra
-		/*
-		 * notificationIntent.putExtra("fromNotification", true);
-		 * notificationIntent.putExtra("notificationTripData", tripRes);
-		 * notificationIntent.putExtra("CheckinButton", checkedIn);
-		 * notificationIntent.putExtra("facebookId", userId);
-		 */
-
-		/*
-		 * PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-		 * notificationIntent, 0);
-		 */
-
 		notification.setLatestEventInfo(c, title, message, null);
 		notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
 
@@ -654,90 +621,4 @@ public class TripManagerActivity extends Activity {
 
 	}
 
-	/**
-	 * Save data if app is killed for memory reasons
-	 */
-	// @Override
-	/*
-	 * public void onSaveInstanceState(Bundle savedInstanceState) {
-	 * super.onSaveInstanceState(savedInstanceState); // Save UI state changes
-	 * to the savedInstanceState. // This bundle will be passed to onCreate if
-	 * the process is // killed and restarted.
-	 * savedInstanceState.putSerializable("Data", tripRes); }
-	 */
-
-	/**
-	 * Restore data if app is killed for memory resonse
-	 */
-	/*
-	 * @Override public void onRestoreInstanceState(Bundle savedInstanceState) {
-	 * super.onRestoreInstanceState(savedInstanceState); // Restore UI state
-	 * from the savedInstanceState. // This bundle has also been passed to
-	 * onCreate. tripRes = (TripResultObject)
-	 * savedInstanceState.getSerializable("Data"); }
-	 */
-
-	/**
-	 * Save data if user finished activity - for notifications
-	 */
-	/*
-	 * @Override protected void onStop() { super.onStop();
-	 * 
-	 * // save trip data SharedPreferences settings =
-	 * getSharedPreferences(PREFS_NAME, 0); SharedPreferences.Editor editor =
-	 * settings.edit(); editor.putInt("lineNumber", tripRes.getLineNumber());
-	 * editor.putString("stationName", tripRes.getStationName());
-	 * editor.putLong("tripId", tripRes.getTripId());
-	 * editor.putString("arrivalTime", tripRes.getArrivalTime());
-	 * editor.putInt("stopSequence", tripRes.getStopSequence());
-	 * 
-	 * // save page user changes editor.putBoolean("notificationToggleChecked",
-	 * notificationToggle.isChecked()); editor.putBoolean("CheckinButton",
-	 * checkedIn);
-	 * 
-	 * // Commit the edits editor.commit(); }
-	 */
-
-	/**
-	 * for notification - save activity state - UI elements
-	 */
-	/*
-	 * private void getUiChangesFromPref(Intent intent) {
-	 * 
-	 * // if came from notification click if (arrivedFromNotification) {
-	 * checkedIn = intent.getBooleanExtra("CheckinButton", false); }
-	 * 
-	 * // else - take from shared preferences
-	 * 
-	 * SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	 * checkedIn = settings.getBoolean("CheckinButton", false); if
-	 * (settings.getBoolean("notificationToggleChecked", false)) {
-	 * notificationToggle.setChecked(true); }
-	 * 
-	 * 
-	 * }
-	 */
-
-	/**
-	 * for notification - save activity state - trip data elements
-	 */
-	/*
-	 * private void getTripResultFromPref(Intent intent) {
-	 * 
-	 * // if came from notification click tripRes = (TripResultObject) intent
-	 * .getSerializableExtra("notificationTripData"); // else
-	 * 
-	 * if (tripRes == null) { SharedPreferences settings =
-	 * getSharedPreferences(PREFS_NAME, 0); int lineNumber =
-	 * settings.getInt("lineNumber", -1); String stationName =
-	 * settings.getString("stationName", null); long tripId =
-	 * settings.getLong("tripId", -1); String arrivalTime =
-	 * settings.getString("arrivalTime", null); int stopSequence =
-	 * settings.getInt("stopSequence", -1);
-	 * 
-	 * tripRes = new TripResultObject(lineNumber, stationName, tripId,
-	 * arrivalTime, stopSequence); }
-	 * 
-	 * }
-	 */
 }

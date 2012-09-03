@@ -34,7 +34,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_top_margin"
-                    android:text="Checkin bus" />
+                    android:text="@string/Checkin_bus_btn_text"
+                     />
 
                 <ImageButton
                     android:id="@+id/getRouteIcon"

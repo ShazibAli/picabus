@@ -59,7 +59,6 @@ public class GetUserScoreTask extends HttpAbstractTask {
 
 		}
 		
-		/* Handle UI score update here - use current score as the updated score! */
 	}
 
 }

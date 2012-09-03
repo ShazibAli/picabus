@@ -1,5 +1,10 @@
 package com.zdm.picabus.utilities;
 
+/**
+ * 
+ * Class used to parse data that was entered on setting page
+ *
+ */
 public class SettingsParser {
 
 	/**

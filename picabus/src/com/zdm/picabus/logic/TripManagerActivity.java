@@ -74,7 +74,6 @@ public class TripManagerActivity extends Activity {
 	static final String KEY_REPORTER = "reporter";
 	static final String KEY_REPORT = "report";
 	static final String KEY_REPORT_TIME = "reportTime";
-	static final String KEY_THUMB_URL = "thumb_url";
     ListView list;
     ReportsListAdapter adapter;
 	// private boolean arrivedFromNotification;
@@ -127,8 +126,7 @@ public class TripManagerActivity extends Activity {
 		setTextReportsUI();
 		setGetRouteLink();
 		
-		// TODO: get the list of reports (that will update the list post HTTP request)
-		//HttpCaller.getInstance().getTripTextualReports(tripRes.getTripId(), this);
+		// TODO: Change to real TripId
 		HttpCaller.getInstance().getTripTextualReports(10, this);
 	}
 	
@@ -255,7 +253,6 @@ public class TripManagerActivity extends Activity {
 	 */
 
 	private boolean isPreviouslyCheckedInCurrTrip() {
-
 		SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
 		boolean checkInSomeTrip = settings.getBoolean("CheckinButton", false);
 		return checkInSomeTrip;

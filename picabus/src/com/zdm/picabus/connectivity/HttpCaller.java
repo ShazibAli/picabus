@@ -70,7 +70,7 @@ public class HttpCaller implements IHttpCaller {
 		};
 		
 		HttpAbstractTask hat = new GetDepartureTimeTask(mContext, waitSpinner, Tasks.GET_DEPARTURE_TIMES.getTaskName(), requestPayload);
-		hat.execute(publicServerURLOld, null, null);
+		hat.execute(localServerURL + SERVICES, null, null);
 
 
 	}
@@ -88,7 +88,7 @@ public class HttpCaller implements IHttpCaller {
 		};
 		
 		HttpAbstractTask hat = new GetRouteDetailsTask(mContext, waitSpinner, Tasks.GET_ROUTE_DETAILS.getTaskName(), requestPayload);
-		hat.execute(publicServerURLOld, null, null);
+		hat.execute(localServerURL + SERVICES, null, null);
 
 
 	}

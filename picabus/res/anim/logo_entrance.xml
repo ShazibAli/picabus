@@ -3,7 +3,7 @@
 
     <translate
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:duration="4000"
+        android:duration="3000"
         android:fromXDelta="0%"
         android:fromYDelta="125%"
         android:toXDelta="0%"

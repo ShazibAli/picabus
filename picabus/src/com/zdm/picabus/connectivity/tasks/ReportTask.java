@@ -31,12 +31,6 @@ public class ReportTask extends HttpAbstractTask {
 
 		int pointsEarnedByCheckin = 0;
 
-		// TODO: this messages should be in Strings.xml
-		final String CHECKOUT_MESSAGE = "Thank you for checkout! You have earned "
-				+ pointsEarnedByCheckin + "points";
-		final String REPORT_TEXT_MESSAGE = "Thank you for the report! You have earned "
-				+ NUMBER_OF_POINTS_PER_TEXTUAL_REPORT + "points";
-
 		// Dismissing progress dialod
 		waitSpinner.dismiss();
 
@@ -83,23 +77,27 @@ public class ReportTask extends HttpAbstractTask {
 					// TODO:pointsOnCheckin=
 					// TODO:pointsEarnedByCheckin=pointsOnCheckin-pointOnCheckout
 
-					// Checkout
+				// Checkout
 				} else if (taskName.equalsIgnoreCase(Tasks.REPORT_CHECKOUT
 						.getTaskName())) {
 
 					/* The update was successful */
 					// TODO:pointsOnCheckout=
-					Toast toast = Toast.makeText(context, CHECKOUT_MESSAGE, 5);
+					String message = context.getResources().getString(
+							R.string.checkin_msg,
+							pointsEarnedByCheckin);
+					Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 					toast.show();
 
-					// text report
+				// text report
 				} else if (taskName.equals(Tasks.REPORT_TEXTUAL_MSG
 						.getTaskName())) {
 					/* The update was successful */
-					Toast toast = Toast.makeText(context, REPORT_TEXT_MESSAGE,
-							5);
+					String message = context.getResources().getString(
+							R.string.checkin_msg,
+							NUMBER_OF_POINTS_PER_TEXTUAL_REPORT);
+					Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 					toast.show();
-
 				}
 			}
 		} else {// result=null

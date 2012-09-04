@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/list_image"
             android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_height="70dip"
             android:src="@drawable/picabus_logo"/>
  
     </LinearLayout>
@@ -37,25 +37,25 @@
  
     <!-- Report -->
     <TextView
-        android:id="@+id/artist"
+        android:id="@+id/report"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:textColor="#343434"
-        android:textSize="10dip"
+        android:textSize="14dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail" />
  
     <!-- Rightend Time -->
     <TextView
-        android:id="@+id/duration"
+        android:id="@+id/report_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/title"
         android:gravity="right"
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
+        android:textSize="12dip"
         android:textColor="#10bcc9"
         android:textStyle="bold"/>
  

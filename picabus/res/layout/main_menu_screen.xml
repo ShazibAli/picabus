@@ -10,19 +10,25 @@
     android:gravity="bottom"
     android:orientation="vertical" >
 
+                            <View
+         android:layout_width="fill_parent"
+         android:layout_height="127dip"
+ />
+            
+                            
     <ImageButton
         android:id="@+id/button_camera"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
         android:background="@null"
         android:contentDescription="@string/menu_camera_button"
+        android:src="@drawable/button_camera_s"
         android:text="@string/menu_camera_button" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="20"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
         android:gravity="bottom|center_horizontal"
         android:orientation="horizontal"
         android:weightSum="4" >
@@ -129,7 +135,7 @@
  />
                         
             <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/notify_pref_txt"

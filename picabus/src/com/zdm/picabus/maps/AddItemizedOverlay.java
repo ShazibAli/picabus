@@ -50,7 +50,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
     	   
 		OverlayItem item = mapOverlays.get(index);
 
-           //Do stuff here when you tap, i.e. :
+           //Do stuff here when you tap
            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
            dialog.setTitle("Stop sequence number: " + item.getTitle());
            dialog.setMessage(item.getSnippet());
@@ -62,7 +62,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
  
        @Override
        public void draw(android.graphics.Canvas canvas, MapView mapView, boolean shadow) {
-           super.draw(canvas, mapView, shadow);
+           super.draw(canvas, mapView, false);
            int mTextSize = 30;
            int dx = 0;
            int dy = 0;
@@ -70,19 +70,19 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
                //cycle through all overlays
                for (int index = 0; index < mapOverlays.size(); index++) {
                    OverlayItem item = mapOverlays.get(index);
-
+                   
                    // Converts lat/lng-Point to coordinates on the screen
                    GeoPoint point = item.getPoint();
                    Point ptScreenCoord = new Point() ;
                    mapView.getProjection().toPixels(point, ptScreenCoord);
 
                    //Paint
-                   Paint paint = new Paint();
+                /*   Paint paint = new Paint();
                    paint.setTextAlign(Paint.Align.CENTER);
                    paint.setTextSize(mTextSize);
                    paint.setARGB(255, 148, 0, 211); // alpha, r, g, b (Purple, semi see-through)
                    //show text to the above of the icon
-                   canvas.drawText(item.getTitle(), ptScreenCoord.x, ptScreenCoord.y  + mTextSize, paint);
+                   canvas.drawText(item.getTitle(), ptScreenCoord.x, ptScreenCoord.y  + mTextSize, paint);*/
                    
                   /* Rect rectBounds = new Rect();
                    paint.getTextBounds(item.getTitle(), 0, item.getTitle().length(), rectBounds);

@@ -46,7 +46,7 @@ public class RoutesMapActivity extends MapActivity {
     		List<Overlay> mapOverlays = mapView.getOverlays();
 			Drawable drawableRegularStop = this.getResources().getDrawable(R.drawable.pin_point_icon);
 			Drawable drawableCurrenStop = this.getResources().getDrawable(R.drawable.u_r_here_pin);
-			Drawable drawableCurrentLocation = this.getResources().getDrawable(R.drawable.notification_icon);
+			Drawable drawableCurrentLocation = this.getResources().getDrawable(R.drawable.bus_current_pin);
 			
 			AddItemizedOverlay itemizedOverlayRegular = new AddItemizedOverlay(drawableRegularStop, this);
 			AddItemizedOverlay itemizedOverlayFirst = new AddItemizedOverlay(drawableCurrenStop, this);

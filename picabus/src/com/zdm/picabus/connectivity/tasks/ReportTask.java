@@ -7,26 +7,22 @@ import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.IResponseParser;
 import com.zdm.picabus.connectivity.ResponseParser;
 import com.zdm.picabus.enitities.ReportResult;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ReportTask extends HttpAbstractTask {
 
-	
 	private static final int NUMBER_OF_POINTS_PER_LOCATION_REPORT = 2;
 	private static final int NUMBER_OF_POINTS_PER_TEXTUAL_REPORT = 5;
 	private Context context;
-	
+
 	public ReportTask(Context mContext, ProgressDialog waitSpinner,
 			String taskName, JSONObject reuqestPayload) {
 		super(mContext, waitSpinner, taskName, reuqestPayload);
 
 		this.context = mContext;
-		
+
 	}
 
 	@Override
@@ -38,15 +34,12 @@ public class ReportTask extends HttpAbstractTask {
 		// TODO: this messages should be in Strings.xml
 		final String CHECKOUT_MESSAGE = "Thank you for checkout! You have earned "
 				+ pointsEarnedByCheckin + "points";
-		final String CHECKOUT_ERROR_MESSAGE = "Attemp to checkin failed, please try again later";
 		final String REPORT_TEXT_MESSAGE = "Thank you for the report! You have earned "
 				+ NUMBER_OF_POINTS_PER_TEXTUAL_REPORT + "points";
-		final String REPORT_TEXT_ERROR_MESSAGE = "Attemp to report failed, please try again later";
 
-		
 		// Dismissing progress dialod
 		waitSpinner.dismiss();
-		
+
 		JSONObject json = null;
 		IResponseParser rp = null;
 		ReportResult rs = new ReportResult();
@@ -55,7 +48,7 @@ public class ReportTask extends HttpAbstractTask {
 			try {
 				json = new JSONObject(result);
 			} catch (JSONException e) {
-				//TODO: handle error + return
+				// TODO: handle error + return
 				e.printStackTrace();
 			}
 			rp = new ResponseParser();
@@ -63,60 +56,56 @@ public class ReportTask extends HttpAbstractTask {
 			if (json != null) {
 				rs = rp.parseReportResult(json);
 			}
-		}
-		
-		if (rs.isEmpty()) {
-			//TODO: handle error + return
-		}
-		
-		else {
-			// values of the reponse
-			String taskName = rs.getTaskName();
-			long currentNumOfPoints = rs.getCurrentNumOfPoints();
-			// TODO: Handle this calues
-			
-			// Checkin
-			if (taskName.equalsIgnoreCase(Tasks.REPORT_LOCATION.getTaskName())) {
-				if (result == null) {
-					Toast toast = Toast.makeText(context,
-							context.getResources().getString(R.string.checkin_failed_msg), Toast.LENGTH_SHORT);
-					toast.show();
-				} else { // result != null
-					/* The update was successful */
-					String message = context.getResources().getString(R.string.checkin_msg, NUMBER_OF_POINTS_PER_LOCATION_REPORT);
-					Toast toast = Toast.makeText(context, message , Toast.LENGTH_LONG);
+
+			// empty report result
+			if (rs.isEmpty()) {
+				Toast toast = Toast.makeText(context, context.getResources()
+						.getString(R.string.report_failed_msg),
+						Toast.LENGTH_SHORT);
+				toast.show();
+			}
+
+			else {
+				// values of the reponse
+				String taskName = rs.getTaskName();
+				long currentNumOfPoints = rs.getCurrentNumOfPoints();
+
+				// Checkin
+				if (taskName.equalsIgnoreCase(Tasks.REPORT_LOCATION
+						.getTaskName())) {
+
+					String message = context.getResources().getString(
+							R.string.checkin_msg,
+							NUMBER_OF_POINTS_PER_LOCATION_REPORT);
+					Toast toast = Toast.makeText(context, message,
+							Toast.LENGTH_LONG);
 					toast.show();
 					// TODO:pointsOnCheckin=
 					// TODO:pointsEarnedByCheckin=pointsOnCheckin-pointOnCheckout
-				}
-			} else if (taskName.equalsIgnoreCase(Tasks.REPORT_CHECKOUT.getTaskName())) { // Checkout
-				if (result == null) {
-					Toast toast = Toast.makeText(context,
-							CHECKOUT_ERROR_MESSAGE, 5);
-					toast.show();
 
-				} else { // result != null
+					// Checkout
+				} else if (taskName.equalsIgnoreCase(Tasks.REPORT_CHECKOUT
+						.getTaskName())) {
+
 					/* The update was successful */
 					// TODO:pointsOnCheckout=
 					Toast toast = Toast.makeText(context, CHECKOUT_MESSAGE, 5);
 					toast.show();
 
-				}
-			} else if (taskName.equals(Tasks.REPORT_TEXTUAL_MSG.getTaskName())) { // text
-																				// report
-				if (result == null) {
-					Toast toast = Toast.makeText(context,
-							REPORT_TEXT_ERROR_MESSAGE, 5);
-					toast.show();
-
-				} else { // result != null
+					// text report
+				} else if (taskName.equals(Tasks.REPORT_TEXTUAL_MSG
+						.getTaskName())) {
 					/* The update was successful */
 					Toast toast = Toast.makeText(context, REPORT_TEXT_MESSAGE,
 							5);
 					toast.show();
+
 				}
 			}
+		} else {// result=null
+			Toast toast = Toast.makeText(context, context.getResources()
+					.getString(R.string.report_failed_msg), Toast.LENGTH_SHORT);
+			toast.show();
 		}
-		}
-	
+	}
 }

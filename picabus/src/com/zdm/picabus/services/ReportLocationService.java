@@ -36,9 +36,9 @@ public class ReportLocationService extends Service implements LocationListener {
 																	// Milliseconds
 	private static final long UPDATE_INTERVAL_MS = 3000;
 	private static final long DELAY_INTERVAL_MS = 1000;
+	private static final long TIME_TO_KILL = 10000;
 	private long tripId;
 	private long userId;
-	private Context mContext;
 	private LocationManager locationManager;
 	private Location location;
 	Timer timer;
@@ -52,7 +52,6 @@ public class ReportLocationService extends Service implements LocationListener {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		this.mContext = this;
 		// initiate the location manager and register for location updates from GPS
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -60,7 +59,7 @@ public class ReportLocationService extends Service implements LocationListener {
 				MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, this);
 		// start updated service
 		sendLocationUpdates = new SendLocationUpdates();
-		timer = new Timer("UpdatesReport");
+		timer = new Timer("Updates Report Timer");
 
 	
 
@@ -93,7 +92,7 @@ public class ReportLocationService extends Service implements LocationListener {
 	public void onDestroy() {
 		super.onDestroy();
 			// stop the location updates
-		sendLocationUpdates.cancel();
+		timer.cancel();
 		Log.d("UpdateService", "On Destroy..");
 	}
 

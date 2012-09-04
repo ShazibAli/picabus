@@ -47,6 +47,9 @@ import android.widget.ImageView;
 			@Override
 			public Bitmap doInBackground(String... params) {
 				
+				// setting the name for this thread for monitoring
+				Thread.currentThread().setName("FB Profile Image Getter Task");
+				
 				String facebookId = FacbookIdentity.userUID;
 				
 				URL facebookGraphUrl = null;

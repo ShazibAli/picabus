@@ -54,6 +54,9 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 	@Override
 	protected String doInBackground(String... arg) { // note: this method is executed off the UI thread
 	
+		// setting the name for this thread for monitoring
+		Thread.currentThread().setName("HTTP Abstract Task");
+		
 		String retreturnVal = null;
 		String serviceURL = arg[0];
 

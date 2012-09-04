@@ -260,7 +260,6 @@ public class DBServices implements IDBServices {
 				
 				rsEmpty = false;
 			}
-			// TODO: get Realtime location
 			
 			rs.close();
 			stmt.close();

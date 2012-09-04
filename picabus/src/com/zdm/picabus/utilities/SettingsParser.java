@@ -28,4 +28,28 @@ public class SettingsParser {
 		return retValue;
 	}
 	
+	
+	/**
+	 * 
+	 * @param str - format int "minutes" / int "hours" / int "day" 
+	 * @return int - number of seconds in the string
+	 */
+	public static int ParseTimeInSeconds(String str){
+		
+		int retValue;
+		String delims = " ";
+		String[] tokens = str.split(delims);
+		retValue = Integer.parseInt(tokens[0]);
+		
+		if (str.contains("hour")){
+			retValue=retValue*60*60;
+		}
+		else if (str.contains("day")){
+			retValue=retValue*60*24*60;
+		}
+		else if (str.contains("minute")){
+			retValue=retValue*60;
+		}
+		return retValue;
+	}
 }

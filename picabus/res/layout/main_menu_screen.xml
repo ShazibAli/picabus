@@ -123,12 +123,19 @@
     android:id="@+id/SpinnerTimeInterval"
     />
         
-
-	<CheckBox
-        android:id="@+id/notifyCheckBox"
-        android:layout_width="fill_parent"
+                        <View
+         android:layout_width="fill_parent"
+         android:layout_height="18dip"
+ />
+                        
+            <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/notify_checkbox" />
+        android:text="@string/notify_pref_txt"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+
         
    <Spinner
    	android:id="@+id/SpinnerNotification"

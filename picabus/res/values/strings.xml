@@ -22,7 +22,7 @@
     <string name="icon_bus_lines_list">icon</string>
     <string name="getroute_icon">Get route</string>
     <string name="no_eta">Bus time arrivals are not available</string>
-    <string name="notify_checkbox">I want to be notified when bus arrives</string>
+    <string name="notify_pref_txt">Please choose time to be notified before bus arrival:</string>
     <string name="clock_icon">clock_icon</string>
     <string name="empty_result">Sorry, no information was found for the requested line number</string>
     <string name="goto_menu">Back to main menu</string>

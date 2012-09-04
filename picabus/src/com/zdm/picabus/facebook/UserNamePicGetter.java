@@ -56,6 +56,8 @@ public class UserNamePicGetter extends
 			reporterNameTextView.setText(userName);
 		}
 		if (profilePic != null) {
+			/*Bitmap scaledProfilePic = Bitmap.createScaledBitmap(profilePic, 50, 50, true);
+			reporterImageView.setImageBitmap(scaledProfilePic);*/
 			reporterImageView.setImageBitmap(profilePic);
 		}
 		
@@ -66,6 +68,9 @@ public class UserNamePicGetter extends
 	@Override
 	public ExternalUserIdentity doInBackground(String... params) {
 
+		// setting the name for this thread for monitoring
+		Thread.currentThread().setName("FB Username Pic Getter Task");
+		
 		Bitmap profileImageBitmap = null;
 		String name = null;
 

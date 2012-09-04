@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,9 +12,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SlidingDrawer;
@@ -34,20 +32,19 @@ import com.zdm.picabus.utilities.SettingsParser;
  */
 public class MainScreenActivity extends Activity {
 
-	static final int NOTIFICATION_UNIQUE_ID = 139874;
-
-	ImageButton cameraBtn;
-	ImageButton historyBtn;
-	ImageButton aboutUsBtn;
-	ImageButton searchBtn;
-	ImageButton myPicabusBtn;
-	Button slideButton;
-	SlidingDrawer slidingDrawer;
-	LinearLayout slideBg;
-	NotificationManager nm;
-	GpsCorrdinates gpsObject;
-
-	Context context;
+	private static final int NOTIFICATION_UNIQUE_ID = 139874;
+	public static final String PICABUS_PREFS_NAME = "picabusSettings";
+	private ImageButton cameraBtn;
+	private ImageButton historyBtn;
+	private ImageButton aboutUsBtn;
+	private ImageButton searchBtn;
+	private ImageButton myPicabusBtn;
+	private Button slideButton;
+	private SlidingDrawer slidingDrawer;
+	private LinearLayout slideBg;
+	private NotificationManager nm;
+	private GpsCorrdinates gpsObject;
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +145,6 @@ public class MainScreenActivity extends Activity {
 		// inside sliding drawer
 		final Spinner spNotification = (Spinner) findViewById(R.id.SpinnerNotification);
 		final Spinner spTimeInterval = (Spinner) findViewById(R.id.SpinnerTimeInterval);
-		CheckBox checkboxTimeInterval = (CheckBox) findViewById(R.id.notifyCheckBox);
 
 		// Spinner Time interval
 		String intervalTimes[] = { "5 minutes", "10 minutes", "15 minutes",
@@ -157,6 +153,7 @@ public class MainScreenActivity extends Activity {
 				this, android.R.layout.simple_spinner_item, intervalTimes);
 		spTimeInterval.setAdapter(adapterInterval);
 
+		//select listener
 		spTimeInterval.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -164,7 +161,13 @@ public class MainScreenActivity extends Activity {
 
 				String choice = (String) parent.getItemAtPosition(pos);
 				int choiceInMinutes = SettingsParser.ParseTimeInMinutes(choice);
-				// TODO: call function
+				
+				//save in shared prefs
+				SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putInt("timeInterval", choiceInMinutes);
+				editor.commit();
+
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -173,18 +176,26 @@ public class MainScreenActivity extends Activity {
 		});
 
 		// Spinner Notification times
-		String notificationTimes[] = { "1 minute", "5 minutes", "10 minutes",
+		String notificationTimes[] = {"10 seconds", "30 seconds","1 minute", "5 minutes", "10 minutes",
 				"15 minutes", "30 minutes", "1 hour" };
 		final ArrayAdapter<String> adapterNotification = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, notificationTimes);
+		spNotification.setAdapter(adapterNotification);
+		
+		//select listener
 		spNotification.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
 
 				String choice = (String) parent.getItemAtPosition(pos);
-				int choiceInMinutes = SettingsParser.ParseTimeInMinutes(choice);
-				// TODO: call function
+				int choiceInSeconds = SettingsParser.ParseTimeInSeconds(choice);
+				
+				//save in shared prefs
+				SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putInt("notificationDelta", choiceInSeconds);
+				editor.commit();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -192,20 +203,6 @@ public class MainScreenActivity extends Activity {
 			}
 
 		});
-
-		// checkbox time interval
-		checkboxTimeInterval
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						if (isChecked) {
-							spNotification.setAdapter(adapterNotification);
-						} else {
-							spNotification.setEnabled(false);
-						}
-					}
-				});
 
 	}
 

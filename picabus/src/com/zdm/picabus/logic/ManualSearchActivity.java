@@ -4,10 +4,10 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DigitalClock;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -32,17 +32,17 @@ import com.zdm.picabus.utilities.ErrorsHandler;
  */
 public class ManualSearchActivity extends MapActivity {
 
+	public static final String PICABUS_PREFS_NAME = "picabusSettings";
 	private final static boolean DEBUG_MODE = true;
-	ImageButton submitBtn;
-	TextView textField;
-	MapView mapView;
-	DigitalClock dc;
-	int line_number;
-	Context c;
-	IHttpCaller ihc = null;
-	ProgressDialog pd;
-	Double lat = null;
-	Double lng = null;
+	private ImageButton submitBtn;
+	private TextView textField;
+	private MapView mapView;
+	private int line_number;
+	private Context c;
+	private IHttpCaller ihc = null;
+	private ProgressDialog pd;
+	private Double lat = null;
+	private Double lng = null;
 
 
 	@Override
@@ -77,8 +77,10 @@ public class ManualSearchActivity extends MapActivity {
 
 					// get necessary data and send request to server
 
-					// TODO: get time interval from preferences
-					int timeInterval = 15;
+					//get time interval from preferences
+					SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
+					int timeInterval = settings.getInt("timeInterval",15);
+					
 					// Get current time
 					String time = DataCollector.getCurrentTime();
 

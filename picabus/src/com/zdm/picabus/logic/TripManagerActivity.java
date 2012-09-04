@@ -45,7 +45,8 @@ public class TripManagerActivity extends Activity {
 
 	private final static boolean DEBUG_MODE = true;
 	static final int NOTIFICATION_UNIQUE_ID = 139874;
-	public static final String PREFS_NAME = "resultDataPfers";
+	public static final String TRIP_MANAGER_PREFS_NAME = "resultDataPfers";
+	public static final String PICABUS_PREFS_NAME = "picabusSettings";
 
 	private Context c;
 	private ImageButton routeImage;
@@ -206,7 +207,7 @@ public class TripManagerActivity extends Activity {
 		boolean arrivedFromNotification = currIntent.getBooleanExtra(
 				"fromCheckinNotification", false);
 		if (arrivedFromNotification) {
-			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
 			boolean checkInSomeTrip = settings.getBoolean("CheckinButton",
 					false);
 			if (!checkInSomeTrip) {
@@ -226,7 +227,7 @@ public class TripManagerActivity extends Activity {
 	private void saveAllDataIfCheckedIn() {
 
 		// save trip data SharedPreferences settings =
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		// set data
 		editor.putInt("lineNumber", tripRes.getLineNumber());
@@ -255,7 +256,7 @@ public class TripManagerActivity extends Activity {
 
 	private boolean isPreviouslyCheckedInCurrTrip() {
 
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
 		boolean checkInSomeTrip = settings.getBoolean("CheckinButton", false);
 		return checkInSomeTrip;
 	}
@@ -266,7 +267,7 @@ public class TripManagerActivity extends Activity {
 	 */
 	private void setDataIfCheckedIn() {
 
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
 
 		int lineNumber = settings.getInt("lineNumber", -1);
 		String stationName = settings.getString("stationName", null);
@@ -285,7 +286,7 @@ public class TripManagerActivity extends Activity {
 	 */
 	private void setNotificationStateIfCheckedIn() {
 
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
 		boolean notificationState = settings.getBoolean(
 				"notificationToggleChecked", false);
 		if (notificationState) {
@@ -299,7 +300,7 @@ public class TripManagerActivity extends Activity {
 	 * is checked in on that trip and returns to that activity
 	 */
 	private void setUserIdIfCheckedIn() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
 		String id = settings.getString("facebookId", null);
 		userId = id;
 	}
@@ -415,7 +416,7 @@ public class TripManagerActivity extends Activity {
 						submitReportButton.setEnabled(false);
 						// save in shared pref that user is not checked in
 						SharedPreferences settings = getSharedPreferences(
-								PREFS_NAME, 0);
+								TRIP_MANAGER_PREFS_NAME, 0);
 						SharedPreferences.Editor editor = settings.edit();
 						editor.putBoolean("CheckinButton", checkedIn);
 						// Commit the edits
@@ -458,9 +459,14 @@ public class TripManagerActivity extends Activity {
 									"You will be notified before bus arrives",
 									Toast.LENGTH_LONG);
 							toast.show();
+							
+							//get notification delta (in seconds) from preferences
+							SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
+							int notificationDelta = settings.getInt("notificationDelta",10);
+							
 							createNotification(tripRes.getArrivalTime(),
 									tripRes.getLineNumber(),
-									tripRes.getStationName(), 5);
+									tripRes.getStationName(), notificationDelta);
 						} else {
 							// notification canceled
 							Toast toast = Toast.makeText(c,
@@ -479,7 +485,7 @@ public class TripManagerActivity extends Activity {
 	 * @param arrivalTime
 	 *            - of the bus in format XX:XX
 	 * @param notificationDelta
-	 *            - in ms - time user chose to be notified before bus arrives
+	 *            - in seconds - time user chose to be notified before bus arrives
 	 * @return time in ms until notification should be set
 	 */
 	private long getMsUntilNotification(String arrivalTime,
@@ -501,7 +507,7 @@ public class TripManagerActivity extends Activity {
 
 		if ((arrivalDate != null) && (currDate != null)) {
 			diffInMs = arrivalDate.getTime() - currDate.getTime();
-			diffInMs = diffInMs - ((long) notificationDelta * 60 * 1000);
+			diffInMs = diffInMs - ((long) notificationDelta * 1000);
 		}
 		return diffInMs;
 
@@ -510,10 +516,10 @@ public class TripManagerActivity extends Activity {
 	/**
 	 * Create a notification for bus arrival
 	 * 
-	 * @param arrivalTime
+	 * @param arrivalTime - time when bus is about to arrive
 	 * @param lineNumber
 	 * @param stopName
-	 * @param notificationDelta
+	 * @param notificationDelta - in seconds - time that user chose
 	 */
 	private void createNotification(String arrivalTime, final int lineNumber,
 			final String stopName, final int notificationDelta) {
@@ -556,8 +562,7 @@ public class TripManagerActivity extends Activity {
 	private void triggerNotification(int lineNumber, String stopName,
 			int notificationDelta) {
 		CharSequence title = "Picabus Update";
-		CharSequence message = "Line " + lineNumber + " is departing from\n"
-				+ stopName + "\nin " + notificationDelta + " minutes!";
+		CharSequence message = "Line " + lineNumber + " is departing in " + notificationDelta + " seconds!";
 
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		Notification notification = new Notification(
@@ -566,7 +571,6 @@ public class TripManagerActivity extends Activity {
 
 		notification.setLatestEventInfo(c, title, message, null);
 		notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
-
 	}
 
 	/**

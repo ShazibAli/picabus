@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-
 import com.zdm.picabus.R;
 import com.zdm.picabus.connectivity.HttpCaller;
 import com.zdm.picabus.connectivity.IHttpCaller;
@@ -24,17 +23,13 @@ import com.zdm.picabus.utilities.ErrorsHandler;
  */
 public class BusLinesListActivity extends ListActivity {
 
+	public static final String PICABUS_PREFS_NAME = "picabusSettings";
 	private final static boolean DEBUG_MODE = true;
-
 	private ArrayList<Integer> linesList = null;
 	private LineRowAdapter lineRowAdapter;
-	PopupWindow pw;
-	int popupRetVal = 0;
-	Intent resultsIntent;
-	ProgressDialog pd;
-
-	boolean afterGpsNull;
-	IHttpCaller ihc = null;
+	private ProgressDialog pd;
+	private boolean afterGpsNull;
+	private IHttpCaller ihc = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -108,19 +103,26 @@ public class BusLinesListActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
+
+		//get line number from click
 		int line_number = this.lineRowAdapter.getItem(position);
-		int timeInterval = 15;// TODO: get time interval from preferences
-		Double lat = null;
-		Double lng = null;
+		
+		//get time interval from preferences
+		SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
+		int timeInterval = settings.getInt("timeInterval",15);
+
 		// Get current time
 		String time = DataCollector.getCurrentTime();
-
+		
 		// Get coordinates
+		Double lat = null;
+		Double lng = null;
 		GpsResult res = DataCollector.getGpsCoordinates(this);
 		if (res != null) {
 			lat = res.getLat();
 			lng = res.getLng();
 		}
+		
 		// Send data to server
 		if (!DEBUG_MODE) {
 			if (lat != null || lng != null) {
@@ -132,7 +134,7 @@ public class BusLinesListActivity extends ListActivity {
 						line_number, time, timeInterval);
 			}
 		} else {
-			// for emulator
+			//in debug mode
 			ihc.getDepartureTime(this, pd, line_number, 32.045816, 34.756983,
 					"08:20:00", timeInterval);
 		}

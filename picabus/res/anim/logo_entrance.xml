@@ -10,7 +10,7 @@
         android:toYDelta="0%"
         android:zAdjustment="top" />
 
-    <scale
+<!--     <scale
         android:duration="4000"
         android:fromXScale="0.1"
         android:fromYScale="0.1"
@@ -25,6 +25,6 @@
         android:pivotX="50%"
         android:pivotY="50%"
         android:toDegrees="0"
-        android:toYScale="0.0" />
+        android:toYScale="0.0" /> -->
 
 </set>

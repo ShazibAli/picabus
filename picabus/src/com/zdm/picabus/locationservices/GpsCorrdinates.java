@@ -75,12 +75,12 @@ public class GpsCorrdinates {
 	 */
 	public void getCurrentLocation() {
 
-/*		lastLocation = locationManager
+		lastLocation = locationManager
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (lastLocation != null) {
-			lat = lastLocation.getLongitude();
-			lng = lastLocation.getLatitude();
-		}*/
+			lat = lastLocation.getLatitude();
+			lng = lastLocation.getLongitude();
+		}
 	}
 
 	/**
@@ -123,7 +123,11 @@ public class GpsCorrdinates {
 	private class LocationListenerHelper implements LocationListener{
 
 		public void onLocationChanged(Location loc) {
-			lastLocation = loc;
+			if (loc != null) {
+				lastLocation=loc;
+				lat = lastLocation.getLatitude();
+				lng = lastLocation.getLongitude();
+			}
 		}
 
 		public void onProviderDisabled(String provider) {

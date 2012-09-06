@@ -30,7 +30,7 @@ public class Trips implements IFileParser {
 		File file = new File(gtfsFilePath); 
 		String line = null;
 		BufferedReader br = null;
-		Long[] singleRow = new Long[5];
+		Long[] singleRow = new Long[4];
 		
 		try {
 			br  = new BufferedReader(new FileReader(file));
@@ -41,7 +41,7 @@ public class Trips implements IFileParser {
 			// we want to batch 1000 inserts each time
 			dbConnection.setAutoCommit(false);
 			PreparedStatement pstmt;
-			pstmt = dbConnection.prepareStatement("INSERT INTO " + Tables.TRIPS + "(route_id,service_id,trip_id,direction_id,shape_id) VALUES(?,?,?,?,?)");
+			pstmt = dbConnection.prepareStatement("INSERT INTO " + Tables.TRIPS + "(route_id,service_id,trip_id,direction_id) VALUES(?,?,?,?)");
 			
 			while((line = br.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(line,",");
@@ -83,7 +83,6 @@ public class Trips implements IFileParser {
 				pstmt.setLong(2, singleRow[1]);
 				pstmt.setLong(3, singleRow[2]);
 				pstmt.setLong(4, singleRow[3]);
-				pstmt.setLong(5, singleRow[4]);
 				pstmt.addBatch();
 				
 				totalLinesCount++;

@@ -35,7 +35,7 @@
     <string name="history_empty">No recent searches</string>
     <string name="checkin_msg">Thank you for checking in! \nYour location will be shared with others until you checkout!\n(each report gives you %d points)</string>
     <string name="checkout_msg">Thank you for checkout! \nYou have earned %d points</string>
-	<string name="report_txt_msg">Thank you for the report! \nYou have earned "%d points</string>
+	<string name="report_txt_msg">Thank you for the report! \nYou have "%d points now!</string>
 	<string name="report_failed_msg">Attemp to report failed.\nPlease try again later&#8230; </string>
 	<string name="not_allowed_enter_trip">Please checkout from your trip before entering other trips</string>
 	<string name="send_report">Send Report</string>

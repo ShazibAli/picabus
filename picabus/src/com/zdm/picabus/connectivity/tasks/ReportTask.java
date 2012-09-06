@@ -29,8 +29,6 @@ public class ReportTask extends HttpAbstractTask {
 	protected void onPostExecute(String result) { // note: this method is
 													// executed by the UI thread
 
-		int pointsEarnedByCheckin = 0;
-
 		// Dismissing progress dialod
 		waitSpinner.dismiss();
 
@@ -74,27 +72,23 @@ public class ReportTask extends HttpAbstractTask {
 					Toast toast = Toast.makeText(context, message,
 							Toast.LENGTH_LONG);
 					toast.show();
-					// TODO:pointsOnCheckin=
-					// TODO:pointsEarnedByCheckin=pointsOnCheckin-pointOnCheckout
 
 				// Checkout
 				} else if (taskName.equalsIgnoreCase(Tasks.REPORT_CHECKOUT
 						.getTaskName())) {
 
-					/* The update was successful */
-					// TODO:pointsOnCheckout=
 					String message = context.getResources().getString(
-							R.string.checkin_msg,
-							pointsEarnedByCheckin);
+							R.string.checkout_msg,
+							currentNumOfPoints);
 					Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 					toast.show();
 
 				// text report
 				} else if (taskName.equals(Tasks.REPORT_TEXTUAL_MSG
 						.getTaskName())) {
-					/* The update was successful */
+
 					String message = context.getResources().getString(
-							R.string.checkin_msg,
+							R.string.report_txt_msg,
 							NUMBER_OF_POINTS_PER_TEXTUAL_REPORT);
 					Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 					toast.show();

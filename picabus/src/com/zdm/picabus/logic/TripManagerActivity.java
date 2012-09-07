@@ -44,7 +44,8 @@ import com.zdm.picabus.utilities.ErrorsHandler;
 public class TripManagerActivity extends Activity {
 
 	private final static boolean DEBUG_MODE = true;
-	static final int NOTIFICATION_UNIQUE_ID = 139874;
+	static final int REMINDER_NOTIFICATION_UNIQUE_ID = 139874;
+	static final int CHECKIN_NOTIFICATION_UNIQUE_ID = 139875;
 	public static final String TRIP_MANAGER_PREFS_NAME = "resultDataPfers";
 	public static final String PICABUS_PREFS_NAME = "picabusSettings";
 
@@ -64,19 +65,14 @@ public class TripManagerActivity extends Activity {
 	private boolean previouslyCheckedInCurrTrip = false;
 	private Timer timer;// timer for notification
 	private Intent currIntent;
-	private boolean retFromNotificationAndCheckedOut;
 	Intent serviceIntent;
 
-	
-	//TODO: daniel list
-//	static final String KEY_SONG = "song"; // parent node
 	static final String KEY_ID = "id";
 	static final String KEY_REPORTER = "reporter";
 	static final String KEY_REPORT = "report";
 	static final String KEY_REPORT_TIME = "reportTime";
     ListView list;
     ReportsListAdapter adapter;
-	// private boolean arrivedFromNotification;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +83,6 @@ public class TripManagerActivity extends Activity {
 		currIntent = getIntent();
 		pd = new ProgressDialog(this);
 		ihc = HttpCaller.getInstance();
-
-		// check if user has checked out and than clicked checkin notification
-		retFromNotificationAndCheckedOut = isRetFromNotificationAndCheckedOut();
-		if (retFromNotificationAndCheckedOut) {
-			finish();
-		}
 
 		// if user is checked in on that trip-set checkIn field and get userid
 		previouslyCheckedInCurrTrip = isPreviouslyCheckedInCurrTrip();
@@ -196,29 +186,6 @@ public class TripManagerActivity extends Activity {
 	}
 
 	/**
-	 * Check if user has checked out, and than clicked on checkin notification
-	 * 
-	 * @return true if checket out and clicked notification, else returns false
-	 */
-	private boolean isRetFromNotificationAndCheckedOut() {
-
-		boolean arrivedFromNotification = currIntent.getBooleanExtra(
-				"fromCheckinNotification", false);
-		if (arrivedFromNotification) {
-			SharedPreferences settings = getSharedPreferences(TRIP_MANAGER_PREFS_NAME, 0);
-			boolean checkInSomeTrip = settings.getBoolean("CheckinButton",
-					false);
-			if (!checkInSomeTrip) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * saved all relevant data for activity if user is checked in saves to
 	 * shares preferences
 	 */
@@ -233,7 +200,6 @@ public class TripManagerActivity extends Activity {
 		editor.putLong("tripId", tripRes.getTripId());
 		editor.putString("arrivalTime", tripRes.getArrivalTime());
 		editor.putInt("stopSequence", tripRes.getStopSequence());
-
 		// save page user changes
 		editor.putBoolean("notificationToggleChecked",
 				notificationToggle.isChecked());
@@ -409,6 +375,11 @@ public class TripManagerActivity extends Activity {
 					} else {
 						checkedIn = false;
 						checkinButton.setEnabled(false);
+						checkinButton.setText("Thanks!");
+						// cancel notification
+						NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+						nm.cancel(CHECKIN_NOTIFICATION_UNIQUE_ID);
+						
 						reportEditText.setEnabled(false);
 						submitReportButton.setEnabled(false);
 						// save in shared pref that user is not checked in
@@ -421,6 +392,12 @@ public class TripManagerActivity extends Activity {
 
 						// send checkout request to server
 						ihc.reportCheckout(c, pd, userId, tripRes.getTripId());
+						// means that we came back from the checkin notification
+						if (serviceIntent == null) {
+							serviceIntent = new Intent(getApplicationContext(), ReportLocationService.class);
+							serviceIntent.putExtra("userId", Long.valueOf(userId));
+							serviceIntent.putExtra("tripId", tripRes.getTripId());
+						}
 						stopService(serviceIntent);
 
 					}
@@ -555,7 +532,6 @@ public class TripManagerActivity extends Activity {
 	 * @param stopName
 	 * @param notificationDelta
 	 */
-	@SuppressWarnings("deprecation")
 	private void triggerNotification(int lineNumber, String stopName,
 			int notificationDelta) {
 		CharSequence title = "Picabus Update";
@@ -567,7 +543,7 @@ public class TripManagerActivity extends Activity {
 				System.currentTimeMillis());
 
 		notification.setLatestEventInfo(c, title, message, null);
-		notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
+		notificationManager.notify(REMINDER_NOTIFICATION_UNIQUE_ID, notification);
 	}
 
 	/**
@@ -600,7 +576,6 @@ public class TripManagerActivity extends Activity {
 	 * @param stopName
 	 * @param notificationDelta
 	 */
-	@SuppressWarnings("deprecation")
 	private void triggerCheckinNotification() {
 		CharSequence title = "Picabus Update";
 		CharSequence message = "You are now checked in on the bus, \nclick here to checkout";
@@ -618,7 +593,7 @@ public class TripManagerActivity extends Activity {
 
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		notification.setLatestEventInfo(c, title, message, contentIntent);
-		notificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
+		notificationManager.notify(CHECKIN_NOTIFICATION_UNIQUE_ID, notification);
 
 	}
 

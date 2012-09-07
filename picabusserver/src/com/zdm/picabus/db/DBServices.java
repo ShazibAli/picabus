@@ -28,6 +28,9 @@ public class DBServices implements IDBServices {
 	public Line getNextDepartureTimePerLine(int lineNumber, double latitude,
 			double longitude, String clientTimeString, int timeIntervalInMinutes) throws EmptyResultException {
 		
+		// TODO: remove to real time
+		String demoTime = "12:22:00";
+		
 		Stop stop = getNearestStop(latitude, longitude, false, 1);
 		if (stop == null) {
 			return null;
@@ -39,7 +42,7 @@ public class DBServices implements IDBServices {
 		try {
 			DriverManager.registerDriver(new AppEngineDriver());
 			c = (Connection) DriverManager.getConnection(URL);
-			Time departureTime = Time.valueOf(clientTimeString);
+			Time departureTime = Time.valueOf(demoTime);
 			long upperLimitTimeInMs = departureTime.getTime() + (timeIntervalInMinutes * minuteToMsFactor);
 			Time upperLimitTime = new Time(upperLimitTimeInMs);
 				
@@ -60,7 +63,7 @@ public class DBServices implements IDBServices {
 								       "and calendar.service_id = trips.service_id " +
 								       "and agency.agency_id = routes.agency_id " +
 								       "and calendar." + dayOfTheWeek.toLowerCase() + " = 1 " +
-								"LIMIT 10";
+								       "ORDER BY arrival_time "+ "LIMIT 10 ";
 			
 			PreparedStatement stmt = c.prepareStatement(statement);
 			

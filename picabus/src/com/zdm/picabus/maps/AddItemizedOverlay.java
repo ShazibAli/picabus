@@ -4,19 +4,16 @@ import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
+import android.content.DialogInterface;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
+import com.zdm.picabus.R;
  
 public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
  
@@ -54,6 +51,15 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
            dialog.setTitle("Stop sequence number: " + item.getTitle());
            dialog.setMessage(item.getSnippet());
+           dialog.setIcon(R.drawable.picabus_logo_icon);
+           
+           // Setting OK Button
+           dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int which) {
+         
+                 
+                   }
+           });
            dialog.show();
 
            //return true to indicate we've taken care of it
@@ -104,7 +110,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
        public boolean onTouchEvent(MotionEvent event, MapView mapView) {   
            if (event.getAction() == 1) {
         	   
-               Toast.makeText(context, "For details, just click on a station", Toast.LENGTH_SHORT).show();
+             //  Toast.makeText(context, "For details, just click on a station", Toast.LENGTH_SHORT).show();
            }
            return false;
        }

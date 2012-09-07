@@ -30,13 +30,10 @@ import com.zdm.picabus.connectivity.tasks.Tasks;
 
 public class ReportLocationService extends Service implements LocationListener {
 
-	private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 100; // in
-																			// Meters
-	private static final long MINIMUM_TIME_BETWEEN_UPDATES = 0; // in
-																	// Milliseconds
-	private static final long UPDATE_INTERVAL_MS = 3000;
-	private static final long DELAY_INTERVAL_MS = 1000;
-	private static final long TIME_TO_KILL = 10000;
+	private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 100; // in Meters
+	private static final long MINIMUM_TIME_BETWEEN_UPDATES = 0; // in Milliseconds
+	private static final long UPDATE_INTERVAL_MS = 5000; // in Milliseconds
+	private static final long DELAY_INTERVAL_MS = 1000; // in Milliseconds
 	private long tripId;
 	private long userId;
 	private LocationManager locationManager;
@@ -100,13 +97,12 @@ public class ReportLocationService extends Service implements LocationListener {
 
 		private static final int CONNECTION_TIMEOUT = 10000;
 		private static final int SO_TIMEOUT = 10000;
-		private static final String localServerURL = "http://10.0.0.1:8888/reports";
+		private static final String localServerURL = "http://192.168.1.154:8888/reports";
 
 		@Override
 		public void run() {
 
 			try {
-
 				location = locationManager
 						.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -121,11 +117,9 @@ public class ReportLocationService extends Service implements LocationListener {
 					requestPayload.put("latitude", location.getLatitude());
 					requestPayload.put("longitude", location.getLongitude());
 					requestPayload.put("tripId", tripId);
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				} catch (JSONException ignore) {				
+					ignore.printStackTrace();
 				}
-				;
 
 				// Create new default http client
 				HttpClient client = new DefaultHttpClient();
@@ -164,36 +158,27 @@ public class ReportLocationService extends Service implements LocationListener {
 				} catch (Exception e) {
 					Log.e("Error in connectivity layer, stacktrace: ",
 							e.toString());
-
 					return;
 				}
 
 			} catch (Exception e) {
 				Log.d("UpdateService", "Error..");
 				e.printStackTrace();
-
 			}
 		}
 	}
 
 	public void onLocationChanged(Location location) {
 		this.location = location;
-
 	}
 
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

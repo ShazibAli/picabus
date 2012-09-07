@@ -15,6 +15,7 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.zdm.picabus.R;
 import com.zdm.picabus.enitities.Stop;
+import com.zdm.picabus.logic.MainScreenActivity;
 
 public class RoutesMapActivity extends MapActivity {
 
@@ -56,11 +57,20 @@ public class RoutesMapActivity extends MapActivity {
 				// handle bus real time location
 				if (stops.get(j).isRealtimeReport()) {
 					Stop realtimeLocation = stops.get(j);
-					GeoPoint geoPoint = new GeoPoint(
-							(int) (realtimeLocation.getLatitude() * 1E6),
-							(int) (realtimeLocation.getLongitude() * 1E6));
+					GeoPoint geoPoint;
+					if (MainScreenActivity.DEMO_MODE) {
+						geoPoint = new GeoPoint(
+								(int) (32.072090 * 1E6),
+								(int) (34.773681 * 1E6));
+					}
+					else {
+						geoPoint = new GeoPoint(
+								(int) (realtimeLocation.getLatitude() * 1E6),
+								(int) (realtimeLocation.getLongitude() * 1E6));
 
-					OverlayItem overlayitem = new OverlayItem(geoPoint, "Current bus location: ","This is the last reported location of this bus. \nReported at: " + realtimeLocation.getReportTimestampString());
+					}
+					
+					OverlayItem overlayitem = new OverlayItem(geoPoint, "Current bus location: ","This is the last reported location of this bus.\nReported at: " + realtimeLocation.getReportTimestampString());
 					itemizedOverlayCurrentBusLocation.addOverlay(overlayitem);
 					mapOverlays.add(itemizedOverlayCurrentBusLocation);
 				}
@@ -73,7 +83,7 @@ public class RoutesMapActivity extends MapActivity {
 							(int) (currentStop.getLongitude() * 1E6));
 
 					OverlayItem overlayitem = new OverlayItem(geoPoint,
-							currentStop.getStopSequenceNumber() + "",
+							"Stop Sequence Number: " + currentStop.getStopSequenceNumber(),
 							currentStop.getStopName() + "\nETA: "
 									+ currentStop.getDepartureTimeString());
 

@@ -49,9 +49,9 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
            //Do stuff here when you tap
            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-           dialog.setTitle("Stop sequence number: " + item.getTitle());
+           dialog.setTitle(item.getTitle());
            dialog.setMessage(item.getSnippet());
-           dialog.setIcon(R.drawable.picabus_logo_icon);
+           dialog.setIcon(R.drawable.application_icon);
            
            // Setting OK Button
            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {

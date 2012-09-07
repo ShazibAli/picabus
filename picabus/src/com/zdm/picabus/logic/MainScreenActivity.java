@@ -153,8 +153,7 @@ public class MainScreenActivity extends Activity {
 		final Spinner spTimeInterval = (Spinner) findViewById(R.id.SpinnerTimeInterval);
 
 		// Spinner Time interval
-		String intervalTimes[] = { "5 minutes", "10 minutes", "15 minutes",
-				"30 minutes", "1 hour", "2 hours", "5 hours", "1 day" };
+		String intervalTimes[] = {"30 minutes", "1 hour", "2 hours", "5 hours", "1 day" };
 		final ArrayAdapter<String> adapterInterval = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, intervalTimes);
 		spTimeInterval.setAdapter(adapterInterval);

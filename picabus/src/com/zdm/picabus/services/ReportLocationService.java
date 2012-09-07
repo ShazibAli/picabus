@@ -27,11 +27,14 @@ import android.util.Log;
 
 import com.zdm.picabus.connectivity.CustomHeader;
 import com.zdm.picabus.connectivity.tasks.Tasks;
+import com.zdm.picabus.logic.MainScreenActivity;
 
 public class ReportLocationService extends Service implements LocationListener {
 
-	private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 100; // in Meters
-	private static final long MINIMUM_TIME_BETWEEN_UPDATES = 0; // in Milliseconds
+	private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 100; // in
+																			// Meters
+	private static final long MINIMUM_TIME_BETWEEN_UPDATES = 0; // in
+																// Milliseconds
 	private static final long UPDATE_INTERVAL_MS = 5000; // in Milliseconds
 	private static final long DELAY_INTERVAL_MS = 1000; // in Milliseconds
 	private long tripId;
@@ -49,7 +52,8 @@ public class ReportLocationService extends Service implements LocationListener {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// initiate the location manager and register for location updates from GPS
+		// initiate the location manager and register for location updates from
+		// GPS
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				MINIMUM_TIME_BETWEEN_UPDATES,
@@ -57,8 +61,6 @@ public class ReportLocationService extends Service implements LocationListener {
 		// start updated service
 		sendLocationUpdates = new SendLocationUpdates();
 		timer = new Timer("Updates Report Timer");
-
-	
 
 	}
 
@@ -80,7 +82,8 @@ public class ReportLocationService extends Service implements LocationListener {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		timer.schedule(sendLocationUpdates, DELAY_INTERVAL_MS, UPDATE_INTERVAL_MS);
+		timer.schedule(sendLocationUpdates, DELAY_INTERVAL_MS,
+				UPDATE_INTERVAL_MS);
 		Log.d("UpdateService", "Created..");
 
 	}
@@ -88,7 +91,7 @@ public class ReportLocationService extends Service implements LocationListener {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-			// stop the location updates
+		// stop the location updates
 		timer.cancel();
 		Log.d("UpdateService", "On Destroy..");
 	}
@@ -114,10 +117,20 @@ public class ReportLocationService extends Service implements LocationListener {
 				JSONObject requestPayload = new JSONObject();
 				try {
 					requestPayload.put("userId", userId);
-					requestPayload.put("latitude", location.getLatitude());
-					requestPayload.put("longitude", location.getLongitude());
 					requestPayload.put("tripId", tripId);
-				} catch (JSONException ignore) {				
+					// Use demo sign GPS coordinates if DEMO mode
+					if (!MainScreenActivity.DEMO_MODE) {
+						// Use real location
+						requestPayload.put("latitude", location.getLatitude());
+						requestPayload
+								.put("longitude", location.getLongitude());
+					} else {
+						// Use GPS coordinates of station that matches the DEMO
+						// sign
+						requestPayload.put("latitude", 32.073397);
+						requestPayload.put("longitude", 34.775048);
+					}
+				} catch (JSONException ignore) {
 					ignore.printStackTrace();
 				}
 

@@ -103,8 +103,7 @@ public class ManualSearchActivity extends MapActivity {
 									.createNullGpsManualSearchErrorAlert(c);
 						}
 					} else {
-						// in debug mode - GPS coordinates of station that
-						// matches the DEMO sign
+						// Use GPS coordinates of station that matches the DEMO sign
 						ihc.getDepartureTime(c, pd, line_number, 32.073397,
 								34.775048, time, timeInterval);
 					}

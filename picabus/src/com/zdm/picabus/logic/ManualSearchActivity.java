@@ -78,7 +78,7 @@ public class ManualSearchActivity extends MapActivity {
 					// get time interval from preferences
 					SharedPreferences settings = getSharedPreferences(
 							PICABUS_PREFS_NAME, 0);
-					int timeInterval = settings.getInt("timeInterval", 15);
+					int timeInterval = settings.getInt("timeInterval", 30);
 
 					// Get current time
 					String time = DataCollector.getCurrentTime();

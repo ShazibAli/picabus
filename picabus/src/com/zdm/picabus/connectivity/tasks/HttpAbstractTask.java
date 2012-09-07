@@ -93,7 +93,6 @@ public abstract class HttpAbstractTask extends AsyncTask<String, String, String>
 			}
 		} catch (Exception e) {
 			Log.e("Error in connectivity layer, stacktrace: ", e.toString());
-			//ErrorsHandler.createConnectivityErrorAlert(mContext,ERROR_CONNECTION_TO_SERVER);
 			return null;
 		}
 		return retreturnVal; // This value will be returned to your onPostExecute(result) method

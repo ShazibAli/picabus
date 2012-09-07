@@ -3,10 +3,7 @@ package com.zdm.picabus.db;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.appengine.api.rdbms.AppEngineDriver;
@@ -21,7 +18,6 @@ import com.zdm.picabus.server.entities.Report;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
-import com.zdm.picabus.utils.DateUtils;
 
 public class DBServices implements IDBServices {
 
@@ -47,21 +43,6 @@ public class DBServices implements IDBServices {
 			long upperLimitTimeInMs = departureTime.getTime() + (timeIntervalInMinutes * minuteToMsFactor);
 			Time upperLimitTime = new Time(upperLimitTimeInMs);
 				
-			// TODO: remove unnecessary query
-			// build SQL statement
-			/*	String statement = "SELECT  trips.trip_id, arrival_time, stop_id, stop_sequence, stop_headsign, " +
-					"routes.route_id, service_id, direction_id, route_short_name as \"Line Number\", route_long_name, agency_name "
-					+ "FROM " + Tables.STOPTIMES.getTableName() +", " + Tables.TRIPS.getTableName() + ", " 
-					+ Tables.ROUTES.getTableName() + ", " + Tables.AGENCY.getTableName() + " "
-					+ "WHERE stop_id = ? and departure_time > ? "
-					+ "and departure_time < ? "
-					+ "and stop_times.trip_id = trips.trip_id "
-					+ "and trips.route_id = routes.route_id "
-					+ "and agency.agency_id = routes.agency_id "
-					+ "and route_short_name = ? "
-					+ "GROUP BY route_short_name, direction_id";
-			
-			*/
 //			String dayOfTheWeek = DateUtils.getTodayString();
 			// TODO: debug 
 			String dayOfTheWeek = "sunday";
@@ -405,14 +386,12 @@ public class DBServices implements IDBServices {
 			boolean exists = rs.next();
 			
 			if (exists) { // update 
-				Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 				statement = "UPDATE " + Tables.CURRENT_LOCATION_REPORTS.getTableName() + " SET longitude = ?, latitude = ?  WHERE reporter_id = ? and trip_id = ?";		
 				stmt = c.prepareStatement(statement);
 				stmt.setDouble(1, longitude);
 				stmt.setDouble(2, latitude);
 				stmt.setLong(3, userId);
 				stmt.setLong(4, tripId);
-		//		stmt.setTimestamp(5, null);
 				stmt.executeUpdate();				
 			}
 			else { //user has no existing prior report

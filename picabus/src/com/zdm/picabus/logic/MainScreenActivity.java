@@ -32,6 +32,12 @@ import com.zdm.picabus.utilities.SettingsParser;
  */
 public class MainScreenActivity extends Activity {
 
+	/*
+	 * Demo mode flag - global flag which indicates that we are using GPS
+	 * coordinates of the DEMO bus sign
+	 */
+	public static final boolean DEMO_MODE = true;
+
 	private static final int NOTIFICATION_UNIQUE_ID = 139874;
 	public static final String PICABUS_PREFS_NAME = "picabusSettings";
 	private ImageButton cameraBtn;
@@ -153,7 +159,7 @@ public class MainScreenActivity extends Activity {
 				this, android.R.layout.simple_spinner_item, intervalTimes);
 		spTimeInterval.setAdapter(adapterInterval);
 
-		//select listener
+		// select listener
 		spTimeInterval.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -161,9 +167,10 @@ public class MainScreenActivity extends Activity {
 
 				String choice = (String) parent.getItemAtPosition(pos);
 				int choiceInMinutes = SettingsParser.ParseTimeInMinutes(choice);
-				
-				//save in shared prefs
-				SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
+
+				// save in shared prefs
+				SharedPreferences settings = getSharedPreferences(
+						PICABUS_PREFS_NAME, 0);
 				SharedPreferences.Editor editor = settings.edit();
 				editor.putInt("timeInterval", choiceInMinutes);
 				editor.commit();
@@ -176,13 +183,13 @@ public class MainScreenActivity extends Activity {
 		});
 
 		// Spinner Notification times
-		String notificationTimes[] = {"10 seconds", "30 seconds","1 minute", "5 minutes", "10 minutes",
-				"15 minutes", "30 minutes", "1 hour" };
+		String notificationTimes[] = { "10 seconds", "30 seconds", "1 minute",
+				"5 minutes", "10 minutes", "15 minutes", "30 minutes", "1 hour" };
 		final ArrayAdapter<String> adapterNotification = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, notificationTimes);
 		spNotification.setAdapter(adapterNotification);
-		
-		//select listener
+
+		// select listener
 		spNotification.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -190,9 +197,10 @@ public class MainScreenActivity extends Activity {
 
 				String choice = (String) parent.getItemAtPosition(pos);
 				int choiceInSeconds = SettingsParser.ParseTimeInSeconds(choice);
-				
-				//save in shared prefs
-				SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
+
+				// save in shared prefs
+				SharedPreferences settings = getSharedPreferences(
+						PICABUS_PREFS_NAME, 0);
 				SharedPreferences.Editor editor = settings.edit();
 				editor.putInt("notificationDelta", choiceInSeconds);
 				editor.commit();
@@ -252,8 +260,8 @@ public class MainScreenActivity extends Activity {
 		slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
 
 			public void onDrawerClosed() {
-				
-				 slideButton.setBackgroundResource(R.drawable.settings_icon_up);	 
+
+				slideButton.setBackgroundResource(R.drawable.settings_icon_up);
 				slidingDrawer.setClickable(false);
 			}
 		});

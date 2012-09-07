@@ -24,7 +24,6 @@ import com.zdm.picabus.utilities.ErrorsHandler;
 public class BusLinesListActivity extends ListActivity {
 
 	public static final String PICABUS_PREFS_NAME = "picabusSettings";
-	private final static boolean DEBUG_MODE = true;
 	private ArrayList<Integer> linesList = null;
 	private LineRowAdapter lineRowAdapter;
 	private ProgressDialog pd;
@@ -124,7 +123,7 @@ public class BusLinesListActivity extends ListActivity {
 		}
 		
 		// Send data to server
-		if (!DEBUG_MODE) {
+		if (!MainScreenActivity.DEMO_MODE) {
 			if (lat != null || lng != null) {
 				ihc.getDepartureTime(this, pd, line_number, lat, lng, time,
 						timeInterval);
@@ -134,9 +133,9 @@ public class BusLinesListActivity extends ListActivity {
 						line_number, time, timeInterval);
 			}
 		} else {
-			//in debug mode
-			ihc.getDepartureTime(this, pd, line_number, 32.045816, 34.756983,
-					"08:20:00", timeInterval);
+			//in demo mode - GPS coordinates of station that matches the DEMO sign
+			ihc.getDepartureTime(this, pd, line_number, 32.073397, 34.775048,
+					time, timeInterval);
 		}
 
 	}

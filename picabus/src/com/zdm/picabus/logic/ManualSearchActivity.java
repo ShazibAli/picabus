@@ -33,7 +33,6 @@ import com.zdm.picabus.utilities.ErrorsHandler;
 public class ManualSearchActivity extends MapActivity {
 
 	public static final String PICABUS_PREFS_NAME = "picabusSettings";
-	private final static boolean DEBUG_MODE = true;
 	private ImageButton submitBtn;
 	private TextView textField;
 	private MapView mapView;
@@ -43,7 +42,6 @@ public class ManualSearchActivity extends MapActivity {
 	private ProgressDialog pd;
 	private Double lat = null;
 	private Double lng = null;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,34 +75,25 @@ public class ManualSearchActivity extends MapActivity {
 
 					// get necessary data and send request to server
 
-					//get time interval from preferences
-					SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
-					int timeInterval = settings.getInt("timeInterval",15);
-					
+					// get time interval from preferences
+					SharedPreferences settings = getSharedPreferences(
+							PICABUS_PREFS_NAME, 0);
+					int timeInterval = settings.getInt("timeInterval", 15);
+
 					// Get current time
 					String time = DataCollector.getCurrentTime();
 
 					// Get coordinates
-				GpsResult res = DataCollector.getGpsCoordinates(c);
+					GpsResult res = DataCollector.getGpsCoordinates(c);
 					if (res != null) {
 						lat = res.getLat();
 						lng = res.getLng();
 					}
-					
-		/*			LocationHandler.LocationResult locationResult = new LocationHandler.LocationResult() {
-				
-						@Override
-						public void gotLocation(Location location) {
-							setCurrentLocation(location);
-						}
 
-					};
-					
-					LocationHandler myLocation = new LocationHandler();
-					myLocation.getLocation(c, locationResult);*/
-					
-					// Send data to server
-					if (!DEBUG_MODE) {
+					//Send data to server
+					// Use demo sign GPS coordinates if DEMO mode
+					if (!MainScreenActivity.DEMO_MODE) {
+					// Use real location
 						if (lat != null || lng != null) {
 							ihc.getDepartureTime(c, pd, line_number, lat, lng,
 									time, timeInterval);
@@ -114,22 +103,16 @@ public class ManualSearchActivity extends MapActivity {
 									.createNullGpsManualSearchErrorAlert(c);
 						}
 					} else {
-						// for emulator
-						ihc.getDepartureTime(c, pd, line_number, 32.045816,
-								34.756983, "08:20:00", timeInterval);
+						// in debug mode - GPS coordinates of station that
+						// matches the DEMO sign
+						ihc.getDepartureTime(c, pd, line_number, 32.073397,
+								34.775048, time, timeInterval);
 					}
 
 				}
 			}
 		});
 	}
-	
-/*	private void setCurrentLocation(Location location) {
-		// TODO Auto-generated method stub
-		lat = location.getLatitude();
-		lng = location.getLongitude();
-	}*/
-	
 
 	private void displayUserOnMap(MapView mapView) {
 
@@ -139,21 +122,18 @@ public class ManualSearchActivity extends MapActivity {
 
 		GpsResult res = DataCollector.getGpsCoordinates(this);
 
-		// null gps coordinates
-		if (res == null)
-			if (DEBUG_MODE) {
-				lat = 32.045816;
-				lng = 34.756983;
-			} else {
-				return;
-			}
-
-		// valid gps coordinates
-		if (res != null) {
+		// Use demo sign GPS coordinates if DEMO mode
+		if (MainScreenActivity.DEMO_MODE) {
+			lat = 32.073397;
+			lng = 34.775048;
+		// Use real location
+		} else if (res != null) {
 			lat = res.getLat();
 			lng = res.getLng();
 		}
-
+		else{
+			return; //don't show location on map
+		}
 		// here lat and lng are not null - continue showing map
 
 		// Displaying Zooming controls

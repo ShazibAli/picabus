@@ -56,9 +56,8 @@ public class UserNamePicGetter extends
 			reporterNameTextView.setText(userName);
 		}
 		if (profilePic != null) {
-			/*Bitmap scaledProfilePic = Bitmap.createScaledBitmap(profilePic, 50, 50, true);
-			reporterImageView.setImageBitmap(scaledProfilePic);*/
-			reporterImageView.setImageBitmap(profilePic);
+			Bitmap scaledProfilePic = Bitmap.createScaledBitmap(profilePic, reporterImageView.getWidth(), reporterImageView.getHeight(), true);
+			reporterImageView.setImageBitmap(scaledProfilePic);
 		}
 		
 		

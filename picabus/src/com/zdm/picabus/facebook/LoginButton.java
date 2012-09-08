@@ -17,6 +17,7 @@
 package com.zdm.picabus.facebook;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,13 +25,13 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
-
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.zdm.picabus.R;
+import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.facebook.BaseRequestListener;
 import com.zdm.picabus.facebook.SessionEvents.AuthListener;
 import com.zdm.picabus.facebook.SessionEvents.LogoutListener;
@@ -43,7 +44,11 @@ public class LoginButton extends ImageButton {
     private String[] mPermissions;
     private Activity mActivity;
     private int mActivityCode;
-
+    private Context context;
+    
+	private ProgressDialog pd;
+	IHttpCaller ihc = null;
+    
     public LoginButton(Context context) {
         super(context);
     }
@@ -56,18 +61,29 @@ public class LoginButton extends ImageButton {
         super(context, attrs, defStyle);
     }
 
-    public void init(final Activity activity, final int activityCode, final Facebook fb) {
+/*    public void init(final Activity activity, final int activityCode, final Facebook fb) {
         init(activity, activityCode, fb, new String[] {});
-    }
+    }*/
+    
+	/**
+	 * get user's points using async task update UI from async task afterwards
+	 */
+	private void getUserScore() {
+		ihc.getUserScore(context, pd, FacbookIdentity.getUserId());
+	}
 
     public void init(final Activity activity, final int activityCode, final Facebook fb,
-            final String[] permissions) {
+            final String[] permissions, IHttpCaller ihc, ProgressDialog pd, Context c) {
+    	
         mActivity = activity;
         mActivityCode = activityCode;
         mFb = fb;
         mPermissions = permissions;
         mHandler = new Handler();
-
+        this.ihc=ihc;
+        this.pd=pd;
+        this.context=c;
+        
         setBackgroundColor(Color.TRANSPARENT);
         //login / logout image icon
         setImageResource(fb.isSessionValid() ? R.drawable.facebook_logout : R.drawable.facebook_login);
@@ -91,7 +107,7 @@ public class LoginButton extends ImageButton {
                 asyncRunner.logout(getContext(), new LogoutRequestListener());
             } else {
                 mFb.authorize(mActivity, mPermissions, mActivityCode, new LoginDialogListener());
-                
+                getUserScore();
             }
         }
     }

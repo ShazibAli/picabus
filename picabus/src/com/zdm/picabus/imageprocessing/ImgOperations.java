@@ -2,7 +2,6 @@ package com.zdm.picabus.imageprocessing;
 
 import static com.googlecode.javacv.cpp.opencv_core.CV_FILLED;
 import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_32F;
-import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_8U;
 import static com.googlecode.javacv.cpp.opencv_core.cvCopy;
 import static com.googlecode.javacv.cpp.opencv_core.cvMinMaxLoc;
 import static com.googlecode.javacv.cpp.opencv_core.cvPoint;
@@ -10,35 +9,39 @@ import static com.googlecode.javacv.cpp.opencv_core.cvRectangle;
 import static com.googlecode.javacv.cpp.opencv_core.cvReleaseImage;
 import static com.googlecode.javacv.cpp.opencv_core.cvScalar;
 import static com.googlecode.javacv.cpp.opencv_core.cvSetImageROI;
+import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
 import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_TM_CCOEFF_NORMED;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvMatchTemplate;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
-import java.net.URL;
-
-import javax.annotation.Resource;
 
 
-import android.R;
+//import org.opencv.android.Utils;
+//import org.opencv.core.Mat;
+//import org.opencv.imgproc.Imgproc;
+
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
+import android.widget.Toast;
 
 import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvRect;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
-import com.zdm.picabus.R.drawable;
-
 
 
 
 public class ImgOperations {
+	
+	static Context context;
+	
+
+	
 	/**
 	 * Cropping function for IplImages
 	 * 
@@ -127,14 +130,16 @@ public class ImgOperations {
 
 			cvReleaseImage(res);
 
-			if (maxval[0] > 0.62) // 0.74
+			if (maxval[0] > 0.7) // 0.74 //0.62 //0.28
 			{
+				Toast.makeText(context, "True MaxVal = " + maxval[0], Toast.LENGTH_SHORT).show();
 				// System.out.println("True MaxVal = " + maxval[0]);
 
 			} else {
 				rect[0] = null;
 				rect[1] = null;
 				// System.out.println("False MaxVal = " + maxval[0]);
+				Toast.makeText(context, "False MaxVal = " + maxval[0], Toast.LENGTH_SHORT).show();
 			}
 
 			return rect;
@@ -156,13 +161,13 @@ public class ImgOperations {
 	 */
 	public static int[] templateMatchLib(IplImage img, Context con) 
 	{
-		
+		context = con;
 		IplImage temp = null;
 		String[] nameParsed = null;
 		String name = null;
 		CvPoint[] rectT = new CvPoint[2];
 
-		int length = 0;
+		int length = 10;
 		int i = 0;;
 
 		int[] line = new int[length * 7]; // the return line numbers
@@ -183,24 +188,26 @@ public class ImgOperations {
 		       {
 		    	   res = f.getInt(null);
 		    	   draw = con.getResources().getDrawable(res);
-		    	   Bitmap bitmap = ((BitmapDrawable)draw).getBitmap();
 		    	   
-		    	   temp = IplImage.create(bitmap.getWidth(), bitmap.getHeight(), IPL_DEPTH_8U ,3 );
-		   		   bitmap.copyPixelsToBuffer(temp.getByteBuffer());		    	   		    	   
+		    	   Bitmap icon = null;
+		    	   Options opt = new Options();
+		    	   opt.inScaled = false;
+		    	   icon = BitmapFactory.decodeResource(context.getResources(),
+                           res, opt);
+		    	   
 		    	
-		    	// each template check 4 times on the picture to see if the template
-					// is there more than once.
-					// that way for a line numbered 244 we'll find the two '4' and not
-					// only one
-					// each time covers the result by a rectangle so it won't be found
-					// again
-					for (int n = 0; n < 4; n++) {
+		    	   FileOutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/templateBitmap.png");
+		           icon.compress(Bitmap.CompressFormat.PNG, 90, out);
+		           
+		           String filePath = Environment.getExternalStorageDirectory() + "/templateBitmap.png";
+		           temp = cvLoadImage(filePath);
+		           
+		           //cvSaveImage(Environment.getExternalStorageDirectory() + "/templateIpl.png", temp);
+	
 
-						// System.out.println("detection num: " + (n + 1) + " named: " +
-						// name[0]);
 						rectT = templateMatch(img, temp); // match the given template
 															// with the picture
-
+						Toast.makeText(context, "Line Num = " + Integer.valueOf(nameParsed[1]), Toast.LENGTH_SHORT).show();
 						rect[i][0] = rectT[0]; // get all the results in an array -
 												// rect[][]
 						rect[i][1] = rectT[1];
@@ -208,31 +215,23 @@ public class ImgOperations {
 						if (rect[i][0] != null) // if the template was detected
 						{
 
-							line[i] = Integer.valueOf(nameParsed[0]); // enter the number
+							line[i] = Integer.valueOf(nameParsed[1]); // enter the number
 																// result
 							i++;
 
-							/*
-							 * //CV_TM_CCORR_NORMED cvRectangle( img, cvPoint(
-							 * minloc.x(), minloc.y() ), cvPoint( minloc.x() + tempW,
-							 * minloc.y() + tempH ), cvScalar( 0, 0, 255, 0 ), 1, 0, 0
-							 * );
-							 */
 
 							// draw a rectangle so the digit that was found wouldn't be
 							// found again
 							// CV_TM_CCOEFF_NORMED
 							cvRectangle(img, rectT[0], rectT[1],
 									cvScalar(0, 0, 255, 0), CV_FILLED, 0, 0); // 1
-																				// instead
+						}													// instead
 																				// of
 																				// CV_FILLED
-						} else {
-							// if it wasn't found , stop searching
-							n = 5;
-						}
-					}
-						    	   
+					
+					cvReleaseImage(temp);
+					icon.recycle();
+					icon = null;
 		    	   
 		       }
 		       
@@ -252,8 +251,8 @@ public class ImgOperations {
 
 
 			
-
-		filterPoints(rect, line);
+		cvReleaseImage(img);
+		//filterPoints(rect, line);
 
 		return line;
 	}

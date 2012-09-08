@@ -12,10 +12,9 @@
 
                             <View
          android:layout_width="fill_parent"
-         android:layout_height="140dip"
+         android:layout_height="125dip"
  />
             
-                            
     <ImageButton
         android:id="@+id/button_camera"
         android:layout_width="wrap_content"

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zdm.picabus.R;
@@ -15,7 +16,10 @@ import com.zdm.picabus.connectivity.ResponseParser;
 public class GetUserScoreTask extends HttpAbstractTask {
 
 	private Context context;
-
+	private static final int bronzeScore = 1000;
+	private static final int silverScore = 2000;
+	private static final int goldScore = 5000;
+	
 	public GetUserScoreTask(Context mContext, ProgressDialog waitSpinner,
 			String taskName, JSONObject reuqestPayload) {
 		super(mContext, waitSpinner, taskName, reuqestPayload);
@@ -53,7 +57,22 @@ public class GetUserScoreTask extends HttpAbstractTask {
 				
 				//update score in 'my picabus' page
 				TextView userPoints = (TextView) ((Activity) context).findViewById(R.id.pointsMyPicabus);//make sure that works from spinner
-				userPoints.setText("You have earned " + currentScore + " points!");
+				TextView pointsTillNext = (TextView) ((Activity) context).findViewById(R.id.numberOfPointsTillNext);//make sure that works from spinner
+				userPoints.setText(currentScore + "");
+				ImageView medal = (ImageView) ((Activity) context).findViewById(R.id.imageMedal);
+				if (currentScore < bronzeScore) {
+					medal.setImageDrawable(context.getResources().getDrawable(R.drawable.bronze_medal));
+					pointsTillNext.setText((silverScore - currentScore) + "");
+				}
+				else if (currentScore < silverScore) {
+					medal.setImageDrawable(context.getResources().getDrawable(R.drawable.silver_medal));
+					pointsTillNext.setText((goldScore - currentScore) + "");
+				}
+				else if (currentScore < goldScore) {
+					medal.setImageDrawable(context.getResources().getDrawable(R.drawable.gold_medal));
+					pointsTillNext.setText("0");
+				}				
+				//
 			}
 
 		}

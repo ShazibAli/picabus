@@ -33,10 +33,12 @@ public class MyPicabusPageActivity extends Activity {
 
 	private LoginButton mLoginButton;
 	private ImageButton postToFacebookBtn;
-	private Button sendAppRequest;
+	private Button shareApp;
 	private TextView mText;
+	private TextView numberOfPointsTillnext;
 	private ImageView mUserPic;
 	private Handler mHandler;
+	private ImageView medal;
 	private Context c = this;
 	private final static int AUTHORIZE_ACTIVITY_RESULT_CODE = 0;
 	private ProgressDialog pd;
@@ -51,13 +53,19 @@ public class MyPicabusPageActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_picabus_screen);
 		mHandler = new Handler();
-
+		medal = (ImageView) findViewById(R.id.imageMedal);
+		medal.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.bronze_medal));
 		mText = (TextView) MyPicabusPageActivity.this
 				.findViewById(R.id.txtFacebookUser);
+		mText.setText("User");
 		mUserPic = (ImageView) MyPicabusPageActivity.this
 				.findViewById(R.id.facebookProfilePic);
+		mUserPic.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.application_icon));
 		mLoginButton = (LoginButton) findViewById(R.id.login);
 		userPoints = (TextView) findViewById(R.id.pointsMyPicabus);
+		userPoints.setText("0");
+		numberOfPointsTillnext = (TextView) findViewById(R.id.numberOfPointsTillNext);
+		numberOfPointsTillnext.setText("1000");
 
 		// Create facebook objects, restore session if exists, define
 		// login/logout actions and get user's data
@@ -129,14 +137,19 @@ public class MyPicabusPageActivity extends Activity {
 			}
 		});
 
-		// send app request
-		sendAppRequest = (Button) findViewById(R.id.sendAppRequest);
-		sendAppRequest.setOnClickListener(new View.OnClickListener() {
+		// share app request
+		shareApp = (Button) findViewById(R.id.shareWithFriends);
+		shareApp.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				sendAppRequest();
+				Intent sendIntent = new Intent();
+				sendIntent.setAction(Intent.ACTION_SEND);
+				sendIntent.putExtra(Intent.EXTRA_TEXT,
+						getResources().getText(R.string.share_message));
+				sendIntent.setType("text/plain");
+				startActivity(Intent.createChooser(sendIntent, getResources()
+						.getText(R.string.share_title)));
 			}
 		});
-
 	}
 
 	/**
@@ -184,7 +197,7 @@ public class MyPicabusPageActivity extends Activity {
 	public void postToWall() {
 		// post on user's wall.
 		if (!FacbookIdentity.mFacebook.isSessionValid()) {
-			Util.showAlert(this, "Warning", "You must first log in.");
+			Util.showAlert(this, "Information", "You must first log in.");
 		} else {
 			FacbookIdentity.mFacebook.dialog(this, "feed",
 					new DialogListener() {
@@ -211,7 +224,7 @@ public class MyPicabusPageActivity extends Activity {
 
 	protected void sendAppRequest() {
 		if (!FacbookIdentity.mFacebook.isSessionValid()) {
-			Util.showAlert(this, "Warning", "You must first log in.");
+			Util.showAlert(this, "Information", "You must first log in.");
 		} else {
 			Bundle params = new Bundle();
 			params.putString("message",
@@ -259,7 +272,7 @@ public class MyPicabusPageActivity extends Activity {
 
 				mHandler.post(new Runnable() {
 					public void run() {
-						mText.setText("Welcome " + name + "!");
+						mText.setText("Hey " + name + "!");
 						ProfileImageGetter profilePicRequest = new ProfileImageGetter(
 								c);
 						profilePicRequest.execute();
@@ -299,8 +312,12 @@ public class MyPicabusPageActivity extends Activity {
 		}
 
 		public void onLogoutFinish() {
-			mText.setText("You have logged out! ");
+			mText.setText("Login to use Social features ! ");
 			mUserPic.setImageBitmap(null);
+			// TODO: change medal and score
+			numberOfPointsTillnext.setText("1000");
+			userPoints.setText("0");
+			
 		}
 	}
 
@@ -308,7 +325,6 @@ public class MyPicabusPageActivity extends Activity {
 	 * Request user name and picture to show on 'my picabus'.
 	 */
 	public void requestUserData() {
-		mText.setText("Fetching username and profile picture...");
 		Bundle params = new Bundle();
 		params.putString("fields", "name, picture");
 		FacbookIdentity.mAsyncRunner.request("me", params,

@@ -38,7 +38,16 @@ import android.widget.ImageView;
 	        protected void onPostExecute(Bitmap result) {
 
 	        	ImageView mUserPic = (ImageView)  ((Activity) context).findViewById(R.id.facebookProfilePic);
-	        	mUserPic.setImageBitmap(result);
+
+	        	if (result != null) {
+	        		Bitmap scaledProfilePic = Bitmap.createScaledBitmap(result, mUserPic.getWidth(), mUserPic.getHeight(), true);
+	        		mUserPic.setImageBitmap(scaledProfilePic);
+	        	}
+	        	
+	        	
+/*
+	        	Bitmap scaledProfilePic = Bitmap.createScaledBitmap(result, mUserPic.getWidth(), mUserPic.getHeight(), true);
+				mUserPic.setImageBitmap(result);*/
 	        }
 
 	        /**
@@ -56,7 +65,7 @@ import android.widget.ImageView;
 		        Bitmap profileImageBitmap = null;
 		            try {
 			    	    Log.d("TAG", "Loading Picture");
-		                facebookGraphUrl = new URL("http://graph.facebook.com/"+facebookId+"/picture?type=small");
+		                facebookGraphUrl = new URL("http://graph.facebook.com/"+facebookId+"/picture");
 		                profileImageBitmap = BitmapFactory.decodeStream(facebookGraphUrl.openConnection().getInputStream());
 		            } catch (MalformedURLException e) {
 				        Log.d("TAG", "Loading Picture FAILED");

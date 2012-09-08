@@ -67,7 +67,7 @@ public class HistoryRowAdapter extends ArrayAdapter<HistoryObject> {
 			if (lineNumber != null) {
 				int lineNum = obj.getLineNumber();
 				if (lineNum != 0) {
-					lineNumber.setText("Line "+ Integer.toString(lineNum));
+					lineNumber.setText(Integer.toString(lineNum));
 				}
 			}
 

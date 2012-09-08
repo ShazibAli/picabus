@@ -7,6 +7,11 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.zdm.picabus.enitities.HistoryObject;
 
+/**
+ * 
+ * Class for saving and restoring user's history
+ *
+ */
 public class HistoryService{
 	
 	private static final String HISTORY_RECORD_COUNT = "UserHistoryCount";
@@ -14,7 +19,7 @@ public class HistoryService{
 	public static final String HISTORY_PREFS_NAME = "resultDataPfers";
 	
 	/**
-	 * This method gets all the user history records
+	 * Gets user history record
 	 * 
 	 * @param context the context of the current activity 
 	 * @return an ArrayList containing all the user history records (can be empty if no record were found/an error occured)
@@ -47,7 +52,7 @@ public class HistoryService{
 	}
 	
 	/**
-	 * This method saves a single history record
+	 * saves a single history record
 	 * 
 	 * @param ho HistoryObject - record we want to save
 	 * @param context
@@ -80,10 +85,11 @@ public class HistoryService{
 	
 	
 /**
+ * Checks if the record 'historyJson' already exist
  * 
  * @param ho - history object to search
  * @param context
- * @return
+ * @return true if record exists. false otherwise
  */
 	public boolean checkIfRecordExist(String historyJson, Context context) {
 	

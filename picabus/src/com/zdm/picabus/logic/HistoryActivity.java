@@ -17,7 +17,11 @@ import com.zdm.picabus.connectivity.IHttpCaller;
 import com.zdm.picabus.enitities.HistoryObject;
 import com.zdm.picabus.utilities.DataCollector;
 
-
+/**
+ * 
+ * Activity used to show users searches history
+ *
+ */
 public class HistoryActivity extends ListActivity {
 
 	public static final String PICABUS_PREFS_NAME = "picabusSettings";

@@ -20,8 +20,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
        private ArrayList<OverlayItem> mapOverlays = new ArrayList<OverlayItem>();
  
        private Context context;
- 
-       
+     
        public AddItemizedOverlay(Drawable defaultMarker) {
             super(boundCenterBottom(defaultMarker));
        }
@@ -56,8 +55,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
            // Setting OK Button
            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
-         
-                 
+                	   // just return to map
                    }
            });
            dialog.show();
@@ -69,10 +67,6 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
        @Override
        public void draw(android.graphics.Canvas canvas, MapView mapView, boolean shadow) {
            super.draw(canvas, mapView, false);
-           int mTextSize = 30;
-           int dx = 0;
-           int dy = 0;
-        
                //cycle through all overlays
                for (int index = 0; index < mapOverlays.size(); index++) {
                    OverlayItem item = mapOverlays.get(index);
@@ -80,25 +74,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
                    // Converts lat/lng-Point to coordinates on the screen
                    GeoPoint point = item.getPoint();
                    Point ptScreenCoord = new Point() ;
-                   mapView.getProjection().toPixels(point, ptScreenCoord);
-
-                   //Paint
-                /*   Paint paint = new Paint();
-                   paint.setTextAlign(Paint.Align.CENTER);
-                   paint.setTextSize(mTextSize);
-                   paint.setARGB(255, 148, 0, 211); // alpha, r, g, b (Purple, semi see-through)
-                   //show text to the above of the icon
-                   canvas.drawText(item.getTitle(), ptScreenCoord.x, ptScreenCoord.y  + mTextSize, paint);*/
-                   
-                  /* Rect rectBounds = new Rect();
-                   paint.getTextBounds(item.getTitle(), 0, item.getTitle().length(), rectBounds);
-                   rectBounds.inset(dx, dy);
-                   paint.setColor(Color.BLACK);
-                   paint.setStyle(Style.STROKE);
-                   paint.setStrokeWidth(3);
-              
-                   canvas.drawRect(rectBounds, paint);
-              */                
+                   mapView.getProjection().toPixels(point, ptScreenCoord);       
            }
        }
        
@@ -108,8 +84,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
        }
        @Override
        public boolean onTouchEvent(MotionEvent event, MapView mapView) {   
-           if (event.getAction() == 1) {
-        	   
+           if (event.getAction() == 1) {  	   
              //  Toast.makeText(context, "For details, just click on a station", Toast.LENGTH_SHORT).show();
            }
            return false;

@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Class is used for getting user's facebook profile image from network, using
+ * Class is used for getting user's Facebook profile image from network, using
  * async task
  * 
  */
@@ -59,9 +59,6 @@ public class UserNamePicGetter extends
 			Bitmap scaledProfilePic = Bitmap.createScaledBitmap(profilePic, reporterImageView.getWidth(), reporterImageView.getHeight(), true);
 			reporterImageView.setImageBitmap(scaledProfilePic);
 		}
-		
-		
-
 	}
 
 	@Override

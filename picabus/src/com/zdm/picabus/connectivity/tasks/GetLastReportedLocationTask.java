@@ -30,8 +30,7 @@ public class GetLastReportedLocationTask extends HttpAbstractTask {
 
 		// null result from server means an error in connectivity stage
 		if (result == null) {
-
-			
+			// we do nothing, real-time report won't be available
 		}
 		else { // result != null
 			try {

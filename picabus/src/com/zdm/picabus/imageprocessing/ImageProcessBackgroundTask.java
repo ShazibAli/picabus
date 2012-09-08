@@ -63,8 +63,6 @@ public class ImageProcessBackgroundTask extends
 			context.startActivity(intent);
 			((CameraActivity) context).finish();
 		}
-
-
 	}
 
 	@Override

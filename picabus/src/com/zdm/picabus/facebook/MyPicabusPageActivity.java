@@ -181,8 +181,10 @@ public class MyPicabusPageActivity extends Activity {
 		SessionEvents.addLogoutListener(new FbAPIsLogoutListener());
 
 		// login logout button
+		ihc = HttpCaller.getInstance();
+		pd = new ProgressDialog(this);
 		mLoginButton.init(this, AUTHORIZE_ACTIVITY_RESULT_CODE,
-				FacbookIdentity.mFacebook, permissions);
+				FacbookIdentity.mFacebook, permissions,ihc,pd,c);
 
 		// get user data if valid session
 		if (FacbookIdentity.mFacebook.isSessionValid()) {

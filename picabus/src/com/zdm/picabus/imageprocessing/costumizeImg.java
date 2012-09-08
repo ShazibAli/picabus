@@ -53,21 +53,21 @@ public class costumizeImg
 	        if (image != null) 
 	        {
 	            
-	            colordetected = ColorDetector.DetectColor(image, 1);
+	            //colordetected = ColorDetector.DetectColor(image, 1);
 	                       
 	              
 	           
-	            cropped = ImgOperations.cropIpl(image, colordetected.getArr());
+	            //cropped = ImgOperations.cropIpl(image, colordetected.getArr());
 	            
-	        	//cropped = image;
+	        	cropped = image;
 
 				
-	            houghlines = HoughLines.HoughLines(cropped);
+	            //houghlines = HoughLines.HoughLines(cropped);
 	            
-	            for(int i = 0; i < houghlines.length; i++)
-	            //for(int i = 0; i < 1; i++)
+	            //for(int i = 0; i < houghlines.length; i++)
+	            for(int i = 0; i < 1; i++)
 	            {
-	            	line = ImgOperations.cropIpl(cropped, houghlines[i]); //cropped;
+	            	line =  cropped; //ImgOperations.cropIpl(cropped, houghlines[i]);
 	   			
 	            	if(line != null)
 	            	{
@@ -94,7 +94,7 @@ public class costumizeImg
 	
         cvReleaseImage(cropped);
         cvReleaseImage(line); 
-        cvReleaseImage(colordetected.getImage());
+        //cvReleaseImage(colordetected.getImage());
         cvReleaseImage(image);
         cvReleaseImage(origImage);
         

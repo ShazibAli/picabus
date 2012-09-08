@@ -90,7 +90,6 @@ public class CameraActivity extends Activity {
 								con, pd, rotatedImg, matrix);
 						imageProcessBackgroundTask.execute();
 
-						finish();
 					} catch (FileNotFoundException e) {
 						Log.e("Image operations", "file " + imageFilePath
 								+ " not found");

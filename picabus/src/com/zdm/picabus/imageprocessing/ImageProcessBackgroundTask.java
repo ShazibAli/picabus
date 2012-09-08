@@ -3,6 +3,7 @@ package com.zdm.picabus.imageprocessing;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.zdm.picabus.cameraservices.CameraActivity;
 import com.zdm.picabus.utilities.ErrorsHandler;
 
 import android.app.ProgressDialog;
@@ -44,6 +45,14 @@ public class ImageProcessBackgroundTask extends
 	@Override
 	protected void onPostExecute(List<Integer> linesList) {
 
+		waitSpinner.dismiss();
+		
+		// release memory
+		rotatedImg.recycle();
+		rotatedImg = null;
+		matrix.reset();
+		matrix = null;
+		
 		// null check - if OPEN CV result is null
 		if (linesList == null) {
 			ErrorsHandler.createNullLinesListErrorAlert(context);
@@ -54,9 +63,10 @@ public class ImageProcessBackgroundTask extends
 			intent.putIntegerArrayListExtra("linesList",
 					(ArrayList<Integer>) linesList);
 			context.startActivity(intent);
+			((CameraActivity) context).finish();
 		}
 
-		waitSpinner.dismiss();
+
 	}
 
 	@Override
@@ -65,12 +75,6 @@ public class ImageProcessBackgroundTask extends
 		// setting the name for this thread for monitoring
 		Thread.currentThread().setName("Image Processing Task");
 		List<Integer> linesList = costumizeImg.processImage(context);
-
-		// release memory
-		rotatedImg.recycle();
-		rotatedImg = null;
-		matrix.reset();
-		matrix = null;
 
 		return linesList;
 	}
@@ -85,7 +89,7 @@ public class ImageProcessBackgroundTask extends
 									// thread
 		super.onPreExecute();
 		if (waitSpinner != null) {
-			waitSpinner = ProgressDialog.show(context, "Processing",
+			waitSpinner = ProgressDialog.show(context, "Processing Image",
 					"Please wait...", true);
 		}
 	}

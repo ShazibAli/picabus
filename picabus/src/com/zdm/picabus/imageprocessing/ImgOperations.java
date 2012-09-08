@@ -132,14 +132,14 @@ public class ImgOperations {
 
 			if (maxval[0] > 0.7) // 0.74 //0.62 //0.28
 			{
-				Toast.makeText(context, "True MaxVal = " + maxval[0], Toast.LENGTH_SHORT).show();
+				//Toast.makeText(context, "True MaxVal = " + maxval[0], Toast.LENGTH_SHORT).show();
 				// System.out.println("True MaxVal = " + maxval[0]);
 
 			} else {
 				rect[0] = null;
 				rect[1] = null;
 				// System.out.println("False MaxVal = " + maxval[0]);
-				Toast.makeText(context, "False MaxVal = " + maxval[0], Toast.LENGTH_SHORT).show();
+				//Toast.makeText(context, "False MaxVal = " + maxval[0], Toast.LENGTH_SHORT).show();
 			}
 
 			return rect;
@@ -207,7 +207,7 @@ public class ImgOperations {
 
 						rectT = templateMatch(img, temp); // match the given template
 															// with the picture
-						Toast.makeText(context, "Line Num = " + Integer.valueOf(nameParsed[1]), Toast.LENGTH_SHORT).show();
+						//Toast.makeText(context, "Line Num = " + Integer.valueOf(nameParsed[1]), Toast.LENGTH_SHORT).show();
 						rect[i][0] = rectT[0]; // get all the results in an array -
 												// rect[][]
 						rect[i][1] = rectT[1];

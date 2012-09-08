@@ -1,100 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" 
-            android:descendantFocusability="beforeDescendants"
-			android:focusableInTouchMode="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/my_trip_background"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:background="@color/back_grey"
-                android:gravity="left|center"
-                android:padding="7dp"
-                android:text="@string/my_trip_status"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/lineAndArrivalTop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_purple"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <Button
-                    android:id="@+id/checkinButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_top_margin"
-                    android:text="@string/Checkin_bus_btn_text"
-                     />
-
-                <ImageButton
-                    android:id="@+id/getRouteIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="@dimen/small_top_margin"
-                    android:background="@null"
-                    android:contentDescription="@string/getroute_icon"
-                    android:src="@drawable/map_bus_icon" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/checkinButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="61dp"
+           />
 
-                <ToggleButton
-                    android:id="@+id/notifyToggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/small_left_margin"
-                    android:textOff="@string/notify_me"
-                    android:textOn="@string/cancel_notification" />
+        <ImageButton
+            android:id="@+id/getRouteIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="62dp"
+            android:background="@null"
+            android:contentDescription="@string/getroute_icon"
+            android:src="@drawable/button_map_s" />
+
+        <ToggleButton
+            android:id="@+id/notifyToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_left_margin"
+            android:layout_marginTop="59dp"
+            android:background="@drawable/button_notify_s"
+            android:textOff=""
+            android:textOn="@string/empty_text" />
 
-            </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lineAndArrivalTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/app_blue"
+        android:textStyle="bold|normal" />
+
+    <EditText
+        android:id="@+id/reportEditText"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:ems="10"
+        android:hint="@string/report_hint"
+        android:inputType="textMultiLine"
+        android:maxLength="200" />
 
-            <TextView
-                android:id="@+id/notifyInst"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="@dimen/small_top_margin"
-                android:background="@color/back_grey"
-                android:gravity="left|center"
-                android:padding="7dp"
-                android:text="@string/trip_reports"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/reportEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_top_margin"
-                android:ems="10"
-                android:hint="@string/report_hint"
-                android:inputType="textMultiLine" />
-
-            <Button
-                android:id="@+id/submitReportBtn"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="@string/send_report" />
-
-            <ListView
-                android:id="@+id/listReports"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:divider="#b5b5b5"
-                android:dividerHeight="1dp"
-                android:listSelector="@drawable/list_selector" >
+    <Button
+        android:id="@+id/submitReportBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/button_send_report_s" />
+
+    <ListView
+        android:id="@+id/listReports"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector"
+        android:padding="@dimen/small_padding" >
 
-            </ListView>
-        </LinearLayout>
+    </ListView>
 
-
+</LinearLayout>

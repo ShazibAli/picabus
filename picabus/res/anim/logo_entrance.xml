@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<!--     <translate
+     <translate
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:duration="3000"
         android:fromXDelta="0%"
         android:fromYDelta="125%"
         android:toXDelta="0%"
         android:toYDelta="0%"
-        android:zAdjustment="top" /> -->
+        android:zAdjustment="top" /> 
 
-<!--     <scale
+     <scale
         android:duration="4000"
         android:fromXScale="0.1"
         android:fromYScale="0.1"
@@ -25,6 +25,6 @@
         android:pivotX="50%"
         android:pivotY="50%"
         android:toDegrees="0"
-        android:toYScale="0.0" /> -->
+        android:toYScale="0.0" /> 
 
 </set>

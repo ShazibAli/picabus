@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" state_pressed="true" android:drawable="@drawable/norify_me_touched"/> currently pressed turning the toggle on
+    <item android:state_pressed="true" android:drawable="@drawable/norify_me"/> currently pressed turning the toggle off
+    <item android:state_checked="true" android:drawable="@drawable/norify_me"/> not pressed default checked state
+    <item android:state_pressed="true" android:drawable="@drawable/norify_me"/> default non-pressed non-checked
+</selector> -->
+
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- When selected, use grey -->
+    <item android:drawable="@drawable/norify_me_touched"
+          android:state_checked="true" />
+    <!-- When not selected, use white-->
+    <item android:drawable="@drawable/norify_me"
+        android:state_checked="false"/>
+
+ </selector>

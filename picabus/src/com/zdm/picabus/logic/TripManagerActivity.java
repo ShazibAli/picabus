@@ -153,7 +153,7 @@ public class TripManagerActivity extends Activity {
       
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-            	Toast.makeText(c, "Item Clicked", Toast.LENGTH_LONG).show();
+            //	Toast.makeText(c, "Item Clicked", Toast.LENGTH_LONG).show();
             }
 
         });
@@ -331,7 +331,10 @@ public class TripManagerActivity extends Activity {
 	private void setCheckinButton() {
 
 		if (checkedIn) {
-			checkinButton.setText("Checkout bus");
+			checkinButton.setBackgroundResource(R.drawable.check_out_ok);
+		}
+		else {
+			checkinButton.setBackgroundResource(R.drawable.check_in_ok);
 		}
 
 		checkinButton.setOnClickListener(new View.OnClickListener() {
@@ -348,7 +351,7 @@ public class TripManagerActivity extends Activity {
 				else {
 					if (checkedIn == false) {
 						checkedIn = true;
-						checkinButton.setText("Checkout bus");
+						checkinButton.setBackgroundResource(R.drawable.check_out_ok);
 						
 						// activate report parts of page
 						reportEditText.setEnabled(true);
@@ -374,6 +377,7 @@ public class TripManagerActivity extends Activity {
 
 					} else {
 						checkedIn = false;
+						checkinButton.setBackgroundResource(R.drawable.check_in_ok);
 						checkinButton.setEnabled(false);
 						checkinButton.setText("Thanks!");
 						// cancel notification
@@ -412,9 +416,6 @@ public class TripManagerActivity extends Activity {
 	 * Set notifications UI and functionality
 	 */
 	private void setNotificationToggle() {
-		// set notificationToggle
-		notificationToggle.setTextOn("On");
-		notificationToggle.setTextOff("Off");
 
 		// restore if was previously set on that trip
 		if (previouslyCheckedInCurrTrip) {

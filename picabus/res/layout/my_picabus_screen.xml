@@ -45,7 +45,7 @@
             android:layout_marginTop="34dp"
             android:maxHeight="90dp"
             android:maxWidth="90dp" />
-
+
         <TextView
             android:id="@+id/pointsMyPicabus"
             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
             android:layout_marginTop="7dp"
             android:layout_toRightOf="@+id/facebookProfilePic"
             android:text="1000"
-            android:textColor="@color/light_purple"
+            android:textColor="@color/app_blue"
             android:textSize="30dp" />
 
         <ImageView

@@ -1,8 +1,8 @@
 package com.zdm.picabus.utils;
 
 /**
- * Enum representing the available services (each contains it's own task name)
  * 
+ * available services and reports (each contains it's descriptive task name)
  * 
  */
 public enum Service {

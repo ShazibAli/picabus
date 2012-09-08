@@ -14,6 +14,11 @@ import com.zdm.picabus.utils.RequestUtils;
 import com.zdm.picabus.utils.ServerError;
 import com.zdm.picabus.utils.Service;
 
+/**
+ * 
+ * Servlet for handling services information related requests
+ *
+ */
 public class ServicesServlet extends HttpServlet {
 
 

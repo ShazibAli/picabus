@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 /**
  * 
- * Class that provides utilities for working with dates  
+ * Provides simple utilities for working with dates  
  *
  */
 public class DateUtils {

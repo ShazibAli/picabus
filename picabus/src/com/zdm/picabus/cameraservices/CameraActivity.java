@@ -30,46 +30,37 @@ public class CameraActivity extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		
+
 	}
-	
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 	}
-	
+
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAMERA_PIC_REQUEST) {
 
 			if (resultCode == RESULT_OK) {
 				// get image taken
 				Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-				
+
 				Context con = getApplicationContext();
 				// Send image to open cv and get result
-				List<Integer> linesList = costumizeImg.processImage(thumbnail, con);
-				// null check - dummy values for open cv for now
-/*				if (linesList == null) {
-					linesList = new ArrayList<Integer>();
-					linesList.add(45);
-					linesList.add(10);
-					linesList.add(114);
-					linesList.add(67);
-					linesList.add(624);
-				}*/
+				List<Integer> linesList = costumizeImg.processImage(thumbnail,
+						con);
 
-				//null check - if OPEN CV result is null
+				// null check - if OPEN CV result is null
 				if (linesList == null) {
 					ErrorsHandler.createNullLinesListErrorAlert(this);
-				}
-				else{
-				// open results page
-				Intent intent = new Intent(
-						"com.zdm.picabus.logic.BusLinesListActivity");
-				intent.putIntegerArrayListExtra("linesList",
-						(ArrayList<Integer>) linesList);
-				startActivity(intent);
+				} else {
+					// open results page
+					Intent intent = new Intent(
+							"com.zdm.picabus.logic.BusLinesListActivity");
+					intent.putIntegerArrayListExtra("linesList",
+							(ArrayList<Integer>) linesList);
+					startActivity(intent);
 				}
 
 			}
@@ -78,8 +69,7 @@ public class CameraActivity extends Activity {
 				finish();
 			} else {
 			}
-		}
-		else{
+		} else {
 			finish();
 		}
 	}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="@drawable/bus_results_button"
+    android:orientation="horizontal"
+    android:padding="6dip" >
+
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_gravity="left"
+        android:orientation="vertical" >
+    <ImageView
+        android:id="@+id/imageBusSignHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+                android:gravity="left"
+        android:layout_gravity="left"
+        android:src="@drawable/dan_icon" />
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/lineNumberHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:paddingRight="29dp"
+            android:text="line 125"
+            android:textColor="#451179"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/stationNameHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:paddingRight="29dp"
+            android:text="תחנה בלה בלה טרילילי טרללה"
+            android:textColor="#451179"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

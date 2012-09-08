@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.zdm.picabus.R;
 import com.zdm.picabus.enitities.Company;
 import com.zdm.picabus.enitities.Destination;
+import com.zdm.picabus.enitities.HistoryObject;
 import com.zdm.picabus.enitities.Line;
 import com.zdm.picabus.enitities.Trip;
 import com.zdm.picabus.enitities.TripResultObject;
@@ -91,7 +92,8 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 			// update fields and UI of page from data results:
 			UpdateResultsPageFields();
-
+			//save history
+			saveDataForHistory(lineDataModel.getStopHeadsign(), firstTrip.getLineNumber(),context);
 		}
 	}
 
@@ -113,7 +115,6 @@ public class ResultBusArrivalActivity extends ListActivity {
 		arrivalTimesList = new ArrayList<TripResultObject>();
 		for (Iterator<Trip> iterator = trips.iterator(); iterator.hasNext();) {
 			Trip trip = (Trip) iterator.next();
-			
 			lineNumber = trip.getLineNumber();
 			stationName=lineDataModel.getStopHeadsign();
 			tripId = trip.getTripID();
@@ -141,12 +142,11 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 		// Set company
 		companyImage = (ImageView) findViewById(R.id.iconCompany);
-		if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.DAN)) {
+		if (firstTrip.getCompany().getCompanyName().equals(Company.DAN.getCompanyName())) {
 			companyImage.setImageResource(R.drawable.dan_icon);
-		} else if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.EGGED)) {
+		} else if (firstTrip.getCompany().getCompanyName().equals(Company.EGGED.getCompanyName())) {
 			companyImage.setImageResource(R.drawable.egged_icon);
-		} else if (getCompanyByString(firstTrip.getCompany()) == getCompanyByString(Company.METROPOLIN)) {
-			companyImage.setImageResource(R.drawable.metropoline_icon);
+		} else if (firstTrip.getCompany().getCompanyName().equals(Company.METROPOLIN.getCompanyName())) {			companyImage.setImageResource(R.drawable.metropoline_icon);
 		} else {
 			companyImage.setImageResource(R.drawable.line_row_bus);
 		}
@@ -189,10 +189,6 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 	}
 
-	private String getCompanyByString(Company company) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * 
@@ -221,4 +217,27 @@ public class ResultBusArrivalActivity extends ListActivity {
 
 	}
 
+
+	/**
+	 * save data to history
+	 * @param stationName
+	 * @param lineNumber
+	 */
+	private void saveDataForHistory(String stationName, int lineNumber, Context c) {
+
+		String companyName=null;
+		
+		//get lng and lat
+		Intent currIntent = getIntent();
+		double lat = currIntent.getDoubleExtra("lat", 0);
+		double lng = currIntent.getDoubleExtra("lng", 0);
+		// get company
+		if (firstTrip!=null){
+			companyName = firstTrip.getCompany().getCompanyName();
+		}
+
+		HistoryObject ho = new HistoryObject(lineNumber, stationName, companyName, lat, lng);
+		HistoryService lss = new HistoryService();
+		lss.saveUserHistory(ho,c);
+	}
 }

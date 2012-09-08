@@ -60,15 +60,15 @@ public class GetUserScoreTask extends HttpAbstractTask {
 				TextView pointsTillNext = (TextView) ((Activity) context).findViewById(R.id.numberOfPointsTillNext);//make sure that works from spinner
 				userPoints.setText(currentScore + "");
 				ImageView medal = (ImageView) ((Activity) context).findViewById(R.id.imageMedal);
-				if (currentScore < bronzeScore) {
+				if (currentScore < silverScore) {
 					medal.setImageDrawable(context.getResources().getDrawable(R.drawable.bronze_medal));
 					pointsTillNext.setText((silverScore - currentScore) + "");
 				}
-				else if (currentScore < silverScore) {
+				else if (currentScore >= silverScore && currentScore < goldScore) {
 					medal.setImageDrawable(context.getResources().getDrawable(R.drawable.silver_medal));
 					pointsTillNext.setText((goldScore - currentScore) + "");
 				}
-				else if (currentScore < goldScore) {
+				else if (currentScore >= goldScore) {
 					medal.setImageDrawable(context.getResources().getDrawable(R.drawable.gold_medal));
 					pointsTillNext.setText("0");
 				}				

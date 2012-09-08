@@ -113,11 +113,7 @@ public class ColorDetector
 //		buffDest = toBufferedImage(dst);
 		
 		
-        cvNamedWindow( "Example1", CV_WINDOW_AUTOSIZE );
-        cvShowImage("Example1", img);
-        
-        String path = "d:\\temp\\testBW.jpg";
-        cvSaveImage(path, img);
+ 
         
 		res.setArr(DetectArea(dst));
 		
@@ -426,7 +422,7 @@ public class ColorDetector
 	//Helper Methods 
 	public static boolean distance(int src,int targetRGB)
 	{
-		int d = 60; //d = 60
+		int d = 80; //d = 60
 		int[] delta = {d , d, d};
 		boolean red, green, blue, isDelta = false;
 		

@@ -57,44 +57,12 @@ public class CameraActivity extends Activity {
 
 				if (Environment.getExternalStorageState().equals(
 						Environment.MEDIA_MOUNTED)) {
-					try {
-
-						Bitmap thumbnail = null;
-						Options options = new BitmapFactory.Options();
-						options.inScaled = false;
-
-						thumbnail = BitmapFactory.decodeFile(imageFilePath,
-								options);
-
-						thumbnail.setDensity(DisplayMetrics.DENSITY_XHIGH);
-
-						// create a matrix for the manipulation
-						Matrix matrix = new Matrix();
-						// rotate the Bitmap
-						matrix.postRotate(90);
-
-						// recreate the new Bitmap
-						Bitmap rotatedImg = Bitmap.createBitmap(thumbnail, 0,
-								0, thumbnail.getWidth(), thumbnail.getHeight(),
-								matrix, true);
-
-						FileOutputStream out = new FileOutputStream(
-								Environment.getExternalStorageDirectory()
-										+ "/cameraAct.png");
-						rotatedImg.compress(Bitmap.CompressFormat.PNG, 90, out);
-						thumbnail.recycle();
-						thumbnail = null;
-
-						// Send image to open cv and get result
-						ImageProcessBackgroundTask imageProcessBackgroundTask = new ImageProcessBackgroundTask(
-								con, pd, rotatedImg, matrix);
-						imageProcessBackgroundTask.execute();
-
-					} catch (FileNotFoundException e) {
-						Log.e("Image operations", "file " + imageFilePath
-								+ " not found");
-					}
-
+					
+					// Send image to open cv and get result
+					ImageProcessBackgroundTask imageProcessBackgroundTask = new ImageProcessBackgroundTask(
+							con, pd, imageFilePath);
+					imageProcessBackgroundTask.execute();
+					
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {

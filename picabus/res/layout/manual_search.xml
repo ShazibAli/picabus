@@ -2,56 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/manual_search_background"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/manual_search_instruction"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:gravity="bottom|center_horizontal"
         android:orientation="horizontal"
         android:weightSum="3" >
-
+
         <EditText
             android:id="@+id/freetext_line_num"
-            android:layout_width="fill_parent"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="1"
             android:hint="@string/manual_search_hint"
             android:inputType="number" />
 
         <ImageButton
             android:id="@+id/button_submit_ft"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="2"
+            android:background="@drawable/button_manual_search_s"
             android:contentDescription="@string/ft_submit_button"
-            android:src="@drawable/submit_ft_icon"
+            android:scaleType="centerCrop"
             android:text="@string/ft_submit_button" />
     </LinearLayout>
-
+
     <AnalogClock
         android:id="@+id/analogClock1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="18dp" />
+
     <com.google.android.maps.MapView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapViewManualSearch"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="221dp"
+        android:layout_height="167dp"
         android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_weight="0.0.3"
         android:apiKey="0l2dWDvSSjME4yiuWvHpK0EeI6jBHghwqqNdJFA"
         android:clickable="true"
-        android:enabled="true" />
+        android:enabled="true" >
+
+    </com.google.android.maps.MapView>
 
 </LinearLayout>

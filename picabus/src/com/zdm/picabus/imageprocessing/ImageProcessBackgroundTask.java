@@ -1,5 +1,7 @@
 package com.zdm.picabus.imageprocessing;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +12,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.BitmapFactory.Options;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 /**
  * Class is used for getting user's facebook profile image from network, using
@@ -23,8 +30,7 @@ public class ImageProcessBackgroundTask extends
 
 	private ProgressDialog waitSpinner;
 	private Context context;
-	private Matrix matrix;
-	private Bitmap rotatedImg;
+	String imageFilePath;
 
 	/**
 	 * Constructor
@@ -34,24 +40,16 @@ public class ImageProcessBackgroundTask extends
 	 * @param matrix
 	 * @param rotatedImg
 	 */
-	public ImageProcessBackgroundTask(Context c, ProgressDialog waitSpinner,
-			Bitmap rotatedImg, Matrix matrix) {
+	public ImageProcessBackgroundTask(Context c, ProgressDialog waitSpinner,String imageFilePath) {
 		this.context = c;
 		this.waitSpinner = waitSpinner;
-		this.matrix = matrix;
-		this.rotatedImg = rotatedImg;
+		this.imageFilePath = imageFilePath;
 	}
 
 	@Override
 	protected void onPostExecute(List<Integer> linesList) {
 
 		waitSpinner.dismiss();
-		
-		// release memory
-		rotatedImg.recycle();
-		rotatedImg = null;
-		matrix.reset();
-		matrix = null;
 		
 		// null check - if OPEN CV result is null
 		if (linesList == null) {
@@ -72,10 +70,53 @@ public class ImageProcessBackgroundTask extends
 	@Override
 	public List<Integer> doInBackground(String... params) {
 
+		Bitmap rotatedImg = null;
+		Matrix matrix = null;
+		
 		// setting the name for this thread for monitoring
 		Thread.currentThread().setName("Image Processing Task");
+		
+		try {
+
+			Bitmap thumbnail = null;
+			Options options = new BitmapFactory.Options();
+			options.inScaled = false;
+
+			thumbnail = BitmapFactory.decodeFile(imageFilePath,
+					options);
+
+			thumbnail.setDensity(DisplayMetrics.DENSITY_XHIGH);
+
+			// create a matrix for the manipulation
+			matrix = new Matrix();
+			// rotate the Bitmap
+			matrix.postRotate(90);
+
+			// recreate the new Bitmap
+			rotatedImg = Bitmap.createBitmap(thumbnail, 0,
+					0, thumbnail.getWidth(), thumbnail.getHeight(),
+					matrix, true);
+
+			FileOutputStream out = new FileOutputStream(
+					Environment.getExternalStorageDirectory()
+							+ "/cameraAct.png");
+			rotatedImg.compress(Bitmap.CompressFormat.PNG, 90, out);
+			thumbnail.recycle();
+			thumbnail = null;
+
+		} catch (FileNotFoundException e) {
+			Log.e("Image operations", "file " + imageFilePath
+					+ " not found");
+		}
+		
 		List<Integer> linesList = costumizeImg.processImage(context);
 
+		// release memory
+		rotatedImg.recycle();
+		rotatedImg = null;
+		matrix.reset();
+		matrix = null;
+		
 		return linesList;
 	}
 

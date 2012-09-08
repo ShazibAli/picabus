@@ -14,6 +14,11 @@ import com.zdm.picabus.utils.RequestUtils;
 import com.zdm.picabus.utils.ServerError;
 import com.zdm.picabus.utils.Service;
 
+/**
+ * 
+ * Servlet for handling reports requests
+ *
+ */
 public class ReportServlet extends HttpServlet {
 
 	private final static String TASK_NAME_HEADER = "Task-name";

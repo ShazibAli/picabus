@@ -1,5 +1,11 @@
 package com.zdm.picabus.server.exceptions;
 
+/**
+ * 
+ * Custom exception representing that the result data set
+ * for the desired query was empty
+ *
+ */
 public class EmptyResultException extends Exception {
 
 	private static final long serialVersionUID = 1L;

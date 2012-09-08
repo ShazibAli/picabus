@@ -1,5 +1,10 @@
 package com.zdm.picabus.utils;
 
+/**
+ * 
+ * Different server/db errors description
+ *
+ */
 public enum ServerError {
 	UNSUPPOTED_TASK_ERROR_MSG("Supplied Task-name is not supported by Picabus server"),
 	UNSUPPOTED_PAYLOAD_TYPE_ERROR_MSG("Supplied payload data type is not supported by Picabus server"),

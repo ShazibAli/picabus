@@ -14,14 +14,18 @@
         android:layout_alignParentLeft="true"
         android:background="@drawable/image_bg"
         android:layout_marginRight="5dip">
- 
+ 
         <ImageView
             android:id="@+id/list_image"
-            android:layout_width="75dip"
-            android:layout_height="75dip"
-            android:scaleType="centerCrop"
-            android:src="@drawable/picabus_logo"/>
- 
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_gravity="center_vertical"
+            android:maxHeight="@dimen/image_size"
+            android:maxWidth="@dimen/image_size"
+            android:scaleType="fitCenter"
+            android:src="@drawable/picabus_logo" />
+
+ 			<!-- android:scaleType="centerCrop" -->
     </LinearLayout>
  
     <!-- Reporter Name-->

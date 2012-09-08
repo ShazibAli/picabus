@@ -92,12 +92,16 @@ public class CameraActivity extends Activity {
 				 FileOutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/cameraAct.png");
 				 rotatedImg.compress(Bitmap.CompressFormat.PNG, 90, out);
 				 thumbnail.recycle();
+				 thumbnail = null;
 				 
 			    Context con = getApplicationContext();
 				 // Send image to open cv and get result
 				linesList = costumizeImg.processImage(rotatedImg, con);
 				
 				rotatedImg.recycle();
+				rotatedImg = null;
+				matrix.reset();
+				matrix = null;
 			} 
 			catch (FileNotFoundException e) 
 			{

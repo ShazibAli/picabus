@@ -96,7 +96,7 @@ public class CameraActivity extends Activity {
 				 
 			    Context con = getApplicationContext();
 				 // Send image to open cv and get result
-				linesList = costumizeImg.processImage(rotatedImg, con);
+				linesList = costumizeImg.processImage(con);
 				
 				rotatedImg.recycle();
 				rotatedImg = null;

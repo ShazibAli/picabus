@@ -51,5 +51,6 @@
 	<string name="short_checkin_exp">Checkin/Checkout from this trip</string>
 	<string name="Checkin_bus_btn_text">Checkin bus</string>
 	<string name="empty_text"></string>
+	<string name="login_text">Login to Picabus using \'\My picabus\'\ page!</string>
     
 </resources>

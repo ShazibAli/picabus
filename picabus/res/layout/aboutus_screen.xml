@@ -2,25 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/about_us_bg"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="36dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/picabus_logo" />
-
-  <!--   <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:text="@string/aboutus_title"
-        android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+
 
     <TextView
         android:id="@+id/textView2"
@@ -34,7 +27,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="Version 1.0 (Beta)"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />

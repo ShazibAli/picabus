@@ -52,5 +52,6 @@
 	<string name="Checkin_bus_btn_text">Checkin bus</string>
 	<string name="empty_text"></string>
 	<string name="login_text">Login to Picabus using \'\My picabus\'\ page!</string>
+	<string name="version_about_us">Version 1.0 (Beta)</string>
     
 </resources>

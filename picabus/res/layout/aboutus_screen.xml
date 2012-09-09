@@ -12,6 +12,7 @@
         android:paddingTop="36dp"
         android:layout_gravity="center"
         android:scaleType="centerInside"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/picabus_logo" />
 
 
@@ -28,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Version 1.0 (Beta)"
+        android:text="@string/version_about_us"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
 
@@ -43,6 +44,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
+            android:contentDescription="@string/share_title"
             android:src="@drawable/share" />
 
     </LinearLayout>

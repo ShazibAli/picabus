@@ -59,7 +59,7 @@ public class MyPicabusPageActivity extends Activity {
 		setContentView(R.layout.my_picabus_screen);
 		mHandler = new Handler();
 		medal = (ImageView) findViewById(R.id.imageMedal);
-		medal.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.bronze_medal));
+		medal.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.question_mark_medal));
 		mText = (TextView) MyPicabusPageActivity.this
 				.findViewById(R.id.txtFacebookUser);
 		mText.setText("User");
@@ -324,7 +324,7 @@ public class MyPicabusPageActivity extends Activity {
 			// TODO: change medal and score
 			numberOfPointsTillnext.setText("1000");
 			userPoints.setText("0");
-			
+			medal.setImageDrawable(getResources().getDrawable(R.drawable.question_mark_medal));
 		}
 	}
 

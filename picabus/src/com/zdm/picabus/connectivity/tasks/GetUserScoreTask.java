@@ -72,7 +72,7 @@ public class GetUserScoreTask extends HttpAbstractTask {
 					medal.setImageDrawable(context.getResources().getDrawable(R.drawable.gold_medal));
 					pointsTillNext.setText("0");
 				}				
-				//
+
 			}
 
 		}

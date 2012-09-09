@@ -20,7 +20,7 @@ public class EmptyBusResultsActivity extends Activity{
 	
 @Override
 protected void onCreate(Bundle savedInstanceState) {
-	// TODO Auto-generated method stub
+
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.result_busarrival_empty);
 	

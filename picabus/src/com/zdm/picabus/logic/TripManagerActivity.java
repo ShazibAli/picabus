@@ -63,7 +63,7 @@ public class TripManagerActivity extends Activity {
 	private ProgressDialog pd;
 	private String userId;
 	private boolean previouslyCheckedInCurrTrip = false;
-	private Timer timer;// timer for notification
+	private Timer timer;// timer for arrival notification
 	private Intent currIntent;
 	Intent serviceIntent;
 
@@ -515,7 +515,7 @@ public class TripManagerActivity extends Activity {
 		}
 
 		// set notification
-		Timer timer = new Timer();
+		timer = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
@@ -560,14 +560,14 @@ public class TripManagerActivity extends Activity {
 	private void createCheckinNotification() {
 
 		// set notification
-		Timer timer = new Timer();
+		Timer checkinTimer = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
 				triggerCheckinNotification();
 			}
 		};
-		timer.schedule(timerTask, 0);
+		checkinTimer.schedule(timerTask, 0);
 
 	}
 

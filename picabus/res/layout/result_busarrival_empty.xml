@@ -9,6 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_result"
+        android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:textColor="@color/app_blue"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button

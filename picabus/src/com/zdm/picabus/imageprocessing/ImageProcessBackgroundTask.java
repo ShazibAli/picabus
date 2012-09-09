@@ -40,7 +40,8 @@ public class ImageProcessBackgroundTask extends
 	 * @param matrix
 	 * @param rotatedImg
 	 */
-	public ImageProcessBackgroundTask(Context c, ProgressDialog waitSpinner,String imageFilePath) {
+	public ImageProcessBackgroundTask(Context c, ProgressDialog waitSpinner,
+			String imageFilePath) {
 		this.context = c;
 		this.waitSpinner = waitSpinner;
 		this.imageFilePath = imageFilePath;
@@ -50,7 +51,7 @@ public class ImageProcessBackgroundTask extends
 	protected void onPostExecute(List<Integer> linesList) {
 
 		waitSpinner.dismiss();
-		
+
 		// null check - if OPEN CV result is null
 		if (linesList == null) {
 			ErrorsHandler.createNullLinesListErrorAlert(context);
@@ -71,18 +72,17 @@ public class ImageProcessBackgroundTask extends
 		Bitmap rotatedImg = null;
 		Matrix matrix = null;
 		List<Integer> linesList = null;
-		
+
 		// setting the name for this thread for monitoring
 		Thread.currentThread().setName("Image Processing Task");
-		
+
 		try {
 
 			Bitmap thumbnail = null;
 			Options options = new BitmapFactory.Options();
 			options.inScaled = false;
 
-			thumbnail = BitmapFactory.decodeFile(imageFilePath,
-					options);
+			thumbnail = BitmapFactory.decodeFile(imageFilePath, options);
 
 			thumbnail.setDensity(DisplayMetrics.DENSITY_XHIGH);
 
@@ -92,9 +92,8 @@ public class ImageProcessBackgroundTask extends
 			matrix.postRotate(90);
 
 			// recreate the new Bitmap
-			rotatedImg = Bitmap.createBitmap(thumbnail, 0,
-					0, thumbnail.getWidth(), thumbnail.getHeight(),
-					matrix, true);
+			rotatedImg = Bitmap.createBitmap(thumbnail, 0, 0,
+					thumbnail.getWidth(), thumbnail.getHeight(), matrix, true);
 
 			FileOutputStream out = new FileOutputStream(
 					Environment.getExternalStorageDirectory()
@@ -104,21 +103,23 @@ public class ImageProcessBackgroundTask extends
 			thumbnail = null;
 			linesList = costumizeImg.processImage(context);
 			return linesList;
-			
+
 		} catch (FileNotFoundException e) {
-			Log.e("Image operations", "file " + imageFilePath
-					+ " not found");
-			return linesList; //will be null on that case
+			Log.e("Image operations", "file " + imageFilePath + " not found");
+			return linesList; // will be null on that case
 		}
-		
-		finally{
-		// release memory
-		rotatedImg.recycle();
-		rotatedImg = null;
-		matrix.reset();
-		matrix = null;
+
+		finally {
+			// release memory
+			if (rotatedImg != null) {
+				rotatedImg.recycle();
+				rotatedImg = null;
+			}
+			if (matrix != null) {
+				matrix.reset();
+				matrix = null;
+			}
 		}
-		
 
 	}
 

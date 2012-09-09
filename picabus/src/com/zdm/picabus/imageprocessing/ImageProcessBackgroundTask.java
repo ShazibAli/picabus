@@ -99,8 +99,12 @@ public class ImageProcessBackgroundTask extends
 					Environment.getExternalStorageDirectory()
 							+ "/cameraAct.png");
 			rotatedImg.compress(Bitmap.CompressFormat.PNG, 90, out);
-			thumbnail.recycle();
-			thumbnail = null;
+			
+			if (thumbnail != null) {
+				thumbnail.recycle();
+				thumbnail = null;
+			}
+			
 			linesList = costumizeImg.processImage(context);
 			return linesList;
 

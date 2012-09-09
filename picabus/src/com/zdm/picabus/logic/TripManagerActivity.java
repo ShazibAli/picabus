@@ -377,9 +377,8 @@ public class TripManagerActivity extends Activity {
 
 					} else {
 						checkedIn = false;
-						checkinButton.setBackgroundResource(R.drawable.check_in_ok);
+						checkinButton.setBackgroundResource(R.drawable.thanks_button);
 						checkinButton.setEnabled(false);
-						checkinButton.setText("Thanks!");
 						// cancel notification
 						NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 						nm.cancel(CHECKIN_NOTIFICATION_UNIQUE_ID);

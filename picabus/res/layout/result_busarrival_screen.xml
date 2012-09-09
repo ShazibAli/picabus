@@ -8,7 +8,7 @@
 
                             <View
          android:layout_width="fill_parent"
-         android:layout_height="74dip"
+         android:layout_height="71dip"
  />
     <LinearLayout
         android:weightSum="100"
@@ -19,60 +19,52 @@
 
     <TextView
         android:id="@+id/textViewLine"
-            android:layout_weight="35"
+            android:layout_weight="75"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:textStyle="bold"
-        	android:textColor="#451179"
-        	android:text="25"
-        	android:textAppearance="?android:attr/textAppearanceMedium" />
+        	android:textColor="@color/app_blue"
+        	android:textAppearance="?android:attr/textAppearanceLarge" />
     
      <ImageView
         android:id="@+id/iconCompany"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="65"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:layout_weight="25"
             android:contentDescription="@string/company_icon"
-            android:src="@drawable/dan_icon"
         android:layout_marginRight="2dip"
 	 />
 
     </LinearLayout>
     
-                                    <View
-         android:layout_width="fill_parent"
-         android:layout_height="15dip"
- />
      <TextView
         android:id="@+id/textViewStation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#451179"
-            android:paddingRight="18dip"
+        	android:textColor="@color/app_blue"
+            android:paddingRight="24dip"
+            android:paddingTop="14dp"
             android:layout_gravity="right"
-            android:textSize="13dp"
-            android:text="תחנה מרכזית מיאו מיאו"
+            android:textSize="16dp"
  />
 
-                                      <View
-         android:layout_width="fill_parent"
-         android:layout_height="14dip"
- /> 
+
           <TextView
         android:id="@+id/textViewLastStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:paddingRight="18dip"
-            android:textSize="13dp"
-            android:textColor="#451179"
-                        android:text="תחנה מרכזית מיאו מיאו"
+            android:paddingRight="24dip"
+            android:paddingTop="51dp"
+            android:textSize="16dp"
+        	android:textColor="@color/app_blue"
  />
     
                                       <View
          android:layout_width="fill_parent"
-         android:layout_height="65dip"
+         android:layout_height="95dip"
  /> 
     
     

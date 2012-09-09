@@ -44,10 +44,6 @@ import android.widget.ImageView;
 	        		mUserPic.setImageBitmap(scaledProfilePic);
 	        	}
 	        	
-	        	
-/*
-	        	Bitmap scaledProfilePic = Bitmap.createScaledBitmap(result, mUserPic.getWidth(), mUserPic.getHeight(), true);
-				mUserPic.setImageBitmap(result);*/
 	        }
 
 	        /**
@@ -58,9 +54,11 @@ import android.widget.ImageView;
 				
 				// setting the name for this thread for monitoring
 				Thread.currentThread().setName("FB Profile Image Getter Task");
-				
+	
+				//get facebook id
 				String facebookId = FacbookIdentity.userUID;
 				
+				//get picture from network
 				URL facebookGraphUrl = null;
 		        Bitmap profileImageBitmap = null;
 		            try {

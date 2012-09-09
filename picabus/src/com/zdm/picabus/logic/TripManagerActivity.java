@@ -533,6 +533,7 @@ public class TripManagerActivity extends Activity {
 	 * @param stopName
 	 * @param notificationDelta
 	 */
+	@SuppressWarnings("deprecation")
 	private void triggerNotification(int lineNumber, String stopName,
 			int notificationDelta) {
 		CharSequence title = "Picabus Update";
@@ -577,6 +578,7 @@ public class TripManagerActivity extends Activity {
 	 * @param stopName
 	 * @param notificationDelta
 	 */
+	@SuppressWarnings("deprecation")
 	private void triggerCheckinNotification() {
 		CharSequence title = "Picabus Update";
 		CharSequence message = "You are now checked in on the bus, \nclick here to checkout";

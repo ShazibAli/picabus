@@ -29,6 +29,11 @@ import com.zdm.picabus.facebook.SessionEvents.AuthListener;
 import com.zdm.picabus.facebook.SessionEvents.LogoutListener;
 import com.zdm.picabus.facebook.BaseDialogListener;
 
+/**
+ * 
+ * 'My picabus' page
+ *
+ */
 public class MyPicabusPageActivity extends Activity {
 
 	private LoginButton mLoginButton;

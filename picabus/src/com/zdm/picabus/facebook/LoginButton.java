@@ -36,6 +36,10 @@ import com.zdm.picabus.facebook.BaseRequestListener;
 import com.zdm.picabus.facebook.SessionEvents.AuthListener;
 import com.zdm.picabus.facebook.SessionEvents.LogoutListener;
 
+/**
+ * Facebooks login and logout button functionality
+ *
+ */
 public class LoginButton extends ImageButton {
 
     private Facebook mFb;
@@ -61,9 +65,6 @@ public class LoginButton extends ImageButton {
         super(context, attrs, defStyle);
     }
 
-/*    public void init(final Activity activity, final int activityCode, final Facebook fb) {
-        init(activity, activityCode, fb, new String[] {});
-    }*/
     
 	/**
 	 * get user's points using async task update UI from async task afterwards

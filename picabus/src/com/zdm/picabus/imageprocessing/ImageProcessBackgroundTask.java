@@ -70,6 +70,7 @@ public class ImageProcessBackgroundTask extends
 
 		Bitmap rotatedImg = null;
 		Matrix matrix = null;
+		List<Integer> linesList = null;
 		
 		// setting the name for this thread for monitoring
 		Thread.currentThread().setName("Image Processing Task");
@@ -101,21 +102,24 @@ public class ImageProcessBackgroundTask extends
 			rotatedImg.compress(Bitmap.CompressFormat.PNG, 90, out);
 			thumbnail.recycle();
 			thumbnail = null;
-
+			linesList = costumizeImg.processImage(context);
+			return linesList;
+			
 		} catch (FileNotFoundException e) {
 			Log.e("Image operations", "file " + imageFilePath
 					+ " not found");
+			return linesList; //will be null on that case
 		}
 		
-		List<Integer> linesList = costumizeImg.processImage(context);
-
+		finally{
 		// release memory
 		rotatedImg.recycle();
 		rotatedImg = null;
 		matrix.reset();
 		matrix = null;
+		}
 		
-		return linesList;
+
 	}
 
 	/*

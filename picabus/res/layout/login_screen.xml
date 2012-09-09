@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
     android:orientation="vertical" >
 
             
                         <View
          android:layout_width="fill_parent"
-         android:layout_height="40dip"
+         android:layout_height="65dip"
  />
                         <TextView
             android:id="@+id/loginAtMyPicabusTxt"
@@ -15,13 +16,16 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textStyle="bold"
-            android:text="Login to Picabus using 'My picabus' page!"
-			 />        <ImageButton
+            android:textColor="@color/app_blue"
+            android:text="@string/login_text"
+			 />
+			         <ImageButton
             android:id="@+id/loginAtMyPicabusButton"
             android:src="@drawable/mypicabus_icon"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:background="@null"
+            android:contentDescription="@string/login_text"
             android:layout_height="wrap_content" />
                         <View
          android:layout_width="fill_parent"

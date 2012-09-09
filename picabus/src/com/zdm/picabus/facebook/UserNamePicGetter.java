@@ -31,7 +31,7 @@ public class UserNamePicGetter extends
 
 	/**
 	 * Constructor.
-	 * @param userId
+	 * @param userId - facebook user id
 	 * @param reporterNameTextView - field to update UI later
 	 * @param reporterImageView  - field to update UI later
 	 */
@@ -52,6 +52,7 @@ public class UserNamePicGetter extends
 		userName = result.getUserName();
 		profilePic = result.getUserProfilePic();
 
+		//update UI
 		if (userName != null) {
 			reporterNameTextView.setText(userName);
 		}

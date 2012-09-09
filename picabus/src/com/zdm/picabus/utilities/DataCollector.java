@@ -11,7 +11,6 @@ public class DataCollector {
 
 	static GpsCorrdinates gps;
 
-	// static LocationManager locationManager;
 	/**
 	 * 
 	 * @return - user's current time as string XX:XX:XX

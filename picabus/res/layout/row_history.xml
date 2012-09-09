@@ -16,11 +16,9 @@
             android:id="@+id/lineNumberHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="125"
             android:layout_gravity="right"
             android:textColor="@color/app_blue"
-            android:textSize="15dp"
+            android:textSize="19dp"
             android:textStyle="bold" />
 
         <TextView
@@ -29,8 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingLeft="29dp"
-            android:paddingTop="5dp"
-            android:text="תחנה בלה בלה טרילילי טרללה"
            android:textColor="@color/app_blue"
             android:textSize="12dp"
             android:textStyle="bold" />

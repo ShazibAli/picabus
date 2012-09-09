@@ -5,12 +5,12 @@
     android:background="@drawable/choose_busline_button"
         android:gravity="center"
     android:padding="6dip">
-
+
         <TextView
             android:id="@+id/toptext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#451179"
+            android:textColor="@color/app_blue"
             android:textStyle="bold" />
 
 </LinearLayout>

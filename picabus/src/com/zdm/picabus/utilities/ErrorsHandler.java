@@ -18,6 +18,7 @@ public class ErrorsHandler {
 	private static final String ERROR_NULL_GPS_COORDINATES_MANUAL_SEARCH="Could not retrieve valid GPS coordinates. Please try again later";
 	private static final String ERROR_NULL_LINE_MANUAL_SEARCH="No line number was entered. Please insert the requested bus line number";
 	private static final String ERROR_ONLY_LOGGED_IN_CAN_REPORT = "Only logged in users can perform that operation. Please login at 'My Picabus' section and try again";
+	private static final String ERROR_CAMERA_STORAGE = "A problem occured on fetching your device external storage. Please take the photo again";
 	
 /**
  * Creates error message when open cv return null list of lines,
@@ -221,5 +222,25 @@ public class ErrorsHandler {
 		alert.show();
 	}
 	
+	/**
+	 * Creates error when attempting to checkin without being logged in
+	 * @param c - context
+	 */
+	public static void createCameraError(final Context c) {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
+		alertDialogBuilder
+				.setMessage(ERROR_CAMERA_STORAGE)
+				.setCancelable(false)
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								//do nothing
+							}
+						});
+
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+	}
 	
 }

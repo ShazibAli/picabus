@@ -16,7 +16,6 @@ import com.zdm.picabus.connectivity.ResponseParser;
 public class GetUserScoreTask extends HttpAbstractTask {
 
 	private Context context;
-	private static final int bronzeScore = 1000;
 	private static final int silverScore = 2000;
 	private static final int goldScore = 5000;
 	

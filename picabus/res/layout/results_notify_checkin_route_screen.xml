@@ -74,7 +74,7 @@
     <ListView
         android:id="@+id/listReports"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dip"
         android:layout_weight="1"
         android:divider="#b5b5b5"
         android:dividerHeight="1dp"

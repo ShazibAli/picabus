@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +37,6 @@ public class MyPicabusPageActivity extends Activity {
 
 	private LoginButton mLoginButton;
 	private ImageButton postToFacebookBtn;
-	private Button shareApp;
 	private TextView mText;
 	private TextView numberOfPointsTillnext;
 	private ImageView mUserPic;
@@ -77,7 +75,7 @@ public class MyPicabusPageActivity extends Activity {
 		initFacebookSessionAndDefinitions();
 
 		// set post to wall and send app request buttons
-		setPostAndAppRequestFunctionality();
+		setPostFunctionality();
 
 		// get user's score - result will update UI
 		getUserScore();
@@ -132,7 +130,7 @@ public class MyPicabusPageActivity extends Activity {
 	/**
 	 * Set UI and functionality of 'post to wall' and 'send app request'
 	 */
-	private void setPostAndAppRequestFunctionality() {
+	private void setPostFunctionality() {
 
 		// post to wall button
 		postToFacebookBtn = (ImageButton) findViewById(R.id.postToFacebook);
@@ -142,19 +140,6 @@ public class MyPicabusPageActivity extends Activity {
 			}
 		});
 
-		// share app request
-		shareApp = (Button) findViewById(R.id.shareWithFriends);
-		shareApp.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Intent sendIntent = new Intent();
-				sendIntent.setAction(Intent.ACTION_SEND);
-				sendIntent.putExtra(Intent.EXTRA_TEXT,
-						getResources().getText(R.string.share_message));
-				sendIntent.setType("text/plain");
-				startActivity(Intent.createChooser(sendIntent, getResources()
-						.getText(R.string.share_title)));
-			}
-		});
 	}
 
 	/**

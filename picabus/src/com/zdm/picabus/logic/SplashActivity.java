@@ -75,13 +75,10 @@ public class SplashActivity extends Activity implements AnimationListener {
 
 
 	public void onAnimationRepeat(Animation animation) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void onAnimationStart(Animation animation) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private boolean checkFacebookLogin() {

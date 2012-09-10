@@ -24,7 +24,6 @@ public class RoutesMapActivity extends MapActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.google_map);
 		mapView = (MapView) findViewById(R.id.mapView);

@@ -64,7 +64,6 @@ public class HttpCaller implements IHttpCaller {
 			requestPayload.put("timeInterval", timeInterval);
 			
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
@@ -82,7 +81,6 @@ public class HttpCaller implements IHttpCaller {
 			requestPayload.put("tripID", tripID);
 			
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
@@ -102,7 +100,6 @@ public class HttpCaller implements IHttpCaller {
 			requestPayload.put("longitude", longitude);
 			requestPayload.put("tripId", tripId);
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
@@ -116,7 +113,6 @@ public class HttpCaller implements IHttpCaller {
 			requestPayload.put("userId", userId);
 			requestPayload.put("tripId", tripId);
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
@@ -131,7 +127,6 @@ public class HttpCaller implements IHttpCaller {
 			requestPayload.put("tripId", tripId);
 			requestPayload.put("reportMessage", message);
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
@@ -145,7 +140,6 @@ public class HttpCaller implements IHttpCaller {
 		try {		
 			requestPayload.put("userId", userId);
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
@@ -158,7 +152,6 @@ public class HttpCaller implements IHttpCaller {
 		try {
 			requestPayload.put("tripId", tripId);
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
@@ -173,7 +166,6 @@ public class HttpCaller implements IHttpCaller {
 		try {
 			requestPayload.put("tripId", tripId);
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		HttpAbstractTask hat = new GetTextualReports(tripManagerActivity, null, null, Tasks.GET_TRIP_REPORTS.getTaskName(), requestPayload);

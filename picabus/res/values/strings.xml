@@ -10,7 +10,7 @@
     <string name="menu_aboutus_button">about us</string>
         <string name="menu_mypicabus_button">my picabus</string>
     <string name="no_lines">no bus lines were taken</string>
-    <string name="pref_timeinterval_instruction">Please choose time interval for bus arrivals:</string>
+    <string name="pref_timeinterval_instruction">Search time interval</string>
     <string name="manual_search_instruction">Please enter the requested bus line</string>
     <string name="aboutus_title">About us</string>
     <string name="aboutus_text">Nowadays bus passengers dont have an easy way to know when the bus they are waiting for is about to arrive. \nPICABUS is an enjoyable and easy to use way for checking buses schedule -just point and shoot!</string>
@@ -22,7 +22,7 @@
     <string name="icon_bus_lines_list">icon</string>
     <string name="getroute_icon">Get route</string>
     <string name="no_eta">Bus time arrivals are not available</string>
-    <string name="notify_pref_txt">Please choose time to be notified before bus arrival:</string>
+    <string name="notify_pref_txt">Time to be notified</string>
     <string name="clock_icon">clock_icon</string>
     <string name="empty_result">Sorry, no information was found for the requested line number</string>
     <string name="goto_menu">Back to main menu</string>
@@ -53,5 +53,6 @@
 	<string name="empty_text"></string>
 	<string name="login_text">Login to Picabus using \'\My picabus\'\ page!</string>
 	<string name="version_about_us">Version 1.0 (Beta)</string>
+	<string name="settings_title">Settings</string>
     
 </resources>

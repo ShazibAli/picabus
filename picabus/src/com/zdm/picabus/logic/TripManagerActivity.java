@@ -43,7 +43,6 @@ import com.zdm.picabus.utilities.ErrorsHandler;
 
 public class TripManagerActivity extends Activity {
 
-	private final static boolean DEBUG_MODE = true;
 	static final int REMINDER_NOTIFICATION_UNIQUE_ID = 139874;
 	static final int CHECKIN_NOTIFICATION_UNIQUE_ID = 139875;
 	public static final String TRIP_MANAGER_PREFS_NAME = "resultDataPfers";
@@ -369,7 +368,7 @@ public class TripManagerActivity extends Activity {
 						if (res != null) {
 							lat = res.getLat();
 							lng = res.getLng();
-						} else if (DEBUG_MODE) {
+						} else if (MainScreenActivity.DEMO_MODE) {
 							lat = 32.045816;
 							lng = 34.756983;
 						}
@@ -509,16 +508,17 @@ public class TripManagerActivity extends Activity {
 		long msUntilNotification;
 		// get time until notification in ms
 
+		//If on demo mode - show notification after 20 seconds
+		if (MainScreenActivity.DEMO_MODE){
+			msUntilNotification = 20000;
+		}
+		//show notification as defined on user settings
+		else{
 		msUntilNotification = getMsUntilNotification(arrivalTime,
 				notificationDelta);
-
-		// if in debug and arrival time was earlier, result is negative-fix it
+		}
 		if (msUntilNotification < 0) {
-			if (DEBUG_MODE) {
-				msUntilNotification = 10000;
-			} else {
-				return;
-			}
+			return;
 		}
 
 		// set notification

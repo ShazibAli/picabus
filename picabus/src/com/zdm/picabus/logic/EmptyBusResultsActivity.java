@@ -36,4 +36,12 @@ protected void onCreate(Bundle savedInstanceState) {
 		}
 	});
 }
+
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+    System.gc();
+    Runtime.getRuntime().gc();
+}
+
 }

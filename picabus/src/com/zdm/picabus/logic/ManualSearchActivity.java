@@ -113,6 +113,14 @@ public class ManualSearchActivity extends MapActivity {
 		});
 	}
 
+	
+	@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.gc();
+        Runtime.getRuntime().gc();
+    }
+	
 	private void displayUserOnMap(MapView mapView) {
 
 		// attempt to get GPS coordinates again

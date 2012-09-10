@@ -36,4 +36,11 @@ public class AboutUsActivity extends Activity {
 			}
 		});
 	}
+	
+	@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.gc();
+        Runtime.getRuntime().gc();
+    }
 }

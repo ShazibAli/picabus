@@ -13,7 +13,7 @@
     <string name="pref_timeinterval_instruction">Search time interval</string>
     <string name="manual_search_instruction">Please enter the requested bus line</string>
     <string name="aboutus_title">About us</string>
-    <string name="aboutus_text">Nowadays bus passengers dont have an easy way to know when the bus they are waiting for is about to arrive. \nPICABUS is an enjoyable and easy to use way for checking buses schedule -just point and shoot!</string>
+    <string name="aboutus_text">PICABUS is an enjoyable and easy to use way for checking buses schedule!\n\nCheck our website: \nhttp://picabusapp.appspot.com </string>
     <string name="cancel_popup">Cancel</string>
     <string name="choose_bus_destination">Please choose your bus destination:</string>
     <string name="choose_line_number">Please choose a bus line number: </string>

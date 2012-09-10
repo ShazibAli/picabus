@@ -2,6 +2,7 @@ package com.zdm.picabus.imageprocessing;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +106,7 @@ public class ImageProcessBackgroundTask extends
 							+ "/cameraAct.png");
 			rotatedImg.compress(Bitmap.CompressFormat.PNG, 90, out);
 			
+			out.close();
 			
 			
 			linesList = costumizeImg.processImage(context);
@@ -112,6 +114,9 @@ public class ImageProcessBackgroundTask extends
 
 		} catch (FileNotFoundException e) {
 			Log.e("Image operations", "file " + imageFilePath + " not found");
+			return linesList; // will be null on that case
+		} catch (IOException e) {
+			Log.e("Image operations", "file " + imageFilePath + " not found - FileOutputStream Error");
 			return linesList; // will be null on that case
 		}
 

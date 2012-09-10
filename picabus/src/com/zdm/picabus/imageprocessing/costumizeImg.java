@@ -4,13 +4,11 @@ import static com.googlecode.javacv.cpp.opencv_core.cvReleaseImage;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Environment;
 
 import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_INTER_LINEAR;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvResize;
 import static com.googlecode.javacv.cpp.opencv_core.cvCreateImage;

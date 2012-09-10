@@ -130,6 +130,10 @@ public class ImageProcessBackgroundTask extends
 				matrix.reset();
 				matrix = null;
 			}
+			
+			//call gc
+	        System.gc();
+	        Runtime.getRuntime().gc();
 		}
 
 	}

@@ -110,33 +110,59 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/settings_bg"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="10dip" >
+             >
 
-            
-    <TextView
-        android:id="@+id/textView1"
+        <TextView
+        android:id="@+id/textView0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/settings_title"
+        android:textColor="@color/app_blue"
+        android:textStyle="bold"
+        android:paddingBottom="40dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+                
+    <TextView
+        android:id="@+id/textView1"
+ 		android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:padding="7dp"
+        android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+        android:background="@color/app_blue"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:gravity="left|center"
         android:text="@string/pref_timeinterval_instruction"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Spinner
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp"
+        android:layout_gravity="right"
     android:id="@+id/SpinnerTimeInterval"
     />
         
                         <View
          android:layout_width="fill_parent"
-         android:layout_height="18dip"
+         android:layout_height="38dip"
  />
                         
             <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+ 		android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:padding="7dp"
+        android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+        android:background="@color/app_blue"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:gravity="left|center"
         android:text="@string/notify_pref_txt"
         android:textAppearance="?android:attr/textAppearanceMedium" />
             
@@ -144,8 +170,11 @@
         
    <Spinner
    	android:id="@+id/SpinnerNotification"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+        android:layout_gravity="right"
 
     />
                  

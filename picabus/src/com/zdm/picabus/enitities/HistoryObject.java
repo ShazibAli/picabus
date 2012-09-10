@@ -16,7 +16,6 @@ public class HistoryObject implements Serializable {
 	private double lng;
 	
 	public HistoryObject(int lineNumber,String stationName, String companyName, double lat, double lng) {
-		// TODO Auto-generated constructor stub
 		this.lineNumber=lineNumber;
 		this.stationName=stationName;
 		this.companyName=companyName;

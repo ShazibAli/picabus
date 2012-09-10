@@ -36,7 +36,6 @@ public class GetRouteDetailsTask extends HttpAbstractTask {
 		try {
 			json = new JSONObject(result);
 		} catch (JSONException e) {
-			// TODO Handle the parse error
 			e.printStackTrace();
 		}
 		rp = new ResponseParser();

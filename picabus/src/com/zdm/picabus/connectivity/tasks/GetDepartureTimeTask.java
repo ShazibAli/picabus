@@ -38,7 +38,6 @@ public class GetDepartureTimeTask extends HttpAbstractTask {
 			try {
 				json = new JSONObject(result);
 			} catch (JSONException e) {
-				// TODO Handle the parse error
 				e.printStackTrace();
 			}
 
@@ -53,7 +52,6 @@ public class GetDepartureTimeTask extends HttpAbstractTask {
 				lat = requestPayload.getDouble("latitude");
 				lng = requestPayload.getDouble("longitude");
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

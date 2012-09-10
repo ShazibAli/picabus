@@ -9,7 +9,6 @@ public class Destination {
 	 * 
 	 */
 	public Destination() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
@@ -18,7 +17,6 @@ public class Destination {
 	 * @param directionB
 	 */
 	public Destination(String directionA, String directionB)  {
-		// TODO Auto-generated constructor stub
 		this.directionA=directionA;
 		this.directionB=directionB;
 	}

@@ -16,7 +16,6 @@ public class TripResultObject implements Serializable {
 	private int stopSequence;
 	
 	public TripResultObject(int lineNumber,String stationName, long tripId, String arrivalTime,int stopSequence) {
-		// TODO Auto-generated constructor stub
 		this.lineNumber=lineNumber;
 		this.stationName=stationName;
 		this.tripId=tripId;

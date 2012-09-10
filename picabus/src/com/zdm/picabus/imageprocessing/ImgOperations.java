@@ -13,6 +13,7 @@ import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
 import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_TM_CCOEFF_NORMED;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvMatchTemplate;
+import static com.googlecode.javacv.cpp.opencv_core.cvCreateImage;
 
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvRect;
+import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
 
@@ -118,7 +120,8 @@ public class ImgOperations {
 		if ((resW <= 0) || (resH <= 0)) {
 			return rect;
 		} else {
-			res = IplImage.create(resW, resH, IPL_DEPTH_32F, 1);
+			CvSize size = new CvSize(resW, resH);
+			res = cvCreateImage(size, IPL_DEPTH_32F, 1);
 
 			cvMatchTemplate(img, temp, res, CV_TM_CCOEFF_NORMED); // CV_TM_CCORR_NORMED
 																	// 0.955

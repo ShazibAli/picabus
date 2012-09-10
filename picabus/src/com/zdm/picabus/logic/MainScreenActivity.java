@@ -153,39 +153,41 @@ public class MainScreenActivity extends Activity {
 		final Spinner spTimeInterval = (Spinner) findViewById(R.id.SpinnerTimeInterval);
 
 		// Spinner Time interval
-		String intervalTimes[] = {"30 minutes", "1 hour", "2 hours", "5 hours", "1 day" };
+		String intervalTimes[] = { "30 minutes", "1 hour", "2 hours",
+				"5 hours", "1 day" };
 		final ArrayAdapter<String> adapterInterval = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, intervalTimes);
-		
-		//get current selection if exists
-		SharedPreferences settings = getSharedPreferences(
-				PICABUS_PREFS_NAME, 0);
+
+		// get current selection if exists
+		SharedPreferences settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
 		int pos = settings.getInt("timeIntervalPosition", -1);
 
-		//set adapter
+		// set adapter
 		spTimeInterval.setAdapter(adapterInterval);
-		if (pos!=-1){
+		if (pos != -1) {
 			spTimeInterval.setSelection(pos);
 		}
-		
+
 		// select listener
 		spTimeInterval.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			int count=0;
+			int count = 0;
+
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
 
-				if(count >= 1){
-				String choice = (String) parent.getItemAtPosition(pos);
-				int choiceInMinutes = SettingsParser.ParseTimeInMinutes(choice);
+				if (count >= 1) {
+					String choice = (String) parent.getItemAtPosition(pos);
+					int choiceInMinutes = SettingsParser
+							.ParseTimeInMinutes(choice);
 
-				// save in shared prefs
-				SharedPreferences settings = getSharedPreferences(
-						PICABUS_PREFS_NAME, 0);
-				SharedPreferences.Editor editor = settings.edit();
-				editor.putInt("timeInterval", choiceInMinutes);
-				editor.putInt("timeIntervalPosition", pos);
-				editor.commit();
+					// save in shared prefs
+					SharedPreferences settings = getSharedPreferences(
+							PICABUS_PREFS_NAME, 0);
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putInt("timeInterval", choiceInMinutes);
+					editor.putInt("timeIntervalPosition", pos);
+					editor.commit();
 				}
 				count++;
 			}
@@ -199,32 +201,34 @@ public class MainScreenActivity extends Activity {
 				"5 minutes", "10 minutes", "15 minutes", "30 minutes", "1 hour" };
 		final ArrayAdapter<String> adapterNotification = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, notificationTimes);
-		//get current selection if exists
+		// get current selection if exists
 		settings = getSharedPreferences(PICABUS_PREFS_NAME, 0);
 
-		//set adapter
+		// set adapter
 		spNotification.setAdapter(adapterNotification);
 		pos = settings.getInt("notificationDeltaPosition", -1);
-		if (pos!=-1){
+		if (pos != -1) {
 			spNotification.setSelection(pos);
 		}
 		// select listener
 		spNotification.setOnItemSelectedListener(new OnItemSelectedListener() {
-			int count=0;
+			int count = 0;
+
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
 
-				if(count >= 1){
-				String choice = (String) parent.getItemAtPosition(pos);
-				int choiceInSeconds = SettingsParser.ParseTimeInSeconds(choice);
+				if (count >= 1) {
+					String choice = (String) parent.getItemAtPosition(pos);
+					int choiceInSeconds = SettingsParser
+							.ParseTimeInSeconds(choice);
 
-				// save in shared prefs
-				SharedPreferences settings = getSharedPreferences(
-						PICABUS_PREFS_NAME, 0);
-				SharedPreferences.Editor editor = settings.edit();
-				editor.putInt("notificationDelta", choiceInSeconds);
-				editor.putInt("notificationDeltaPosition", pos);
-				editor.commit();
+					// save in shared prefs
+					SharedPreferences settings = getSharedPreferences(
+							PICABUS_PREFS_NAME, 0);
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putInt("notificationDelta", choiceInSeconds);
+					editor.putInt("notificationDeltaPosition", pos);
+					editor.commit();
 				}
 				count++;
 			}
@@ -323,5 +327,8 @@ public class MainScreenActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		gpsObject.stopLocationUpdates();
+		System.gc();
+		Runtime.getRuntime().gc();
+
 	}
 }

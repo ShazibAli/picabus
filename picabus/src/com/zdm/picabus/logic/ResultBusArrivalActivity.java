@@ -97,6 +97,14 @@ public class ResultBusArrivalActivity extends ListActivity {
 		}
 	}
 
+	
+	@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.gc();
+        Runtime.getRuntime().gc();
+    }
+	
 	/**
 	 * Creates a list of the arrival times taken from the line's data
 	 * 

@@ -120,6 +120,14 @@ public class TripManagerActivity extends Activity {
 		HttpCaller.getInstance().getTripTextualReports(10, this);
 	}
 	
+	
+	@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.gc();
+        Runtime.getRuntime().gc();
+    }
+	
 	public void insertFacebookData(){
 		 list=(ListView)findViewById(R.id.listReports);
 		 

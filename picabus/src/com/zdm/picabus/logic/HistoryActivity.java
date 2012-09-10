@@ -48,6 +48,12 @@ public class HistoryActivity extends ListActivity {
 		setListAdapter(this.historyRowAdapter);
 	}
 	
+	@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.gc();
+        Runtime.getRuntime().gc();
+    }
 	
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		

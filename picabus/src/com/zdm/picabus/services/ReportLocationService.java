@@ -100,7 +100,7 @@ public class ReportLocationService extends Service implements LocationListener {
 
 		private static final int CONNECTION_TIMEOUT = 10000;
 		private static final int SO_TIMEOUT = 10000;
-		private static final String localServerURL = "http://10.0.0.1:8888/reports";
+		private static final String localServerURL = "http://10.0.0.7:8888/reports";
 
 		@Override
 		public void run() {

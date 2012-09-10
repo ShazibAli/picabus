@@ -39,6 +39,13 @@ public class CameraActivity extends Activity {
 
 		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 	}
+	
+	@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.gc();
+        Runtime.getRuntime().gc();
+    }
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

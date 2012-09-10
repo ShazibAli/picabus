@@ -94,16 +94,18 @@ public class ImageProcessBackgroundTask extends
 			// recreate the new Bitmap
 			rotatedImg = Bitmap.createBitmap(thumbnail, 0, 0,
 					thumbnail.getWidth(), thumbnail.getHeight(), matrix, true);
+			
+			if (thumbnail != null) {
+				thumbnail.recycle();
+				thumbnail = null;
+			}
 
 			FileOutputStream out = new FileOutputStream(
 					Environment.getExternalStorageDirectory()
 							+ "/cameraAct.png");
 			rotatedImg.compress(Bitmap.CompressFormat.PNG, 90, out);
 			
-			if (thumbnail != null) {
-				thumbnail.recycle();
-				thumbnail = null;
-			}
+			
 			
 			linesList = costumizeImg.processImage(context);
 			return linesList;

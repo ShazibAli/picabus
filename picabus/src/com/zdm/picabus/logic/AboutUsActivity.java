@@ -3,8 +3,10 @@ package com.zdm.picabus.logic;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.zdm.picabus.R;
 
@@ -22,7 +24,9 @@ public class AboutUsActivity extends Activity {
 
 		// share picabus in several medias
 		ImageButton shareBtn = (ImageButton) findViewById(R.id.btnShare);
-
+		TextView link = (TextView) findViewById(R.id.about);
+		Linkify.addLinks(link, Linkify.ALL);
+		
 		shareBtn.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {

@@ -6,12 +6,14 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+
+import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_INTER_LINEAR;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvResize;
-
+import static com.googlecode.javacv.cpp.opencv_core.cvCreateImage;
 
 public class costumizeImg 
 {
@@ -42,7 +44,8 @@ public class costumizeImg
 			{
 				//resize the image
 				int scale = ((origImage.height() / 256) + (origImage.width() / 256)) / 2;
-				image = IplImage.create(origImage.width() / scale, origImage.height() / scale, origImage.depth(), origImage.nChannels());
+				CvSize size = new CvSize(origImage.width() / scale, origImage.height() / scale);
+				image = cvCreateImage(size , origImage.depth(), origImage.nChannels());
 				cvResize(origImage, image, CV_INTER_LINEAR);
 			}
 			else
@@ -97,6 +100,9 @@ public class costumizeImg
         //cvReleaseImage(colordetected.getImage());
         cvReleaseImage(image);
         cvReleaseImage(origImage);
+        
+        image = null;
+        origImage = null;
         
         if(lineList.size() == 0)
         {

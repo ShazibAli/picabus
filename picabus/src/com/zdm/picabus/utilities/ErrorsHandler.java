@@ -189,9 +189,9 @@ public class ErrorsHandler {
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 						//goto main menu activity and close all other activities
-							Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
+/*							Intent intent = new Intent("com.zdm.picabus.MAINSCREEN");
 							intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							c.startActivity(intent);
+							c.startActivity(intent);*/
 							}
 						});
 

@@ -62,6 +62,13 @@ public class BusLinesListActivity extends ListActivity {
 		}
 	}
 
+	
+	@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.gc();
+        Runtime.getRuntime().gc();
+    }
 	/**
 	 * Handles a case when GPS coordinates were null, and this activity was run
 	 * again for another attempt

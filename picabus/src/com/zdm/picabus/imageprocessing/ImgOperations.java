@@ -9,7 +9,6 @@ import static com.googlecode.javacv.cpp.opencv_core.cvRectangle;
 import static com.googlecode.javacv.cpp.opencv_core.cvReleaseImage;
 import static com.googlecode.javacv.cpp.opencv_core.cvScalar;
 import static com.googlecode.javacv.cpp.opencv_core.cvSetImageROI;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvSaveImage;
 import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_TM_CCOEFF_NORMED;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvMatchTemplate;
@@ -29,8 +28,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
-import android.widget.Toast;
-
 import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvRect;
 import com.googlecode.javacv.cpp.opencv_core.CvSize;
@@ -205,33 +202,35 @@ public class ImgOperations {
 		           String filePath = Environment.getExternalStorageDirectory() + "/templateBitmap.png";
 		           temp = cvLoadImage(filePath);
 		           
-		           //cvSaveImage(Environment.getExternalStorageDirectory() + "/templateIpl.png", temp);
+		           out.close();
+		           
+		           
 	
 
-						rectT = templateMatch(img, temp); // match the given template
-															// with the picture
-						//Toast.makeText(context, "Line Num = " + Integer.valueOf(nameParsed[1]), Toast.LENGTH_SHORT).show();
-						rect[i][0] = rectT[0]; // get all the results in an array -
-												// rect[][]
-						rect[i][1] = rectT[1];
+					rectT = templateMatch(img, temp); // match the given template
+														// with the picture
+					//Toast.makeText(context, "Line Num = " + Integer.valueOf(nameParsed[1]), Toast.LENGTH_SHORT).show();
+					rect[i][0] = rectT[0]; // get all the results in an array -
+											// rect[][]
+					rect[i][1] = rectT[1];
 
-						if (rect[i][0] != null) // if the template was detected
-						{
+					if (rect[i][0] != null) // if the template was detected
+					{
 
-							line[i] = Integer.valueOf(nameParsed[1]); // enter the number
-																// result
-							i++;
+						line[i] = Integer.valueOf(nameParsed[1]); // enter the number
+															// result
+						i++;
 
 
-							// draw a rectangle so the digit that was found wouldn't be
-							// found again
-							// CV_TM_CCOEFF_NORMED
-							cvRectangle(img, rectT[0], rectT[1],
-									cvScalar(0, 0, 255, 0), CV_FILLED, 0, 0); // 1
-						}													// instead
-																				// of
-																				// CV_FILLED
-					
+						// draw a rectangle so the digit that was found wouldn't be
+						// found again
+						// CV_TM_CCOEFF_NORMED
+						cvRectangle(img, rectT[0], rectT[1],
+								cvScalar(0, 0, 255, 0), CV_FILLED, 0, 0); // 1
+					}													// instead
+																			// of
+																			// CV_FILLED
+				
 					cvReleaseImage(temp);
 					icon.recycle();
 					icon = null;
@@ -253,7 +252,7 @@ public class ImgOperations {
 			
 
 
-			
+		drawables = null;	
 		cvReleaseImage(img);
 		//filterPoints(rect, line);
 

@@ -18,6 +18,7 @@ import com.zdm.picabus.server.entities.Report;
 import com.zdm.picabus.server.entities.Stop;
 import com.zdm.picabus.server.entities.Trip;
 import com.zdm.picabus.server.exceptions.EmptyResultException;
+import com.zdm.picabus.utils.DateUtils;
 
 public class DBServices implements IDBServices {
 
@@ -46,9 +47,9 @@ public class DBServices implements IDBServices {
 			long upperLimitTimeInMs = departureTime.getTime() + (timeIntervalInMinutes * minuteToMsFactor);
 			Time upperLimitTime = new Time(upperLimitTimeInMs);
 				
-//			String dayOfTheWeek = DateUtils.getTodayString();
-			// TODO: debug 
-			String dayOfTheWeek = "sunday";
+			String dayOfTheWeek = DateUtils.getTodayString();
+			
+			// dayOfTheWeek = "sunday"; 
 			String statement = "SELECT trips.trip_id, arrival_time, stops.stop_id, stop_sequence, stop_headsign, " +
 							   "routes.route_id, trips.service_id, direction_id, route_short_name as \"Line Number\", route_long_name, agency_name " +
 								"FROM " + Tables.STOPTIMES.getTableName() +", " + Tables.TRIPS.getTableName() + ", " + Tables.CALENDAR.getTableName() + ", " 

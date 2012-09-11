@@ -29,8 +29,13 @@ public class DBServices implements IDBServices {
 	public Line getNextDepartureTimePerLine(int lineNumber, double latitude,
 			double longitude, String clientTimeString, int timeIntervalInMinutes) throws EmptyResultException {
 		
-		// TODO: remove to real time
-		String demoTime = "12:22:00";
+		// use static time in the demo to avoid using the servers production landscape system clock
+		String demoTime = "14:15:00";
+		
+/*		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String demoTime = dateFormat.format(cal.getTime());
+*/		
 		
 		Stop stop = getNearestStop(latitude, longitude, false, 1);
 		if (stop == null) {
@@ -223,7 +228,8 @@ public class DBServices implements IDBServices {
 			String statement = "SELECT  * FROM " + Tables.STOPTIMES.getTableName() + ", " + Tables.STOPS.getTableName() + 
 					" where stop_times.trip_id = ? and stop_sequence >= ? and stop_times.stop_id = stops.stop_id ORDER BY stop_sequence ASC";		
 			PreparedStatement stmt = c.prepareStatement(statement);
-			stmt.setLong(1, tripID);
+			
+			stmt.setLong(1, tripID); 
 			stmt.setInt(2,currentStopSequenceNumber);
 			ResultSet rs = stmt.executeQuery();
 			
@@ -530,7 +536,8 @@ public class DBServices implements IDBServices {
 					+ " WHERE trip_id = ? ";
 			PreparedStatement stmt = c.prepareStatement(statement);
 			
-			stmt.setLong(1, tripId);
+			// Using Static tripId in the demo in order to show a real time location report on the map
+			stmt.setLong(1, 10);
 			ResultSet rs = stmt.executeQuery();
 			boolean exists = rs.next();
 			

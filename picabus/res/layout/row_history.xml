@@ -40,6 +40,7 @@
         android:layout_marginBottom="2dp"
                 android:gravity="right"
         android:layout_gravity="right"
+        android:contentDescription="@string/histroy_headline"
         android:src="@drawable/dan_icon" />
 
 </LinearLayout>

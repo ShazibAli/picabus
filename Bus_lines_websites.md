@@ -1,0 +1,27 @@
+# Websites links: #
+
+1. http://busline.gov.il/ - request sent (negative response)
+
+> Contains data about bus lines in "Gush Dan" only.
+> Looks really good and has all the maps of each line (can be great for
+> us).
+
+2. http://www.bus.gov.il/ - request sent. (negative response)
+
+3. http://www.bus.co.il/ - request not sent.
+
+
+
+# Omry #
+In conclusion to this issue:
+As i see it there are a few options
+1. Gain access to one of the above site's DB and build our own based on it.
+2.Gain access to each bus line company DB and build DB based on it.
+3. Write a script that will send queries to the sites above\bus line companies sites and build the DB that way.
+
+i looked at the companies sites - we can get by query every info we need including stations(Metropolin has station numbers..other i'm not sure).
+any way the thing is that each site will require a different script, therefore i believe we should try and use the sites above or get the DB directly. worst case we'll write the script.
+
+examples:
+[MetropolinLine90](http://www.metropoline.com/he/sharon/lineStops/350/550)
+[DanLine25](http://www.dan.co.il/search/lines_details.asp?LineNumber=25-_&month=3#)

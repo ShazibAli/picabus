@@ -1,0 +1,53 @@
+# Open CV OCR Algorithms and issues #
+
+Some useful links:
+
+**My stack over flow question**
+http://stackoverflow.com/questions/10107258/digit-recogntion-using-opencv-on-android
+
+**Color Blob**
+http://forums.devshed.com/c-programming-42/opencv-color-detection-347927.html
+
+**Java CV**
+CookBook http://code.google.com/p/javacv/wiki/OpenCV2_Cookbook_Examples
+JavaCV http://code.google.com/p/javacv/
+
+
+**Basic Open CV OCR explained**
+http://blog.damiles.com/2008/11/basic-ocr-in-opencv/
+
+**OCR SDK - good explained steps**
+http://www.abbyy-developers.eu/en:tech
+http://ocrsdk.com/producttour/programming-languages/
+
+
+**Neural Networks OCR Code**
+> http://www.codeproject.com/Articles/3907/Creating-Optical-Character-Recognition-OCR-applica
+
+> http://www.ccs.neu.edu/home/feneric/charrecnn.html
+
+> http://neuroph.sourceforge.net/image_recognition.html
+
+**k-nearest neighbor algorithm**
+http://en.wikipedia.org/wiki/K-nearest_neighbor_algorithm
+
+**Great explanation about OCR with OpenCV python**
+http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
+
+**Forum Question with good explanations**
+http://stackoverflow.com/questions/1284214/simple-ocr-programming-tutorials-articles
+
+**Good presentation about opencv with android**
+http://www.slideshare.net/alagala/computer-vision-with-android-google-gtug-bangkok-2011
+
+**mobile camera based text detection**
+http://www.stanford.edu/class/ee368/Project_11/Reports/Ma_Lin_Zhang_Mobile_text_recognition_and_translation.pdf
+
+**open cv pattern recognition**
+http://blog.damiles.com/2008/11/the-basic-patter-recognition-and-classification-with-opencv/
+
+**Digit recognition**
+http://stackoverflow.com/questions/8070300/scoreboard-digit-recognition-using-opencv
+
+**Sudoku example**
+http://www.aishack.in/2010/08/sudoku-grabber-with-opencv/4/

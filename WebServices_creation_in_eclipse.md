@@ -1,0 +1,37 @@
+First, make sure Tomcat server and CFX are installed, and configured in eclipse.
+
+**Create the project:**
+
+In eclipse, go to File -> dynamic web project.
+
+Give the project name,
+change "Dynamic web module version"  to 2.5,
+and under "configuration" choose: " CXF web services project 2.5". press finish.
+
+**Create the class with functions:**
+
+Go to the project -> java resources -> new -> class.
+Give the class a name, and press finish.
+Now you can write your functions there.
+
+**Wrap that class with a web service:**
+
+Go to File -> new -> web service.
+Under "service implementation" choose the class you defined earlier.
+Move the slider up (highest possible) in both places. Press next.
+Check "use a service endpoint interface".
+Choose: "create an SEI" (service endpoint interface).
+Give it a name, and check the functions you wrote.
+Press Next -> next ->next. Press "start server".  Finish.
+
+Now the window "Web services explorer" will open.
+In order to make sure that the functions work,  choose your function, press "add" to add parameters. now press "go".
+
+**Client side:**
+
+Go to the project name with ending "Client" -> java resources -> java file that ends with :PORT\_CLIENT.
+In that file – change params of functions that you wish to run.
+
+Now right click on the white area in the file -> run as -> java application.
+
+The server is already running, and the web services are deployed, so this will start up a second process, that will connect to the web service. The function will now run.

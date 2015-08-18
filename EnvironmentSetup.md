@@ -1,0 +1,28 @@
+## Eclipse Installation ##
+
+**You should download: Eclipse IDE for Java EE Developers**
+from: http://www.eclipse.org/downloads/
+
+**Installing Java JDK 1.7**
+
+## Android sdk installation ##
+
+**You should download the windows (recommended) sdk**
+http://developer.android.com/sdk/installing.html
+
+
+## SVN configuration ##
+
+Enter to the following link and follow the instructions depicted there.
+**You should skip the step of the google code project hosting definition**
+
+Link: http://blog.msbbc.co.uk/2007/06/using-googles-free-svn-repository-with.html
+
+Please note: the project already exists in the repository so you just have to consume it as an existing project when you'll be asked to do so (you don't need to create a new Android project).
+
+## OpenCV ##
+**Installing JavaCV step by step (works):**
+http://ganeshtiwaridotcomdotnp.blogspot.com/2011/12/opencv-javacv-eclipse-project.html
+
+This is a guide for installing OpenCV for android (using java) for eclipse
+http://opencv.itseez.com/doc/tutorials/introduction/android_binary_package/android_binary_package.html#get-the-opencv-package-for-android-development
